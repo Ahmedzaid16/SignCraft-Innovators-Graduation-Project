@@ -2,12 +2,14 @@
 :root {
   --blue-color: #0075ff;
   --blue-alt-color: #0d69d5;
-  --orange-color: #f59e0b;
+  --orange-color: #ff9f1c;
   --green-color: #22c55e;
-  --red-color: #f44336;
+  --red-color: #e71d36;
   --grey-color: #888;
-  --main-color: #2196f3;
-  --main-color-alt: #1787e0;
+  --black-color: #011627;
+  --white-color: #fdfffc;
+  --main-color: #2ec4b6;
+  --main-color-alt: #3c7671;
   --main-transition: 0.3s;
 }
 
@@ -39,11 +41,11 @@ ul {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--blue-color);
+  background-color: var(--main-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--blue-alt-color);
+  background-color: var(--main-color-alt);
 }
 
 .page {
@@ -82,7 +84,7 @@ ul {
 /* End Global Rules */
 /* Start header */
 .header {
-  background-color: white;
+  background-color: var(--white-color);
   position: relative;
   -webkit-box-shadow: 0 0 10px #ddd;
   -moz-box-shadow: 0 0 10px #ddd;
@@ -109,7 +111,7 @@ ul {
 }
 
 .header .logo i {
-  color: white;
+  color: var(--white-color);
   background-color: var(--main-color);
   font-size: 20px;
   font-weight: bold;
@@ -154,7 +156,7 @@ ul {
   height: 60px;
   position: relative;
   padding: 0 30px;
-  color: black;
+  color: var(--black-color);
   overflow: hidden;
   font-size: 18px;
   font-weight: bold;
@@ -202,7 +204,6 @@ ul {
 .header .mega-menu {
   position: absolute;
   width: 250px;
-  /* right: -45px; */
   background-color: white;
   padding: 30px;
   border-bottom: 3px solid var(--main-color);
@@ -262,13 +263,19 @@ ul {
 }
 
 .header .mega-menu .links li a {
-  color: var(--main-color);
+  color: var(--black-color);
   padding: 15px;
   display: block;
   font-size: 18px;
   font-weight: bold;
+  transition: var(--main-transition);
+}
+
+.header .mega-menu .links li a:hover {
+  color: var(--main-color);
 }
 
 .header .mega-menu .links li a i {
   margin-right: 10px;
+  color: var(--main-color);
 }
