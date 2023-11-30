@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <!-- <link rel="stylesheet" href="css/framework.css"> -->
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sign Language</title>
+  </head>
+
+  <body>
+    <!-- Start header -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-hands-asl-interpreting"></i>
+          <h3>Sign Language</h3>
+        </a>
+        <ul class="main-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#">Education</a></li>
+          <li><a href="proflie.html" class="active">Profile</a></li>
+          <li>
+            <a href="#">Other Links</a>
+            <!-- Start Megamenu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <!-- End Megamenu -->
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Header -->
+    <!-- Start profile -->
+    <section>
+      <div class="profile-container">
+        <div class="avater">
+          <img src="images/dark-avatar.jpg" alt="avater" />
+        </div>
+        <div class="nav-section">
+          <ul>
+            <li class="active">Personal Information</li>
+            <li class="">Account Information</li>
+          </ul>
+        </div>
+        <div class="information">
+          <form action="" class="profile-form">
+            <div class="email-section">
+              <label for="email">Email</label>
+              <input type="Email" id="email" readonly />
+            </div>
+            <div class="password-section">
+              <label for="password">Password</label>
+              <input type="password" id="password" readonly />
+              <i class="fa-sharp fa-solid fa-chevron-right fa-beat fa-lg"></i>
+            </div>
+            <div class="name-section">
+              <!-- Content will be dynamically added by the script -->
+            </div>
+            <div class="gender-section">
+              <!-- Content will be dynamically added by the script -->
+            </div>
+            <div class="save-section">
+              <!-- Content will be dynamically added by the script -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <script src="js/profile.js"></script>
+  </body>
+</html>

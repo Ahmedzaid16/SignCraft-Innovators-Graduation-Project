@@ -1,0 +1,108 @@
+section {
+    height: 100vh;
+    background-image: url(../images/profile-sign.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-color: #011627;
+}
+.profile-container {
+    /* #FDFFFC #2ec3b6 #011627 #FF9F1C #E71D36*/
+    background-image: linear-gradient(0deg, #011627 0%, #2ec3b6  100%);
+    color: #FDFFFC;
+    height: 90vh;
+    width: 80vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -35%);
+    border-radius: 20px;
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.2);
+    display: grid;
+    grid-template-rows: 160px 100px auto;
+    align-items: center;
+    justify-items: center;
+}
+.profile-container .avater {
+    grid-row-start: 1;
+}
+.profile-container .avater img {
+    border-radius: 100%;
+    filter: brightness(1) invert(1);
+}
+.profile-container .nav-section {
+    grid-row-start: 2;
+    width: 90%;
+    font-size: 18px;
+    font-weight: bold;
+}
+.profile-container .nav-section ul {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    height: 100%;
+    position: relative;
+}
+.profile-container .nav-section ul li:hover {
+  color: #E71D36;
+  cursor: pointer;
+}
+.profile-container .nav-section ul .active {
+    color: #E71D36;
+}
+.profile-container .information {
+    grid-row-start: 3;
+    width: 90%;
+    height: 90%;
+    font-size: 18px;
+    font-weight: bold;
+}
+.profile-container .information .profile-form {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+}
+.profile-container .information .profile-form .email-section,
+.profile-container .information .profile-form .password-section,
+.profile-container .information .profile-form .name-section,
+.profile-container .information .profile-form .gender-section,
+.profile-container .information .profile-form .save-section{
+    display: grid;
+    grid-template-columns: 40% auto 15%;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* The arrow */
+.fa-chevron-right {
+    margin: auto;
+    cursor: pointer;
+}
+#email,
+#password
+{
+    height: 18%;
+    color: #E71D36;
+}
+#name,
+#gender{
+    height: 30%;
+    color: #E71D36;
+}
+
+/* ... for js ... */
+
+.profile-container .personal-info,
+.profile-container .account-info,
+.profile-container .information .profile-form .name-section,
+.profile-container .information .profile-form .gender-section,
+.profile-container .information .profile-form .save-section{
+    display: none;
+}
+.profile-container .information .profile-form .save-section button{
+    width: 60%;
+    height: 40%;
+    color: #FDFFFC;
+    background-color: #E71D36;
+}
