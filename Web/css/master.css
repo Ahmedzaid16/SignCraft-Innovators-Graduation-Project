@@ -165,6 +165,12 @@ ul {
 
 .header .main-nav li.active {
   color: var(--main-color);
+}
+
+/*  I added this because when I was reduce the page, 
+    only the links that had been activated were showing, 
+    But the rest does not.  */
+.header .main-nav li {  
   background-color: #fafafa;
 }
 
