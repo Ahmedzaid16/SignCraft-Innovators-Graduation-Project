@@ -10,11 +10,19 @@
   --white-color: #fdfffc;
   --main-color: #2ec4b6;
   --main-color-alt: #3c7671;
+  --purple-alt: #6610f2;
+  --purple: #6f42c1;
   --main-transition: 0.3s;
 }
 
 * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -167,10 +175,11 @@ ul {
   color: var(--main-color);
 }
 
+
 /*  I added this because when I was reduce the page, 
     only the links that had been activated were showing, 
     But the rest does not.  */
-.header .main-nav li {  
+.header .main-nav li {
   background-color: #fafafa;
 }
 
@@ -285,3 +294,66 @@ ul {
   margin-right: 10px;
   color: var(--main-color);
 }
+
+/* End header */
+/* Start home */
+.home {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+@media (max-width:991px) {
+  .home {
+    flex-direction: column;
+    padding: 5px;
+    margin-top: 60px;
+  }
+}
+
+.home .content {
+  align-items: center;
+  text-align: center;
+  background-color: var(--main-color-alt);
+  margin-right: 20px;
+}
+
+@media (max-width:991px) {
+  .home .content {
+    margin-right: 0;
+  }
+}
+
+.home .content h2 {
+  font-size: 35px;
+  color: var(--white-color);
+}
+
+.home .content p {
+  color: var(--white-color);
+  padding: 0 20px;
+  font-size: 20px;
+}
+
+/* Start video */
+.sign_video {
+  position: relative;
+  margin-top: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sign_video video {
+  max-width: 800px;
+}
+
+@media(max-width:767px) {
+  .sign_video video {
+    max-width: 500px;
+  }
+}
+
+/* End video */
+/* End home */
