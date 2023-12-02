@@ -1,0 +1,236 @@
+/* #FDFFFC #2ec3b6 #011627 #FF9F1C #E71D36*/
+.header {
+    z-index: 1;
+}
+section {
+    position: relative;
+    height: 120vh;
+    background-image: url(../images/profile-sign.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-color: #011627;
+}
+
+.profile-section {
+    background-image: linear-gradient(0deg, #011627 0%, #2ec3b6  100%);
+    color: #FDFFFC;
+    height: 90vh;
+    width: 80vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/*Start Change Password style */
+.profile-section .password-change-section {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+    grid-template-rows: 15% auto;
+}
+.profile-section .password-change-section .back-arrow-and-h2{
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+.profile-section .password-change-section .back-arrow-and-h2 i{
+    cursor: pointer;
+    width: 25px;
+}
+.profile-section .password-change-section .change-form {
+    height: 100%;
+    width: 80%;
+}
+.profile-section .password-change-section .change-form .change-password {
+    display:grid;
+    height: 100%;
+    align-items: center;
+    grid-template-rows: 20% 20% 20% 12% auto;
+}
+.profile-section .password-change-section .change-form .change-password .current-password-section, 
+.profile-section .password-change-section .change-form .change-password .new-password-section,
+.profile-section .password-change-section .change-form .change-password .confirm-password-section {
+    display: grid;
+    height: 60%;
+    align-items: center;
+    align-content: space-between;
+}
+
+.profile-section .password-change-section .change-form .change-password .new-password-input,
+.profile-section .password-change-section .change-form .change-password .confirm-password-input {
+    display: flex;
+    align-items: center;
+}
+.profile-section .password-change-section .change-form .change-password label {
+    font-weight: bold;
+}
+.profile-section .password-change-section .change-form .change-password input {
+    padding: 5px;
+    width: 100%;
+    border-radius: 5px;
+    color: #E71D36;
+}
+.fa-lock,
+.fa-unlock{
+    color: #E71D36;
+    cursor: pointer;
+    width: 0%;
+    translate: -25px;
+}
+.profile-section .password-change-section .change-form p {
+    translate: 0px 40px;
+    color: #E71D36;
+    font-style: italic;
+}
+.profile-section .password-change-section .change-form button {
+    width: 40%;
+    height: 35%;
+    color: #FDFFFC;
+    background-color: #E71D36;
+    border-radius: 7px;
+}
+
+/*End Change Password style */
+
+/*Start Profile information style */
+.profile-section .profile-container {
+    display: grid;
+    grid-template-rows: 160px 100px auto;
+    align-items: center;
+    justify-items: center;
+    width: 100%;
+    height: 100%;
+}
+.profile-section .profile-container .avatar {
+    grid-row-start: 1;
+    display: flex;
+    align-items: flex-end;
+    width: 120px;
+}
+.profile-section .profile-container .avatar input {
+    display: none
+}
+.profile-section .profile-container .avatar .avatar-img {
+    display: flex;
+}
+.profile-section .profile-container .avatar .avatar-img img {
+    width: 120px;
+    height: 120px;
+    border-radius: 100%;
+    filter: brightness(1) invert(1);
+    object-fit: cover;
+}
+
+.circle-animation {
+    position: absolute;
+    border: 2px solid #FDFFFC;
+    border-radius: 50%;
+    border-left: none;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s ease infinite;
+}
+  
+  @keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);;
+    }
+}
+
+.profile-section .profile-container .avatar .camera {
+    translate: -40px;
+    cursor: pointer;
+}
+.profile-section .profile-container .nav-section {
+    grid-row-start: 2;
+    width: 90%;
+    font-size: 18px;
+    font-weight: bold;
+}
+.profile-section .profile-container .nav-section ul {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    height: 100%;
+    position: relative;
+}
+.profile-section .profile-container .nav-section ul li:hover {
+    color: #E71D36;
+    cursor: pointer;
+}
+.profile-section .profile-container .nav-section ul .active {
+    color: #E71D36;
+}
+.profile-section .profile-container .information {
+    grid-row-start: 3;
+    width: 90%;
+    height: 90%;
+    font-size: 18px;
+    font-weight: bold;
+}
+.profile-section .profile-container .information .profile-form {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+}
+.profile-section .profile-container .information .profile-form .email-section,
+.profile-section .profile-container .information .profile-form .password-section,
+.profile-section .profile-container .information .profile-form .name-section,
+.profile-section .profile-container .information .profile-form .gender-section,
+.profile-section .profile-container .information .profile-form .save-section{
+    display: grid;
+    grid-template-columns: 40% auto 15%;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.profile-section .profile-container .information .profile-form .email-section .email-input,
+.profile-section .profile-container .information .profile-form .password-section .password-input
+{
+    height: 18%;
+    color: #E71D36;
+    border-radius: 5px;
+}
+.profile-section .profile-container .information .profile-form .name-section .name-input,
+.profile-section .profile-container .information .profile-form .gender-section .gender-input{
+    height: 30%;
+    color: #E71D36;
+    border-radius: 5px;
+}
+.fa-chevron-right {
+    margin: auto;
+    cursor: pointer;
+}
+.profile-section .profile-container .information .profile-form .save-section button{
+    width: 70%;
+    height: 50%;
+    color: #FDFFFC;
+    background-color: #E71D36;
+    border-radius: 7px;
+}
+
+/*End Profile information style */
+
+/* ... for js ... */
+
+.profile-section .profile-container .personal-info,
+.profile-section .profile-container .account-info,
+.profile-section .profile-container .information .profile-form .name-section,
+.profile-section .profile-container .information .profile-form .gender-section,
+.profile-section .profile-container .information .profile-form .save-section{
+    display: none;
+}
+.hidden {
+    display: none;
+}
+
+/* ... for js ... */
+  

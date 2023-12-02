@@ -1,0 +1,287 @@
+/* Start Global Rules */
+:root {
+  --blue-color: #0075ff;
+  --blue-alt-color: #0d69d5;
+  --orange-color: #ff9f1c;
+  --green-color: #22c55e;
+  --red-color: #e71d36;
+  --grey-color: #888;
+  --black-color: #011627;
+  --white-color: #fdfffc;
+  --main-color: #2ec4b6;
+  --main-color-alt: #3c7671;
+  --main-transition: 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--main-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--main-color-alt);
+}
+
+.page {
+  background-color: #f1f5f9;
+  min-height: 100vh;
+}
+
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Small */
+@media (min-width:768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+/* Medium */
+@media (min-width:992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+/* Large */
+@media (min-width:1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+/* End Global Rules */
+/* Start header */
+.header {
+  background-color: var(--white-color);
+  position: relative;
+  -webkit-box-shadow: 0 0 10px #ddd;
+  -moz-box-shadow: 0 0 10px #ddd;
+  box-shadow: 0 0 10px #ddd;
+}
+
+.header .container {
+  max-height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.header .logo {
+  color: var(--main-color);
+  font-size: 20px;
+  font-weight: bold;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header .logo i {
+  color: var(--white-color);
+  background-color: var(--main-color);
+  font-size: 20px;
+  font-weight: bold;
+  width: 40px;
+  height: 36px;
+  padding-right: 0px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+
+@media(max-width:767px) {
+  .header .logo {
+    width: 100%;
+    height: 50%;
+  }
+}
+
+.header .main-nav {
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  .header .main-nav {
+    margin: auto;
+  }
+}
+
+.header .main-nav>li:hover .mega-menu {
+  opacity: 1;
+  z-index: 100;
+  top: calc(50%);
+}
+
+.header .main-nav>li>a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  position: relative;
+  padding: 0 30px;
+  color: var(--black-color);
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: bold;
+  transition: var(--main-transition);
+}
+
+.header .main-nav li.active {
+  color: var(--main-color);
+}
+
+/*  I added this because when I was reduce the page, 
+    only the links that had been activated were showing, 
+    But the rest does not.  */
+.header .main-nav li {  
+  background-color: #fafafa;
+}
+
+.header .main-nav>li>a::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background-color: var(--main-color);
+  top: 0;
+  left: -100%;
+  transition: var(--main-transition);
+}
+
+.header .main-nav>li>a:hover {
+  color: var(--main-color);
+  background-color: #fafafa;
+}
+
+.header .main-nav>li>a.active {
+  color: var(--main-color);
+  background-color: #fafafa;
+}
+
+.header .main-nav>li>a:hover::before {
+  left: 0;
+}
+
+@media(max-width:767px) {
+  .header .main-nav>li>a {
+    padding: 10px;
+    font-size: 14px;
+    height: 40px;
+  }
+}
+
+.header .mega-menu {
+  position: absolute;
+  width: 250px;
+  background-color: white;
+  padding: 30px;
+  border-bottom: 3px solid var(--main-color);
+  margin-top: 40px;
+  z-index: -1;
+  display: flex;
+  gap: 40px;
+  top: calc(100% + 50px);
+  opacity: 0;
+  transition: top var(--main-transition), opacity var(--main-transition);
+}
+
+@media (max-width: 767px) {
+  .header .mega-menu {
+    flex-direction: column;
+    gap: 0;
+    padding: 5px;
+    margin-top: 60px;
+  }
+}
+
+
+.header .mega-menu .LINKS {
+  min-width: 100px;
+  padding-right: -50px;
+  flex: 1;
+}
+
+.header .mega-menu .links li {
+  position: relative;
+}
+
+.header .mega-menu .links li:not(:last-child) {
+  border-bottom: 1px solid #e9e6e6;
+}
+
+@media (max-width: 767px) {
+  .header .mega-menu .links:first-of-type li:last-child {
+    border-bottom: 1px solid #e9e6e6;
+  }
+}
+
+.header .mega-menu .links li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: #fafafa;
+  z-index: -1;
+  transition: var(--main-transition);
+}
+
+.header .mega-menu .links li:hover::before {
+  width: 100%;
+}
+
+.header .mega-menu .links li a {
+  color: var(--black-color);
+  padding: 15px;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  transition: var(--main-transition);
+}
+
+.header .mega-menu .links li a:hover {
+  color: var(--main-color);
+}
+
+.header .mega-menu .links li a i {
+  margin-right: 10px;
+  color: var(--main-color);
+}

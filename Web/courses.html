@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <!-- <link rel="stylesheet" href="css/framework.css" /> -->
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="stylesheet" href="css/courses.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Courses</title>
+  </head>
+  <body>
+    <!-- Start header -->
+    <div class="header">
+      <div class="container">
+        <a href="index.html" class="logo">
+          <i class="fa-solid fa-hands-asl-interpreting"></i>
+          <h3>Sign Language</h3>
+        </a>
+        <ul class="main-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#" class="active">Education</a></li>
+          <li><a href="proflie.html">Profile</a></li>
+          <li>
+            <a href="#">Other Links</a>
+            <!-- Start Megamenu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <!-- End Megamenu -->
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Header -->
+    <!-- Start COURSES -->
+    <section>
+      <div class="arsls">
+        <div class="left-arsls">
+          <p class="one">ARABIC SIGN LANGUAGE COURSES</p>
+          <p class="two">
+            Learn to sign today with our online sign language courses
+          </p>
+          <p class="three">
+            Each course is packed with vocabulary, numbers, tips about learning
+            Arabic Sign Language (ArSL), and special knowledge of Deaf culture.
+          </p>
+        </div>
+        <div class="right-arsls">
+          <img src="images/kids-head.png" alt="kids-img" />
+        </div>
+      </div>
+      <div class="bottom-left-image">
+        <img src="images/adult-bottom.png" alt="Bottom Left Image" />
+      </div>
+      <div class="categories">
+        <div class="categories-info">
+          <h2 class="rectangular-animation">Course Categories</h2>
+          <p>We've got courses for everyone!</p>
+        </div>
+        <div class="categories-content">
+          <div
+            class="adult-categories"
+            onclick="scrollToElement('adultCourses')"
+          >
+            <img
+              src="images/adult-categories.png"
+              alt="Adult Arabic Sign Language (ArSL) Courses"
+            />
+            <p>Ages 15+</p>
+          </div>
+          <div class="kids-categories" onclick="scrollToElement('kidsCourses')">
+            <img
+              src="images/kids-categories.png"
+              alt="Kids Arabic Sign Language (ArSL) Courses"
+            />
+            <p>Kids</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="courses">
+        <div class="head-courses">
+          <h3 class="rectangular-animation2">ArSL Courses</h3>
+        </div>
+
+        <div class="adult-courses line" id="adultCourses">
+          <div class="adult-info-content">
+            <h4>Adult ArSL Courses</h4>
+            <p>
+              Embrace the beauty of Arabic Sign Language (ArSL) with our
+              individual Online Arabic Sign Language Courses. Whether you're a
+              beginner or looking to enhance your skills, each course offers a
+              comprehensive and interactive journey led by experienced Arabic
+              Sign Language instructors. Dive into a world of expressive
+              gestures, vibrant culture, and meaningful communication, as you
+              learn to converse fluently in Arabic Sign Language (ArSL), one
+              course at a time. Start your signing adventure today!
+            </p>
+            <div class="adult-courses-videos">
+              <a href="course-lessons.html?course=egyptian" class="egyptian">
+                <div class="egyptian-content">
+                  <div class="egyptian-img">
+                    <img src="images/adult-course.jpg" alt="Egyptian img" />
+                    <span>24 Lessons</span>
+                  </div>
+                  <div class="egyption-info">
+                    <h4>Getting Started with ArESL</h4>
+                    <p>
+                      A perfect introduction to Arabic Egyptian Sign Language
+                      (ArESL), gain basic conversation skills and a foundational
+                      understanding of Arabic Egyptian Sign Language (ArESL)
+                      vocabulary and grammar. With practice and expert guidance.
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="kids-courses" id="kidsCourses">
+          <div class="kids-info-content">
+            <h4>ArSL Courses for Kids</h4>
+            <p>
+              Learn Arabic Sign Language (ArSL) in a fun and interactive way
+              with Sign Language 101 for Kids! Our online courses, designed by
+              Deaf curriculum specialists, will engage kids ages 8-15 in an
+              immersive learning experience. Unlock the power of communication
+              and bring clarity to conversations with this hands-on opportunity.
+            </p>
+            <div class="kids-courses-videos">
+              <a href="course-lessons.html?course=primary" class="primary">
+                <div class="primary-content">
+                  <div class="primary-img">
+                    <img src="images/kids-course.jpg" alt="Primary img" />
+                    <span>23 Lessons</span>
+                  </div>
+                  <div class="primary-info">
+                    <h4>Primary School ArSL</h4>
+                    <p>
+                      This course is the perfect introduction to the enchanting
+                      world of Arabic Sign Language (ArSL). Young learners will
+                      acquire fundamental conversation skills while building a
+                      solid foundation in Arabic Sign Language (ArSL) vocabulary
+                      and grammar. With fun practice activities and expert
+                      guidance, your child will be signing confidently in no
+                      time.
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End COURSES -->
+    <script src="js/courses.js"></script>
+  </body>
+</html>
