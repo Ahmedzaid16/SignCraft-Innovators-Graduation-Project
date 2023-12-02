@@ -5,6 +5,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const accountInfoTab = document.querySelector(
     ".nav-section ul li:nth-child(2)"
   );
+  const PasswordChangeSection = document.querySelector(
+    ".password-change-section"
+  );
+  const ProfileContainerSection = document.querySelector(".profile-container");
   const emailSection = document.querySelector(".email-section");
   const passwordSection = document.querySelector(".password-section");
   const nameSection = document.querySelector(".name-section");
@@ -32,25 +36,79 @@ document.addEventListener("DOMContentLoaded", function () {
     genderSection.style.display = "grid";
     saveSection.style.display = "grid";
 
-    // Change form content for Account Information
     if (nameSection && genderSection && saveSection) {
       nameSection.innerHTML = `
           <label for="name">Name</label>
-          <input type="text" id="name"/>
+          <input type="text" id="name" class="name-input" autocomplete="on">
         `;
       genderSection.innerHTML = `
           <label for="gender">Gender</label>
-            <select id="gender">
+            <select name="gender" id="gender" class="gender-input" autocomplete="off">
               <option value="male">Male</option>
               <option value="female">Female</option>
-           </select>
+            </select>
         `;
       saveSection.innerHTML = `
           <button>Save</button>
         `;
     }
   });
+
+  document
+    .querySelector(".password-change-section")
+    .addEventListener("click", function (event) {
+      if (event.target.classList.contains("fa-chevron-left")) {
+        ProfileContainerSection.classList.remove("hidden");
+        PasswordChangeSection.classList.add("hidden");
+        PasswordChangeSection.style.display = "none";
+        ProfileContainerSection.style.display = "grid";
+      }
+    });
+
+  document
+    .querySelector(".fa-chevron-right")
+    .addEventListener("click", function () {
+      ProfileContainerSection.classList.add("hidden");
+      PasswordChangeSection.classList.remove("hidden");
+      PasswordChangeSection.style.display = "grid";
+      ProfileContainerSection.style.display = "none";
+      if (PasswordChangeSection) {
+        PasswordChangeSection.innerHTML = `
+        <div class="back-arrow-and-h2">
+        <i class="fa-sharp fa-solid fa-chevron-left fa-beat fa-lg"></i>
+          <h2>Change Your Password</h2>
+        </div>
+        <div class="change-form">
+          <form action="" class="change-password">
+            <div class="current-password-section">
+              <label for="current-password">Enter your current password</label>
+              <input type="password" id="current-password" autocomplete="off" />
+            </div>
+            <div class="new-password-section">
+              <label for="new-password">New Password</label>
+              <div class="new-password-input">
+                <input type="password" id="new-password" autocomplete="off" />
+                <i class="fa-solid fa-lock" id="show-password"
+                onclick="togglePasswordVisibility('new-password')" ></i>
+              </div>
+            </div>
+            <div class="confirm-password-section">
+              <label for="confirm-password">Confirm New Password</label>
+              <div class="confirm-password-input">
+                <input type="password" id="confirm-password" autocomplete="off" />
+                <i class="fa-solid fa-lock" id="show-confirm-password"
+                onclick="togglePasswordVisibility('confirm-password')" ></i>
+              </div>
+            </div>
+            <p>*You will be signed out when you save.</p>
+            <button>Save</button>
+          </form>
+        </div>
+        `;
+      }
+    });
 });
+
 document.getElementById("avatar").addEventListener("change", function (event) {
   const img = document.getElementById("avatar-img");
   const file = event.target.files[0];
@@ -67,70 +125,6 @@ document.getElementById("avatar").addEventListener("change", function (event) {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const PasswordChangeSection = document.querySelector(
-    ".password-change-section"
-  );
-  const ProfileContainerSection = document.querySelector(".profile-container");
-
-  // Add event listener to a parent element
-  document
-    .querySelector(".password-change-section")
-    .addEventListener("click", function (event) {
-      // Check if the clicked element is the left arrow icon
-      if (event.target.classList.contains("fa-chevron-left")) {
-        ProfileContainerSection.classList.remove("hidden");
-        PasswordChangeSection.classList.add("hidden");
-        PasswordChangeSection.style.display = "none";
-        ProfileContainerSection.style.display = "grid";
-      }
-    });
-
-  // Add event listener for the right arrow icon
-  document
-    .querySelector(".fa-chevron-right")
-    .addEventListener("click", function () {
-      ProfileContainerSection.classList.add("hidden");
-      PasswordChangeSection.classList.remove("hidden");
-      PasswordChangeSection.style.display = "grid";
-      ProfileContainerSection.style.display = "none";
-      // Change form content for Password Change
-      if (PasswordChangeSection) {
-        PasswordChangeSection.innerHTML = `
-        <div class="back-arrow-and-h2">
-        <i class="fa-sharp fa-solid fa-chevron-left fa-beat fa-lg"></i>
-          <h2>Change Your Password</h2>
-        </div>
-        <div class="change-form">
-          <form action="" class="change-password">
-            <div class="current-password-section">
-              <label for="current-password">Enter your current password</label>
-              <input type="password" id="current-password" />
-            </div>
-            <div class="new-password-section">
-              <label for="new-password">New Password</label>
-              <div class="new-password-input">
-                <input type="password" id="new-password" />
-                <i class="fa-solid fa-lock" id="show-password"
-                onclick="togglePasswordVisibility('new-password')" ></i>
-              </div>
-            </div>
-            <div class="confirm-password-section">
-              <label for="confirm-password">Confirm New Password</label>
-              <div class="confirm-password-input">
-                <input type="password" id="confirm-password" />
-                <i class="fa-solid fa-lock" id="show-confirm-password"
-                onclick="togglePasswordVisibility('confirm-password')" ></i>
-              </div>
-            </div>
-            <p>*You will be signed out when you save.</p>
-            <button>Save</button>
-          </form>
-        </div>
-        `;
-      }
-    });
-});
 function togglePasswordVisibility(inputId) {
   var icon = "";
   var passwordInput = document.getElementById(inputId);
