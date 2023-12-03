@@ -6,6 +6,7 @@ section {
 .content {
   display: flex;
   padding: 6rem;
+  align-items: center;
 }
 .content .lessons {
   width: 20%;
@@ -19,19 +20,18 @@ section {
 }
 .content .lessons h2,
 .content .lessons li {
-    color: #2ec3b6;
+  color: #2ec3b6;
 }
 .content .lessons li {
-    cursor: pointer;
-    border: 2px solid #2ec3b6;
-    padding: 10px;
+  cursor: pointer;
+  border: 2px solid #2ec3b6;
+  padding: 10px;
 }
 
-/* .active-lesson, */
 .content .lessons li:hover {
-    background-color: #E71D36 !important;
-    color: #fdfffc !important; 
-    border-color: #011627 !important;
+  background-color: #e71d36 !important;
+  color: #fdfffc !important;
+  border-color: #011627 !important;
 }
 
 .content .video-container {
@@ -42,4 +42,12 @@ iframe {
   width: 100%;
   height: 500px;
   border-radius: 15px;
+}
+@media (max-width:957px) {
+  .content .lessons{
+    width: 30%;
+  }
+  .content .video-container {
+    width: 70%;
+  }
 }

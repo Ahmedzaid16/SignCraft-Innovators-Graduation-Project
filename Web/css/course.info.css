@@ -161,7 +161,7 @@
   height: 260px;
 }
 .benefit .bottom .five {
-  flex-grow: 2;
+  width: 550px;
 }
 .benefit .two img,
 .benefit .five img {
@@ -176,10 +176,7 @@
 .benefit .two img {
   object-fit: cover;
 }
-.benefit .five img {
-  width: 550px;
-}
-.img-link {
+#bottom {
   display: none;
   position: fixed;
   bottom: -5px;
@@ -224,8 +221,7 @@
   padding: 10px;
   background-color: #fdfffc;
   margin-bottom: 5px;
-  padding: 3rem 0 3rem 3rem;
-  width: 890px;
+  padding: 3rem;
 }
 .section {
   display: flex;
@@ -248,6 +244,7 @@
 .content p {
   border-bottom: 1px solid #2ec3b6;
   padding: 1rem;
+  color: #fdfffc;
 }
 
 .content .last {
@@ -282,4 +279,50 @@
   top: 10px;
   right: 10px;
   cursor: pointer;
+}
+@media (max-width: 567px) {
+  .course-head {
+    justify-content: center;
+    grid-template-columns: auto;
+    height: auto;
+  }
+  .right-head {
+    width: 100% !important;
+  }
+  #bottom {
+    left: 40%;
+  }
+  .course-content .about {
+    flex-direction: column;
+  }
+}
+@media (min-width: 568px) and (max-width: 767px) {
+  .course-head {
+    justify-content: center;
+    grid-template-columns: auto;
+    height: auto;
+  }
+  .right-head {
+    width: 100% !important;
+  }
+  #bottom {
+    left: 40%;
+  }
+  .course-content .about {
+    flex-direction: column;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .course-head {
+    justify-content: center;
+  }
+  .right-head {
+    width: 100% !important;
+  }
+  #bottom {
+    left: 52%;
+  }
+  .course-content .about {
+    flex-direction: column;
+  }
 }

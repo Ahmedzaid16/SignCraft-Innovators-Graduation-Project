@@ -12,7 +12,7 @@ function toggleContent(sectionId) {
 }
 
 function showImageOnScroll() {
-  var bottomLeftImage = document.querySelector(".img-link");
+  var bottomLeftImage = document.getElementById("bottom");
   const scrollThreshold = 400;
   const isScrolled = window.scrollY > scrollThreshold;
   bottomLeftImage.style.display = isScrolled ? "block" : "none";
@@ -51,19 +51,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 function openShareModal() {
-    var modal = document.getElementById("shareModal");
-    modal.style.display = "flex";
-  }
-  
-  function closeShareModal() {
-    var modal = document.getElementById("shareModal");
-    modal.style.display = "none";
-  }
-  
-  document.addEventListener("DOMContentLoaded", function () {
-    // ... (existing code)
-  
-    var shareButton = document.querySelector(".share");
-    shareButton.addEventListener("click", openShareModal);
-  });
-  
+  var modal = document.getElementById("shareModal");
+  modal.style.display = "flex";
+}
+
+function closeShareModal() {
+  var modal = document.getElementById("shareModal");
+  modal.style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // ... (existing code)
+
+  var shareButton = document.querySelector(".share");
+  shareButton.addEventListener("click", openShareModal);
+});

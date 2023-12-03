@@ -1,6 +1,4 @@
 section {
-  display: grid;
-  grid-template-rows: 25% 15% auto;
   row-gap: 48px;
   position: relative;
 }
@@ -241,4 +239,23 @@ section {
 .bottom-left-image img {
   width: 163px;
   height: 200px;
+}
+@media (max-width: 581px) {
+  .arsls {
+    grid-template-columns: auto;
+  }
+  .bottom-left-image {
+    left: 65% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .bottom-left-image {
+    left: 75%;
+  }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .bottom-left-image {
+    left: 80%;
+  }
 }
