@@ -223,7 +223,6 @@
   cursor: pointer;
   padding: 10px;
   background-color: #fdfffc;
-  color: #fdfffc;
   margin-bottom: 5px;
   padding: 3rem 0 3rem 3rem;
   width: 890px;
@@ -231,6 +230,7 @@
 .section {
   display: flex;
   background-color: #011627;
+  color: #fdfffc;
   padding: 1rem;
   align-items: center;
   justify-content: space-between;
