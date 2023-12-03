@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     </li>`
       )
       .join("");
-  } else if (courseLink === "primary") {
+  } else {
     var newSrc =
       "https://www.youtube.com/embed/watch?v=pHrxqpjq8FM&list=PLc4t1-K0nthvFoov4oOYlKDqfNnqjZr9X&index=1&ab_channel=اهلاسمسم-AhlanSimsim";
     iframe.src = newSrc;

@@ -1,0 +1,285 @@
+.course-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: 60% auto;
+  align-items: center;
+  padding-left: 9rem;
+  padding-right: 3rem;
+  height: 70vh;
+}
+.course-head::before {
+  content: "";
+  background-image: url(../images/course-bg.jpg);
+  position: absolute;
+  background-size: cover;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: -1;
+  opacity: 0.7;
+}
+.course-head .left-head {
+  height: 85%;
+}
+.course-head .left-head video {
+  width: 95%;
+  height: 100%;
+  border-radius: 10px;
+}
+.course-head .right-head {
+  background-color: #011627;
+  display: grid;
+  grid-template-rows: 15% auto;
+  padding: 1rem 2rem 0;
+  width: 70%;
+  height: 85%;
+  color: #fdfffc;
+  border-radius: 10px;
+}
+.course-head .right-head .course-info {
+  display: grid;
+  grid-template-rows: 55% 15% auto;
+}
+.course-head .right-head .course-info .info {
+  font-size: 13px;
+}
+.categories,
+.duration,
+.language,
+.share {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+}
+.share {
+  justify-content: center;
+  padding-top: 25px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.share p {
+  font-size: 15px;
+}
+
+.share:hover {
+  color: #e71d36;
+}
+
+.learn {
+  height: 100%;
+  width: 100%;
+  border-radius: 20px;
+  position: relative;
+}
+.learn::after {
+  content: "";
+  border-bottom: 1px solid #fdfffc;
+  position: absolute;
+  left: 0;
+  bottom: -18px;
+  width: 100%;
+}
+.learn button {
+  cursor: pointer;
+  background-color: #e71d36;
+  color: #fdfffc;
+  font-weight: bold;
+  font-size: 15px;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+.learn button:hover {
+  background-color: #fdfffc;
+  color: #e71d36;
+}
+.course-content {
+  padding: 3rem 3rem 0;
+}
+.course-content .about {
+  background-color: #fdfffc;
+  display: flex;
+  column-gap: 90px;
+  align-items: center;
+}
+.course-content .about .left {
+  display: flex;
+  flex-direction: column;
+  background-color: #011627;
+  color: #fdfffc;
+  padding: 2rem;
+  border-radius: 20px;
+}
+.course-content .about .left:hover {
+  color: #2ec3b6;
+}
+.course-content .about .right img {
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background-color: #2ec3b6;
+  object-fit: cover;
+}
+.course-content .about .right img:hover {
+  opacity: 0.7;
+}
+.benefit {
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
+  padding: 0 3rem;
+  color: #fdfffc;
+}
+.benefit .head h3 {
+  color: #011627;
+  font-weight: bold;
+  font-size: 22px;
+}
+.benefit .center,
+.benefit .bottom {
+  display: flex;
+  column-gap: 30px;
+}
+
+.benefit .center .one,
+.benefit .center .three,
+.benefit .bottom .four {
+  background-color: #011627;
+  padding: 2rem;
+  border-radius: 20px;
+}
+.benefit .center .one:hover,
+.benefit .center .three:hover,
+.benefit .bottom .four:hover {
+  color: #2ec3b6;
+}
+
+.benefit .center div,
+.benefit .bottom div {
+  width: 260px;
+  height: 260px;
+}
+.benefit .bottom .five {
+  flex-grow: 2;
+}
+.benefit .two img,
+.benefit .five img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+}
+.benefit .two img:hover,
+.benefit .five img:hover {
+  opacity: 0.7;
+}
+.benefit .two img {
+  object-fit: cover;
+}
+.benefit .five img {
+  width: 550px;
+}
+.img-link {
+  display: none;
+  position: fixed;
+  bottom: -5px;
+  left: 65%;
+  cursor: pointer;
+}
+
+.img-link:hover {
+  opacity: 0.8;
+}
+
+.bottom-left-image img {
+  width: 450px;
+  height: 300px;
+}
+.bottom-left-image button {
+  position: absolute;
+  right: 230px;
+  top: 98px;
+  transform: rotate(16deg);
+  z-index: -1;
+  background-color: #e71d36;
+  color: #fdfffc;
+  font-weight: bold;
+  font-size: 15px;
+  width: 100px;
+  height: 50px;
+  border-radius: 15px;
+}
+
+.kids-img {
+  width: 530px !important;
+  height: 380px !important;
+}
+.learn-buttom {
+  right: 321px !important;
+  top: 147px !important;
+}
+
+.section-content {
+  cursor: pointer;
+  padding: 10px;
+  background-color: #fdfffc;
+  color: #fdfffc;
+  margin-bottom: 5px;
+  padding: 3rem 0 3rem 3rem;
+  width: 890px;
+}
+.section {
+  display: flex;
+  background-color: #011627;
+  padding: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 15px;
+}
+.content {
+  margin-top: 3px;
+  display: flex;
+  flex-direction: column;
+  background-color: #011627;
+  display: none;
+  padding: 2rem;
+  border-radius: 15px;
+}
+.content p {
+  border-bottom: 1px solid #2ec3b6;
+  padding: 1rem;
+}
+
+.content .last {
+  border-bottom: none;
+}
+.content.show {
+  display: block;
+}
+/* Add this to your CSS */
+.share-on {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.share-content {
+  position: relative;
+  background-color: #fdfffc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}

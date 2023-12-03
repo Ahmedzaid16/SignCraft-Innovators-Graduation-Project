@@ -70,12 +70,13 @@ section {
 }
 .categories .adult-categories img,
 .categories .kids-categories img {
-  width: 150px;
-  height: 138px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   background-size: cover;
   cursor: pointer;
   background-color: #2ec3b6;
+  object-fit: cover;
 }
 .courses {
   display: grid;
