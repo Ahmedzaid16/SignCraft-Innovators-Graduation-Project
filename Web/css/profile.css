@@ -28,6 +28,7 @@ section {
 
 /*Start Change Password style */
 .profile-section .password-change-section {
+  display: none;
   width: 100%;
   height: 100%;
   align-items: center;
@@ -271,11 +272,11 @@ section {
 
 /*End Profile information style */
 
-@media (max-width:768px) {
-    .profile-section {
-        height: 50%;
-        width: 80%;
-    }
+@media (max-width: 768px) {
+  .profile-section {
+    height: 50%;
+    width: 80%;
+  }
 }
 
 /* ... for js ... */
@@ -287,6 +288,6 @@ section {
 .profile-section .profile-container .information .profile-form .save-section {
   display: none;
 }
-.hidden {
+/* .hidden {
   display: none;
-}
+} */
