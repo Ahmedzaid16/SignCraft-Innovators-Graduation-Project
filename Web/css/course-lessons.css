@@ -28,7 +28,8 @@ section {
   padding: 10px;
 }
 
-.content .lessons li:hover {
+.content .lessons li:hover,
+.active-lesson {
   background-color: #e71d36 !important;
   color: #fdfffc !important;
   border-color: #011627 !important;
@@ -38,13 +39,14 @@ section {
   width: 80%;
 }
 
-iframe {
+iframe,
+video {
   width: 100%;
   height: 500px;
   border-radius: 15px;
 }
-@media (max-width:957px) {
-  .content .lessons{
+@media (max-width: 957px) {
+  .content .lessons {
     width: 30%;
   }
   .content .video-container {

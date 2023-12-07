@@ -180,7 +180,7 @@
   display: none;
   position: fixed;
   bottom: -5px;
-  left: 65%;
+  right: 0;
   cursor: pointer;
 }
 
@@ -305,9 +305,6 @@
   .right-head {
     width: 100% !important;
   }
-  #bottom {
-    left: 40%;
-  }
   .course-content .about {
     flex-direction: column;
   }
@@ -318,9 +315,6 @@
   }
   .right-head {
     width: 100% !important;
-  }
-  #bottom {
-    left: 52%;
   }
   .course-content .about {
     flex-direction: column;
