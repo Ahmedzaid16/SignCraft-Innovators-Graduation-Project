@@ -10,11 +10,19 @@
   --white-color: #fdfffc;
   --main-color: #2ec4b6;
   --main-color-alt: #3c7671;
+  --purple-alt: #6610f2;
+  --purple: #6f42c1;
   --main-transition: 0.3s;
 }
 
 * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -79,6 +87,54 @@ ul {
   .container {
     width: 1170px;
   }
+}
+
+.main-title {
+  text-transform: uppercase;
+  margin: 0 auto 80px;
+  border: 2px solid black;
+  padding: 10px 20px;
+  font-size: 30px;
+  width: fit-content;
+  position: relative;
+  z-index: 1;
+  transition: var(--main-transition);
+}
+
+.main-title::before,
+.main-title::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background-color: var(--main-color);
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.main-title::before {
+  left: -30px;
+}
+
+.main-title::after {
+  right: -30px;
+}
+
+.main-title:hover::before {
+  z-index: -1;
+  animation: left-move 0.5s linear forwards;
+}
+
+.main-title:hover::after {
+  z-index: -1;
+  animation: right-move 0.5s linear forwards;
+}
+
+.main-title:hover {
+  color: white;
+  border: 2px solid white;
+  transition-delay: 0.5s;
 }
 
 /* End Global Rules */
@@ -167,10 +223,11 @@ ul {
   color: var(--main-color);
 }
 
+
 /*  I added this because when I was reduce the page, 
     only the links that had been activated were showing, 
     But the rest does not.  */
-.header .main-nav li {  
+.header .main-nav li {
   background-color: #fafafa;
 }
 
@@ -285,3 +342,204 @@ ul {
   margin-right: 10px;
   color: var(--main-color);
 }
+
+/* End header */
+/* Start home */
+.home {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+@media (max-width:991px) {
+  .home {
+    flex-direction: column;
+    padding: 5px;
+    margin-top: 60px;
+  }
+}
+
+.home .content {
+  align-items: center;
+  text-align: center;
+  background-color: var(--main-color-alt);
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+@media (max-width:991px) {
+  .home .content {
+    margin-right: 0;
+    margin-top: 20px;
+  }
+}
+
+.home .content h2 {
+  font-size: 35px;
+  color: var(--white-color);
+}
+
+.home .content p {
+  color: var(--white-color);
+  padding: 0 20px;
+  font-size: 20px;
+}
+
+/* Start Intro */
+.sign_video {
+  position: relative;
+  margin-top: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sign_video video {
+  max-width: 800px;
+  border-radius: 10px;
+}
+
+@media(max-width:767px) {
+  .sign_video video {
+    max-width: 500px;
+    margin-top: 20px;
+  }
+}
+
+@media (max-width:991px) {
+  .sign_video video {
+    margin-top: 20px;
+  }
+}
+
+
+/* End Intro */
+/* End home */
+/* Start about */
+.about {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-color: #f3f3f3;
+}
+
+.about .container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 10px 70px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: linear-gradient(to left, #03a9f4 50%, white 50%);
+  background-size: 200% 100%;
+  background-position: left bottom;
+  transition: var(--main-transition);
+}
+
+@media(max-width:991px) {
+  .about .container {
+    margin: 0 20px;
+  }
+}
+
+.about .container:hover {
+  background-color: var(--main-color-alt);
+  background-position: right bottom;
+}
+
+.about .container .text {
+  margin-right: 10px;
+  transition: var(--main-transition);
+}
+
+.about .container:hover .text {
+  color: var(--white-color)
+}
+
+.about .container .text h1 {
+  font-size: 35px;
+}
+
+.about .container .text p {
+  font-size: 25px;
+}
+
+.about .container img {
+  max-width: 600px;
+  display: flex;
+  margin-left: 50px;
+  border-radius: 10px;
+}
+
+@media(max-width:991px) {
+  .about .container img {
+    display: none;
+  }
+}
+
+.about .container a {
+  position: absolute;
+  height: 90%;
+  left: 10px;
+  width: 40px;
+  border-radius: 6px;
+  outline: none;
+  background-color: var(--white-color);
+  display: none;
+}
+
+.about .container:hover a {
+  display: block;
+}
+
+.about .container a i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 20px;
+  color: var(--black-color);
+  transform: translate(-50%, -50%);
+  animation: moving-arrow 0.5s linear infinite;
+}
+
+/* End about */
+/* Start animation */
+
+@keyframes left-move {
+  50% {
+    left: 0;
+    width: 12px;
+    height: 12px;
+  }
+
+  100% {
+    left: 0;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@keyframes right-move {
+  50% {
+    right: 0;
+    width: 12px;
+    height: 12px;
+  }
+
+  100% {
+    right: 0;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@keyframes moving-arrow {
+  100% {
+    left: 13px;
+  }
+}
+
+/* End animation */

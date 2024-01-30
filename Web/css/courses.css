@@ -1,6 +1,4 @@
 section {
-  display: grid;
-  grid-template-rows: 25% 15% auto;
   row-gap: 48px;
   position: relative;
 }
@@ -70,12 +68,13 @@ section {
 }
 .categories .adult-categories img,
 .categories .kids-categories img {
-  width: 150px;
-  height: 138px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   background-size: cover;
   cursor: pointer;
   background-color: #2ec3b6;
+  object-fit: cover;
 }
 .courses {
   display: grid;
@@ -106,37 +105,28 @@ section {
   padding-top: 10px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
 }
 .courses .adult-courses .adult-courses-videos a,
 .courses .kids-courses .kids-courses-videos a {
   color: #011627;
 }
-.courses .adult-courses .adult-courses-videos .egyptian:hover,
+.courses .adult-courses .adult-courses-videos .course:hover,
 .courses .kids-courses .kids-courses-videos .primary:hover {
   opacity: 0.8;
 }
-.courses .adult-courses .adult-courses-videos .egyptian-content .egyptian-img,
+.courses .adult-courses .adult-courses-videos .course-content .course-img,
 .courses .kids-courses .kids-courses-videos .primary-content .primary-img {
   display: flex;
   align-items: flex-end;
 }
-.courses
-  .adult-courses
-  .adult-courses-videos
-  .egyptian-content
-  .egyptian-img
-  img,
+.courses .adult-courses .adult-courses-videos .course-content .course-img img,
 .courses .kids-courses .kids-courses-videos .primary-content .primary-img img {
   width: 100%;
   height: 100%;
   border-radius: 20px;
 }
-.courses
-  .adult-courses
-  .adult-courses-videos
-  .egyptian-content
-  .egyptian-img
-  span,
+.courses .adult-courses .adult-courses-videos .course-content .course-img span,
 .courses .kids-courses .kids-courses-videos .primary-content .primary-img span {
   position: absolute;
   color: #fdfffc;
@@ -145,12 +135,7 @@ section {
   padding: 5px 10px;
   transform: translate(10px, -10px);
 }
-.courses
-  .adult-courses
-  .adult-courses-videos
-  .egyptian-content
-  .egyption-info
-  p,
+.courses .adult-courses .adult-courses-videos .course-content .course-info p,
 .courses .kids-courses .kids-courses-videos .primary-content .primary-info p {
   line-height: 20px;
   overflow: hidden;
@@ -160,12 +145,7 @@ section {
   margin-top: -25px;
 }
 
-.courses
-  .adult-courses
-  .adult-courses-videos
-  .egyptian-content
-  .egyption-info
-  h4,
+.courses .adult-courses .adult-courses-videos .course-content .course-info h4,
 .courses .kids-courses .kids-courses-videos .primary-content .primary-info h4 {
   margin-top: 10px;
 }
@@ -232,7 +212,7 @@ section {
 .bottom-left-image {
   position: fixed;
   bottom: -5px;
-  left: 85%;
+  right: 0;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -240,4 +220,9 @@ section {
 .bottom-left-image img {
   width: 163px;
   height: 200px;
+}
+@media (max-width: 581px) {
+  .arsls {
+    grid-template-columns: auto;
+  }
 }

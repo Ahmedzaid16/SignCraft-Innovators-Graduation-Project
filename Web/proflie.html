@@ -25,103 +25,111 @@
   </head>
 
   <body>
-      <!-- Start header -->
-      <div class="header">
-        <div class="container">
-          <a href="#" class="logo">
-            <i class="fa-solid fa-hands-asl-interpreting"></i>
-            <h3>Sign Language</h3>
-          </a>
-          <ul class="main-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="courses.html">Education</a></li>
-            <li><a href="proflie.html" class="active">Profile</a></li>
-            <li>
-              <a href="index.html">Other Links</a>
-              <!-- Start Megamenu -->
-              <div class="mega-menu">
-                <ul class="links">
-                  <li>
-                    <a href="#"
-                      ><i class="fa-solid fa-graduation-cap"></i> Courses</a
-                    >
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
-                  </li>
-                  <li>
-                    <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
-                  </li>
-                  <li>
-                    <a href="#"
-                      ><i class="far fa-clipboard fa-fw"></i> How It Works</a
-                    >
-                  </li>
-                </ul>
-              </div>
-              <!-- End Megamenu -->
-            </li>
-          </ul>
-        </div>
-      </div>
-      <!-- End Header -->
-      <!-- Start profile -->
-      <section>
-        <div class="profile-section">
-          <div class="password-change-section hidden"></div>
-          <div class="profile-container">
-            <div class="avatar">
-              <input type="file" id="avatar" accept="image/*" />
-              <div class="avatar-img">
-                <img
-                  src="images/dark-avatar.jpg"
-                  alt="avatar"
-                  id="avatar-img"
-                />
-                <div class="circle-animation"></div>
-              </div>
-              <div
-                class="camera"
-                onclick="document.getElementById('avatar').click();"
-              >
-                <img src="images/camera-icon.png" alt="camera" />
-              </div>
-            </div>
-            <div class="nav-section">
-              <ul>
-                <li class="active">Personal Information</li>
-                <li class="">Account Information</li>
+    <!-- Start header -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-hands-asl-interpreting"></i>
+          <h3>Sign Language</h3>
+        </a>
+        <ul class="main-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="courses.html">Education</a></li>
+          <li><a href="proflie.html" class="active">Profile</a></li>
+          <li>
+            <a href="index.html">Other Links</a>
+            <!-- Start Megamenu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
+                  >
+                </li>
               </ul>
             </div>
-            <div class="information">
-              <form action="" class="profile-form">
-                <div class="email-section">
-                  <label for="email">Email</label>
-                  <input type="Email" id="email" class="email-input" autocomplete="off" readonly />
-                </div>
-                <div class="password-section">
-                  <label for="password">Password</label>
-                  <input type="password" id="password" class="password-input" autocomplete="off" readonly />
-                  <i
-                    class="fa-sharp fa-solid fa-chevron-right fa-beat fa-lg"
-                    title="Change Password"
-                  ></i>
-                </div>
-                <div class="name-section">
-                  <!-- name of Account Information added by the js-->
-                </div>
-                <div class="gender-section">
-                  <!-- gerder of Account Information added by the js -->
-                </div>
-                <div class="save-section">
-                  <!--save button Account Information added by the js -->
-                </div>
-              </form>
+            <!-- End Megamenu -->
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Header -->
+    <!-- Start profile -->
+    <section>
+      <div class="profile-section">
+        <div class="password-change-section"></div>
+        <div class="profile-container">
+          <div class="avatar">
+            <input type="file" id="avatar" accept="image/*" />
+            <div class="avatar-img">
+              <img src="images/dark-avatar.jpg" alt="avatar" id="avatar-img" />
+              <div class="circle-animation"></div>
+            </div>
+            <div
+              class="camera"
+              onclick="document.getElementById('avatar').click();"
+            >
+              <img src="images/camera-icon.png" alt="camera" />
             </div>
           </div>
+          <div class="nav-section">
+            <ul>
+              <li class="active">Account Information</li>
+              <li class="">Personal Information</li>
+            </ul>
+          </div>
+          <div class="information">
+            <form action="" class="profile-form">
+              <div class="email-section">
+                <label for="email">Email</label>
+                <input
+                  type="Email"
+                  id="email"
+                  class="email-input"
+                  autocomplete="off"
+                  readonly
+                />
+              </div>
+              <div class="password-section">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  class="password-input"
+                  autocomplete="off"
+                  readonly
+                />
+                <i
+                  class="fa-sharp fa-solid fa-chevron-right fa-beat fa-lg"
+                  title="Change Password"
+                ></i>
+              </div>
+              <div class="name-section">
+                <!-- name of Account Information added by the js-->
+              </div>
+              <div class="gender-section">
+                <!-- gerder of Account Information added by the js -->
+              </div>
+              <div class="save-section">
+                <!--save button Account Information added by the js -->
+              </div>
+            </form>
+          </div>
         </div>
-      </section>
-      <!-- End profile -->
+      </div>
+    </section>
+    <!-- End profile -->
     <script src="js/profile.js"></script>
   </body>
 </html>
