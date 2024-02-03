@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Your main content goes here -->
+
+    <!-- Bottom Bar -->
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomBar"
+        android:layout_marginBottom="7dp"
+        android:background="@color/babypowder"
+        android:backgroundTint="@android:color/transparent"
+        android:hint="Type to translate"
+        android:padding="8dp"
+        android:textSize="24sp"/>
+
+    <!-- Camera Icon -->
+    <ImageView
+        android:id="@+id/cameraIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/editText"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/baseline_photo_camera_24"/>
+
+    <!-- Voice Icon -->
+    <ImageView
+        android:id="@+id/voiceIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/cameraIcon"
+        android:layout_alignBottom="@id/editText"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/baseline_keyboard_voice_24"/>
+
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="4dp"
+        android:background="@color/Orange">
+
+        <!-- Home Icon with Text -->
+        <LinearLayout
+            android:id="@+id/translateLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp">
+
+            <ImageView
+                android:id="@+id/translate_Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_translate_24" />
+
+            <TextView
+                android:id="@+id/translateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Translate"/>
+        </LinearLayout>
+
+        <!-- Search Icon with Text -->
+        <LinearLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/educaiton_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_cast_for_education_24" />
+
+            <TextView
+                android:id="@+id/education_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Education"/>
+        </LinearLayout>
+
+        <!-- Settings Icon with Text -->
+        <LinearLayout
+            android:id="@+id/settingsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp">
+
+            <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_person_24" />
+
+            <TextView
+                android:id="@+id/profile_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
