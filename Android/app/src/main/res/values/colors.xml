@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="lavender">#8692f7</color>
+    <color name="gray">#ff424242</color>
+    <color name="purple">#8692f7</color>
+
+    <color name="RichBlack">#011627</color>
+    <color name="babypowder">#FCFFFE</color>
+    <color name="LightSeaGreen">#2EC4B6</color>
+    <color name="Red">#E71D36</color>
+    <color name="Orange">#FFC857</color>
+
+</resources>

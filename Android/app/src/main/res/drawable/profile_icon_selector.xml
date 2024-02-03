@@ -1,0 +1,8 @@
+<!-- res/drawable/profile_icon_selector.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- When pressed or focused -->
+    <item android:drawable="@drawable/baseline_person_24" android:state_pressed="true"/>
+    <item android:drawable="@drawable/baseline_person_24" android:state_focused="true"/>
+    <!-- Default state -->
+    <item android:drawable="@drawable/baseline_person_24"/>
+</selector>
