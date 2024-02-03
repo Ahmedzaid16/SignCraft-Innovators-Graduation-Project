@@ -74,10 +74,12 @@
   color: #fdfffc;
   background-color: #011627;
   top: 600px;
-  height: 86%;
+  /* height: 83.5%; */
+  height: 550px;
   bottom: 0px;
   transform: translate(0px, calc(100px - 1.2rem));
   transition: top 2s ease;
+  box-shadow: 0px 0px 6px 0px #011627;
 }
 /* .chatbot .chatbot-start:hover {
   top: 0;
@@ -186,4 +188,7 @@
   border-color: #011627 !important;
   box-shadow: none !important;
   cursor: no-drop !important;
+}
+.dis {
+  display: none;
 }

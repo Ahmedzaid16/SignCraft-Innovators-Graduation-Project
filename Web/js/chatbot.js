@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Create the chatbot-start div element
   const chatStart = document.createElement("div");
   chatStart.classList.add("chatbot-start"); // Add the "chatbot-start" class
+  chatStart.classList.add("dis");
   chatStart.id = "chat-start"; // Set the ID to "chat-start"
   // Append the created div elements to the body
   document.body.appendChild(chatReady);
@@ -101,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Hide the chat-ready section, show the chat-start section, and scroll to the top
     chatReady.style.display = "none";
     chatStart.style.top = "0px";
+    chatStart.classList.remove("dis");
     messagesContainer.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -112,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show the chat-ready section, hide the chat-start section, and clear messages and options
     chatReady.style.display = "flex";
     chatStart.style.top = "600px";
+    chatStart.classList.add("dis");
     document
       .querySelectorAll(".user-message, .robo-message")
       .forEach(function (element) {

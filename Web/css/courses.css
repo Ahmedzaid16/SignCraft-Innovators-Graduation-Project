@@ -38,6 +38,7 @@ section {
   background-color: #fdfffc;
   color: #011627;
   row-gap: 5px;
+  margin-top: 3rem;
 }
 .categories .categories-info {
   line-height: 15px;
@@ -83,6 +84,7 @@ section {
   background-color: #fdfffc;
   grid-template-rows: 5% auto auto;
   align-items: center;
+  margin-top: 3rem;
 }
 .courses .head-courses h3 {
   font-size: 40px;
