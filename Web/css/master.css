@@ -145,6 +145,7 @@ ul {
   -webkit-box-shadow: 0 0 10px #ddd;
   -moz-box-shadow: 0 0 10px #ddd;
   box-shadow: 0 0 10px #ddd;
+  z-index: 3;
 }
 
 .header .container {
@@ -203,6 +204,7 @@ ul {
   opacity: 1;
   z-index: 100;
   top: calc(50%);
+  display: flex;
 }
 
 .header .main-nav>li>a {
@@ -272,7 +274,7 @@ ul {
   border-bottom: 3px solid var(--main-color);
   margin-top: 40px;
   z-index: -1;
-  display: flex;
+  display: none;
   gap: 40px;
   top: calc(100% + 50px);
   opacity: 0;
@@ -347,6 +349,7 @@ ul {
 /* Start home */
 .home {
   position: relative;
+  background-color: var(--main-color-alt);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -430,11 +433,23 @@ ul {
   justify-content: space-between;
   padding: 10px 20px 10px 70px;
   border-radius: 10px;
-  cursor: pointer;
-  background: linear-gradient(to left, #03a9f4 50%, white 50%);
+  transition: var(--main-transition);
+}
+
+.about .one {
+  background: linear-gradient(to left, var(--main-color) 50%, white 50%);
   background-size: 200% 100%;
   background-position: left bottom;
-  transition: var(--main-transition);
+}
+
+.about .two {
+  background: linear-gradient(to right, var(--main-color) 50%, white 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+}
+
+.about .container:not(:nth-child(5)) {
+  margin-bottom: 50px;
 }
 
 @media(max-width:991px) {
@@ -443,15 +458,26 @@ ul {
   }
 }
 
-.about .container:hover {
+.about .one:hover {
   background-color: var(--main-color-alt);
   background-position: right bottom;
 }
 
-.about .container .text {
-  margin-right: 10px;
+.about .two:hover {
+  background-color: var(--main-color-alt);
+  background-position: left bottom;
+}
+
+.about .container .text_left {
+  margin-left: 10px;
   transition: var(--main-transition);
 }
+
+.about .container .text_right {
+  margin-right: 50px;
+  transition: var(--main-transition);
+}
+
 
 .about .container:hover .text {
   color: var(--white-color)
@@ -461,16 +487,31 @@ ul {
   font-size: 35px;
 }
 
+.about .container .text span {
+  display: block;
+}
+
 .about .container .text p {
   font-size: 25px;
 }
 
 .about .container img {
-  max-width: 600px;
-  display: flex;
-  margin-left: 50px;
   border-radius: 10px;
+  max-width: 600px;
+  height: 400px;
+  display: flex;
 }
+
+.about .container .image_right {
+  margin-left: 50px;
+}
+
+.about .container .image_left {
+  margin-right: 50px;
+  margin-left: -50px;
+}
+
+
 
 @media(max-width:991px) {
   .about .container img {
@@ -478,32 +519,288 @@ ul {
   }
 }
 
-.about .container a {
+.about .container a.left {
   position: absolute;
   height: 90%;
-  left: 10px;
   width: 40px;
+  left: 10px;
   border-radius: 6px;
   outline: none;
   background-color: var(--white-color);
   display: none;
+  transition: var(--main-transition);
+}
+
+.about .container a.right {
+  position: absolute;
+  height: 90%;
+  width: 40px;
+  right: 10px;
+  border-radius: 6px;
+  outline: none;
+  background-color: var(--white-color);
+  display: none;
+  transition: var(--main-transition);
 }
 
 .about .container:hover a {
   display: block;
 }
 
-.about .container a i {
+.about .container a:hover {
+  outline: 3px solid var(--main-color-alt);
+  cursor: pointer;
+}
+
+.about .container a.left i {
   position: absolute;
   left: 50%;
   top: 50%;
   font-size: 20px;
   color: var(--black-color);
   transform: translate(-50%, -50%);
-  animation: moving-arrow 0.5s linear infinite;
+  animation: moving-arrow-L 0.5s linear infinite;
+}
+
+.about .container a.right i {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  font-size: 20px;
+  color: var(--black-color);
+  transform: translate(-50%, -50%);
+  animation: moving-arrow-R 0.5s linear infinite;
 }
 
 /* End about */
+/* Start SignIn page */
+.signIn {
+background-color: var(--white-color);
+border-radius: 10px;
+box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+0 10px 10px rgba(0, 0, 0, 0.22);
+position: relative;
+overflow: hidden;
+width: 900px;
+max-width: 100%;
+min-height: 550px;
+margin: auto ;
+margin-top: 25px;
+}
+.signIn .containerS{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.signIn .containerS .content{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 550px;
+  flex: 1;
+}
+.signIn .containerS .content .social{
+  font-size: 25px;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid var(--grey-color);
+  border-radius: 50%;
+  transition: var(--main-transition);
+}
+.signIn .containerS .content .social:hover{
+  background-color: var(--main-color);
+  color: white;
+}
+.signIn .containerS .content input{
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  outline-color: var(--main-color);
+}
+
+.signIn .containerS .content .text span a{
+  transition: var(--main-transition);
+  color: black;
+}
+.signIn .containerS .content .text span a:hover{
+  color: var(--main-color);
+}
+.signIn .containerS button{
+  border-radius: 20px;
+  border: 1px solid white;
+  background-color: var(--main-color);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  transition: var(--main-transition);
+}
+.signIn .containerS button:hover{
+  background-color: white;
+  border:1px solid var(--main-color);
+  color: var(--main-color);
+  cursor: pointer;
+}
+.signIn .containerS button.dif:hover{
+  background-color:white;
+  color: var(--main-color);
+  cursor: pointer;
+}
+.signIn .containerS .intro{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  height: 550px;
+  background-color: var(--main-color);
+}
+
+.signIn .containerS .intro p{
+  margin-right: 50px;
+  margin-left: 50px;
+}
+.signIn .containerS .content form .text{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+}
+.signIn .containerS .content form{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+}
+/* End SignIn page */
+/* Start signUp page */
+.signUp {
+  background-color: var(--white-color);
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+  0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  width: 900px;
+  max-width: 100%;
+  min-height: 550px;
+  margin: auto ;
+  margin-top: 25px;
+  }
+  .signUp .containerU{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+  .signUp .containerU .content{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 550px;
+    flex: 1;
+  }
+  .signUp .containerU .content .social{
+    font-size: 25px;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid var(--grey-color);
+    border-radius: 50%;
+    transition: var(--main-transition);
+  }
+  .signUp .containerU .content .social:hover{
+    background-color: var(--main-color);
+    color: white;
+  }
+  .signUp .containerU .content input.one{
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 10px;
+    width: 100%;
+    outline-color: var(--main-color);
+  }
+  
+  .signUp .containerU .content .text .gender{
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .signUp .containerU .content .text span a{
+    transition: var(--main-transition);
+    color: black;
+  }
+  .signUp .containerU .content .text span a:hover{
+    color: var(--main-color);
+  }
+  .signUp .containerU button{
+    border-radius: 20px;
+    border: 1px solid white;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    transition: var(--main-transition);
+  }
+  .signUp .containerU button:hover{
+    background-color: white;
+    border:1px solid var(--main-color);
+    color: var(--main-color);
+    cursor: pointer;
+  }
+  .signUp .containerU button.dif:hover{
+    background-color:white;
+    color: var(--main-color);
+    cursor: pointer;
+  }
+  .signUp .containerU .intro{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+    height: 550px;
+    background-color: var(--main-color);
+  }
+  
+  .signUp .containerU .intro p{
+    margin-right: 50px;
+    margin-left: 50px;
+  }
+  .signUp .containerU .content form .text{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .signUp .containerU .content form{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  /* End signUp page */
 /* Start animation */
 
 @keyframes left-move {
@@ -536,9 +833,15 @@ ul {
   }
 }
 
-@keyframes moving-arrow {
+@keyframes moving-arrow-L {
   100% {
     left: 13px;
+  }
+}
+
+@keyframes moving-arrow-R {
+  100% {
+    right: -7px;
   }
 }
 

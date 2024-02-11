@@ -6,6 +6,11 @@
   --green-color: #22c55e;
   --red-color: #f44336;
   --grey-color: #888;
+  --white-color: #fdfffc;
+  --main-color: #2ec4b6;
+  --main-color-alt: #3c7671;
+  --purple-alt: #6610f2;
+  --purple: #6f42c1;
   --main-transition: 0.3s;
 }
 
@@ -115,6 +120,10 @@
   margin-right: 0;
 }
 
+.mr-5 {
+  margin-right: 5px;
+}
+
 .mr-10 {
   margin-right: 10px;
 }
@@ -125,6 +134,9 @@
 
 .mr-20 {
   margin-right: 20px;
+}
+.mr-30 {
+  margin-right: 30px;
 }
 
 .ml-0 {
@@ -166,6 +178,10 @@
 .mb-25 {
   margin-bottom: 25px;
 }
+.mb-30 {
+  margin-bottom: 30px;
+}
+
 
 .w-100 {
   width: 100px;
@@ -225,6 +241,10 @@
 
 .c-orange {
   color: var(--orange-color);
+}
+
+.c-main {
+  color: var(--main-color);
 }
 
 .c-black {

@@ -3,6 +3,10 @@ section {
   background-size: cover;
 }
 
+.edu {
+  color: #2ec4b6 !important;
+}
+
 .content {
   display: flex;
   padding: 6rem;

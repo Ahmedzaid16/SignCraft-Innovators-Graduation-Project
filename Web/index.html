@@ -1,99 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/framework.css" />
+    <link rel="stylesheet" href="css/master.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sign Language</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="website icon" type="png" href="" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="css/all.min.css" />
-  <link rel="stylesheet" href="css/framework.css" />
-  <link rel="stylesheet" href="css/master.css" />
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet" />
-  <title>Sign Language</title>
-</head>
-
-<body>
-  <!-- Start header -->
-  <div class="header">
-    <div class="container">
-      <a href="#" class="logo">
-        <i class="fa-solid fa-hands-asl-interpreting"></i>
-        <h3>Sign Language</h3>
-      </a>
-      <ul class="main-nav">
-        <li><a class="active" href="#">Home</a></li>
-        <li><a href="courses.html">Education</a></li>
-        <li><a href="proflie.html">Profile</a></li>
-        <li>
-          <a href="#">Other Links</a>
-          <!-- Start Megamenu -->
-          <div class="mega-menu">
-            <ul class="links">
-              <li>
-                <a href="#"><i class="fa-solid fa-graduation-cap"></i> Courses</a>
-              </li>
-              <li>
-                <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
-              </li>
-              <li>
-                <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
-              </li>
-              <li>
-                <a href="#"><i class="far fa-clipboard fa-fw"></i> How It Works</a>
-              </li>
-            </ul>
-          </div>
-          <!-- End Megamenu -->
-        </li>
-      </ul>
-    </div>
-  </div>
-  </div>
-  <!-- End Header -->
-  <!-- Start Home -->
-  <!-- Start intro -->
-  <div class="home">
-    <div class="content">
-      <h2>Artificial Itelligence Supported Sign Language Translator</h2>
-      <p>We enable hearing impaired and deaf individuals who have difficulty in understanding what they read or are
-        illiterate to access information, services and video content with the ai powered sign language , which is their
-        mother tongue</p>
-    </div>
-    <div class="sign_video">
-      <video autoplay muted loop controls>
-        <source src="images/sign_animation.mp4" type="video/mp4">
-      </video>
-    </div>
-    <!-- End intro -->
-    <!-- End Home -->
-  </div>
-  <!-- Start About Section -->
-  <div class="about">
-    <h2 class="main-title">About</h2>
-    <div class="container">
-      <div class="text">
-        <h1>Sign Language Translator</h1>
-        <p>Welcome to our Sign Language Translator website! We aim
-          to bridge the communication gap between individuals
-          using sign language and those who use written text.</p>
+  <body>
+    <!-- Start header -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-hands-asl-interpreting"></i>
+          <h3>Sign Language</h3>
+        </a>
+        <ul class="main-nav">
+          <li><a class="active" href="#">Home</a></li>
+          <li id="education"><a href="signUp.html">Education</a></li>
+          <li>
+            <a href="#">Other Links</a>
+            <!-- Start Megamenu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <!-- End Megamenu -->
+          </li>
+          <li id="signInLink">
+            <a href="signIn.html"
+              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
+            >
+          </li>
+          <li id="logoutLink" style="display: none" class="logout">
+            <a href="index.html" onclick="logout()"
+              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+            >
+          </li>
+        </ul>
       </div>
-      <div class="image">
-        <img src="images/Women_hand.jpg" alt="">
-      </div>
-      <a href="#"><i class="fa-regular fa-circle-left"></i></a>
     </div>
-  </div>
-  <!-- End About Section -->
-</body>
-
+    <!-- End Header -->
+    <!-- Start Home -->
+    <!-- Start intro -->
+    <div class="home">
+      <div class="content">
+        <h2>Artificial Itelligence Supported Sign Language Translator</h2>
+        <p>
+          We enable hearing impaired and deaf individuals who have difficulty in
+          understanding what they read or are illiterate to access information,
+          services and video content with the ai powered sign language , which
+          is their mother tongue
+        </p>
+      </div>
+      <div class="sign_video">
+        <video autoplay muted loop>
+          <source src="images/sign_animation.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <!-- End intro -->
+      <!-- End Home -->
+    </div>
+    <!-- Start About Section -->
+    <div class="about">
+      <h2 class="main-title">About</h2>
+      <div class="container one">
+        <div class="text text_left">
+          <h1>Sign Language Translator</h1>
+          <p>
+            Welcome to our Sign Language Translator Project! We aim to bridge
+            the communication gap between individuals using sign language and
+            those who use written text.
+          </p>
+        </div>
+        <div class="image_right">
+          <img src="images/Women_hand.jpg" alt="" />
+        </div>
+        <a class="left" href="#"><i class="fa-regular fa-circle-left"></i></a>
+      </div>
+      <div class="container reverse two">
+        <div class="image_left">
+          <img src="images/sign-language-interpreter.jpg" alt="" />
+        </div>
+        <div class="text text_right">
+          <h1><span>Web</span> Sign Language Translator</h1>
+          <p>
+            Our website aims to offer courses focusing on sign language
+            education for schools and colleges, providing a comprehensive
+            resource for learning and understanding sign language.
+          </p>
+        </div>
+        <a class="right" href="#"><i class="fa-regular fa-circle-right"></i></a>
+      </div>
+      <div class="container one">
+        <div class="text text_left">
+          <h1><span>App</span> Sign Language Translator</h1>
+          <p>
+            Welcome to our Sign Language Translator application! Our goal is to
+            introduce a sign language translation feature facilitating
+            communication between users. Additionally, we aim to provide courses
+            within the app to enhance sign language skills for a better
+            interactive experience.
+          </p>
+        </div>
+        <div class="image_right">
+          <img src="images/sign-lauguage-app.avif" alt="" />
+        </div>
+        <a class="left" href="#"><i class="fa-regular fa-circle-left"></i></a>
+      </div>
+      <div class="container reverse two">
+        <div class="image_left">
+          <img src="images/persons.jpg" alt="" />
+        </div>
+        <div class="text text_right">
+          <h1><span>Ai</span> Sign Language Translator</h1>
+          <p>
+            We developed models supporting sign-to-text and text-to-sign
+            translation alongside speech support. These models enable seamless
+            translation between sign language and written text while providing
+            audio feedback.
+          </p>
+        </div>
+        <a class="right" href="#"><i class="fa-regular fa-circle-right"></i></a>
+      </div>
+    </div>
+    <!-- End About Section -->
+    <script src="js/logout.js"></script>
+    <script src="js/check.js"></script>
+  </body>
 </html>

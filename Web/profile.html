@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/framework.css" />
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Profile</title>
+  </head>
+
+  <body>
+    <!-- Start header -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-hands-asl-interpreting"></i>
+          <h3>Sign Language</h3>
+        </a>
+        <ul class="main-nav">
+          <li><a href="index.html">Home</a></li>
+          <li id="education"><a href="courses.html">Education</a></li>
+          <li>
+            <a href="index.html">Other Links</a>
+            <!-- Start Megamenu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
+                  >
+                </li>
+              </ul>
+              <li id="logoutLink" class="logout">
+                <a href="index.html" onclick="logout()"
+                  ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+                >
+              </li>
+            </div>
+            <!-- End Megamenu -->
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Header -->
+    <!-- Start profile -->
+    <section>
+      <div class="profile-section">
+        <div class="password-change-section">
+          <div class="back-arrow-and-h2">
+            <i class="fa-sharp fa-solid fa-chevron-left fa-beat fa-lg"></i>
+            <h2>Change Your Password</h2>
+          </div>
+          <div action="#" class="change-form">
+            <form class="change-password">
+              <div class="current-password-section">
+                <label for="current-password"
+                  >Enter your current password</label
+                >
+                <input
+                  type="password"
+                  id="current-password"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="new-password-section">
+                <label for="new-password">New Password</label>
+                <div class="new-password-input">
+                  <input type="password" id="new-password" autocomplete="off" />
+                  <i
+                    class="fa-solid fa-lock"
+                    id="show-password"
+                    onclick="togglePasswordVisibility('new-password')"
+                  ></i>
+                </div>
+              </div>
+              <div class="confirm-password-section">
+                <label for="confirm-password">Confirm New Password</label>
+                <div class="confirm-password-input">
+                  <input
+                    type="password"
+                    id="confirm-password"
+                    autocomplete="off"
+                  />
+                  <i
+                    class="fa-solid fa-lock"
+                    id="show-confirm-password"
+                    onclick="togglePasswordVisibility('confirm-password')"
+                  ></i>
+                </div>
+              </div>
+              <p>*You will be signed out when you save.</p>
+              <button id="saveNewPassword">Save</button>
+            </form>
+          </div>
+        </div>
+        <div class="profile-container">
+          <form>
+            <div class="avatar">
+              <input type="file" id="avatar" accept="image/*" />
+              <div class="avatar-img">
+                <img
+                  src="images/dark-avatar.jpg"
+                  alt="avatar"
+                  id="avatar-img"
+                />
+                <div class="circle-animation"></div>
+              </div>
+              <div
+                class="camera"
+                onclick="document.getElementById('avatar').click();"
+              >
+                <img src="images/camera-icon.png" alt="camera" />
+              </div>
+            </div>
+          </form>
+          <div class="nav-section">
+            <ul>
+              <li class="active">Account Information</li>
+              <li class="">Personal Information</li>
+            </ul>
+          </div>
+          <div class="information">
+            <form class="profile-form">
+              <div class="email-section">
+                <label for="email">Email</label>
+                <input
+                  type="Email"
+                  id="email"
+                  class="email-input"
+                  autocomplete="off"
+                  readonly
+                />
+              </div>
+              <div class="password-section">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  class="password-input"
+                  autocomplete="off"
+                  value="*********"
+                  readonly
+                />
+                <i
+                  class="fa-sharp fa-solid fa-chevron-right fa-beat fa-lg"
+                  title="Change Password"
+                ></i>
+              </div>
+              <div class="name-section">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  class="name-input"
+                  autocomplete="on"
+                />
+              </div>
+              <div class="gender-section">
+                <label for="gender">Gender</label>
+                <select
+                  name="gender"
+                  id="gender"
+                  class="gender-input"
+                  autocomplete="off"
+                >
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+              <div class="save-section">
+                <button id="saveButton">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End profile -->
+    <script src="js/profile.js"></script>
+    <script>
+      function logout() {
+        localStorage.removeItem("userId");
+        // Hide the Logout link
+        document.getElementById("logoutLink").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

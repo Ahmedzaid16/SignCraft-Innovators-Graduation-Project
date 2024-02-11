@@ -43,63 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
     nameSection.style.display = "grid";
     genderSection.style.display = "grid";
     saveSection.style.display = "grid";
-
-    // Update HTML content for the "Name," "Gender," and "Save" sections.
-    if (nameSection && genderSection && saveSection) {
-      nameSection.innerHTML = `
-          <label for="name">Name</label>
-          <input type="text" id="name" class="name-input" autocomplete="on">
-        `;
-      genderSection.innerHTML = `
-          <label for="gender">Gender</label>
-            <select name="gender" id="gender" class="gender-input" autocomplete="off">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-        `;
-      saveSection.innerHTML = `
-          <button>Save</button>
-        `;
-    }
   });
 
   rightArrow.addEventListener("click", function () {
     PasswordChangeSection.style.display = "grid";
     ProfileContainerSection.style.display = "none";
-    if (PasswordChangeSection) {
-      PasswordChangeSection.innerHTML = `
-        <div class="back-arrow-and-h2">
-        <i class="fa-sharp fa-solid fa-chevron-left fa-beat fa-lg"></i>
-          <h2>Change Your Password</h2>
-        </div>
-        <div class="change-form">
-          <form action="" class="change-password">
-            <div class="current-password-section">
-              <label for="current-password">Enter your current password</label>
-              <input type="password" id="current-password" autocomplete="off" />
-            </div>
-            <div class="new-password-section">
-              <label for="new-password">New Password</label>
-              <div class="new-password-input">
-                <input type="password" id="new-password" autocomplete="off" />
-                <i class="fa-solid fa-lock" id="show-password"
-                onclick="togglePasswordVisibility('new-password')" ></i>
-              </div>
-            </div>
-            <div class="confirm-password-section">
-              <label for="confirm-password">Confirm New Password</label>
-              <div class="confirm-password-input">
-                <input type="password" id="confirm-password" autocomplete="off" />
-                <i class="fa-solid fa-lock" id="show-confirm-password"
-                onclick="togglePasswordVisibility('confirm-password')" ></i>
-              </div>
-            </div>
-            <p>*You will be signed out when you save.</p>
-            <button>Save</button>
-          </form>
-        </div>
-        `;
-    }
   });
 
   PasswordChangeSection.addEventListener("click", function (event) {
@@ -112,28 +60,86 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-document.getElementById("avatar").addEventListener("change", function (event) {
-  // Get the image element and the selected file.
-  const img = document.getElementById("avatar-img");
-  const file = event.target.files[0];
+const updateAvatarImage = async () => {
+  const userId = localStorage.getItem("userId");
 
-  // Check if a file is selected.
+  try {
+    const response = await fetch("http://localhost:4000/uploadAvatar", {
+      method: "POST", // Change to POST
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: userId,
+      }),
+    });
+
+    const avatarUrl = await response.json();
+    console.log(avatarUrl);
+    if (response.ok) {
+      if (avatarUrl) {
+        const img = document.getElementById("avatar-img");
+        img.src = avatarUrl.avatarUrl; // Update to access the correct property
+        img.style.filter = "none";
+      }
+    } else {
+      alert("Error uploading profile avatar");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while uploading profile avatar");
+  }
+};
+
+// Call the function to update the avatar image when the page loads
+updateAvatarImage();
+
+document.getElementById("avatar").addEventListener("change", function (event) {
+  const img = document.getElementById("avatar-img");
+  const fileInput = event.target;
+  const file = fileInput.files[0];
+
   if (file) {
-    // Create a FileReader to read the file as a data URL.
     const reader = new FileReader();
 
-    // Set up a callback function to be executed when the reading is complete.
     reader.onload = function (e) {
-      // Set the image source to the data URL.
       img.src = e.target.result;
-      // make the image filter none
       img.style.filter = "none";
+
+      // Create FormData and append the file
+      const formData = new FormData();
+      formData.append("avatar", file);
+      const userId = localStorage.getItem("userId");
+      // Send FormData to server for upload
+      uploadImageToServer(formData, userId);
     };
 
-    // Read the file as a data URL.
     reader.readAsDataURL(file);
   }
 });
+
+async function uploadImageToServer(formData, userId) {
+  try {
+    // Append the user ID to the FormData
+    formData.append("userId", userId);
+
+    const response = await fetch("http://localhost:4000/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    console.log("Image uploaded successfully:", data);
+    // You can perform additional actions if needed
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    // Handle errors if necessary
+  }
+}
 
 // Function to toggle the visibility of a password input field be click on lock icon.
 function togglePasswordVisibility(inputId) {
@@ -158,3 +164,161 @@ function togglePasswordVisibility(inputId) {
     icon.classList.add("fa-lock");
   }
 }
+
+//-----------------------BackEnd----------------------------
+
+document.addEventListener("DOMContentLoaded", async () => {
+  // Retrieve the user ID from local storage
+  const userId = localStorage.getItem("userId");
+
+  // If user ID is not present, redirect to the login page
+  if (!userId) {
+    window.location.href = "signIn.html";
+    return;
+  }
+
+  try {
+    // Fetch user data from the server using the user ID
+    const response = await fetch(`http://localhost:4000/`);
+    const userData = await response.json();
+    const EmailResponse = await fetch(`http://localhost:4000/getemail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+      }),
+    });
+    const userEmail = await EmailResponse.json();
+    // Assuming you have a function called `findById` in your server
+    const user = userData.find((user) => user.id === userId);
+
+    // Display user data on the profile page
+    document.getElementById("email").value = userEmail.email;
+    document.getElementById("name").value = user.username;
+    document.getElementById("gender").value = user.gender;
+    // Add logic to display other user information as needed
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    // Handle errors, such as redirecting to an error page
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Fetch the Save button element
+  const saveButton = document.getElementById("saveButton");
+
+  // Add a click event listener to the Save button
+  saveButton.addEventListener("click", async function (event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+    // Fetch the input values
+    const name = document.getElementById("name").value;
+    const gender = document.getElementById("gender").value;
+    if (name.trim() === "") {
+      alert("name is empty");
+      return;
+    }
+
+    // Fetch the user ID
+    const userId = localStorage.getItem("userId");
+
+    // Prepare the data to be updated
+    const updatedData = {
+      username: name,
+      gender: gender,
+    };
+
+    try {
+      const response = await fetch("http://localhost:4000/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userId,
+          data: updatedData,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Data successfully updated
+        alert("Profile information updated successfully!");
+      } else {
+        // Error updating data
+        alert("Error updating profile information");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while updating profile information");
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Fetch the Save button element
+  const saveNewPasswordButton = document.getElementById("saveNewPassword");
+
+  // Add a click event listener to the Save button
+  saveNewPasswordButton.addEventListener("click", async function (event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+    // Fetch the input values
+    const currentPassword = document.getElementById("current-password").value;
+    const newPassword = document.getElementById("new-password").value;
+    const configPassword = document.getElementById("confirm-password").value;
+    const email = document.getElementById("email").value;
+    if (currentPassword.trim() === "") {
+      alert("currentPassword is empty");
+      return;
+    } else if (newPassword.trim() === "") {
+      alert("new Password is empty");
+      return;
+    } else if (configPassword.trim() === "") {
+      alert("confirm password is empty");
+      return;
+    } else if (newPassword !== configPassword) {
+      alert("new Password not equal confirm password");
+      return;
+    }
+    // Fetch the user ID
+    const userId = localStorage.getItem("userId");
+
+    try {
+      const response = await fetch("http://localhost:4000/updatePass", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userId,
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+          email: email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Data successfully updated
+        alert("Password updated successfully!");
+        // Perform logout after password update
+        window.location.href = "index.html";
+        localStorage.removeItem("userId");
+        // Hide the Logout link
+        document.getElementById("logoutLink").style.display = "none";
+      } else {
+        // Error updating data
+        alert("Error updating password");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while updating password");
+    }
+  });
+});

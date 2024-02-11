@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="website icon" type="png" href="" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="css/all.min.css" />
+  <link rel="stylesheet" href="css/framework.css" />
+  <link rel="stylesheet" href="css/master.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <title>Sign Language</title>
+</head>
+
+<body>
+  <!-- Start header -->
+  <div class="header">
+    <div class="container">
+      <a href="#" class="logo">
+        <i class="fa-solid fa-hands-asl-interpreting"></i>
+        <h3>Sign Language</h3>
+      </a>
+      <ul class="main-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="signUp.html">Education</a></li>
+        <li>
+          <a href="#">Other Links</a>
+          <!-- Start Megamenu -->
+          <div class="mega-menu">
+            <ul class="links">
+              <li>
+                <a href="#"><i class="fa-solid fa-graduation-cap"></i> Courses</a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+              </li>
+              <li>
+                <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+              </li>
+              <li>
+                <a href="#"><i class="far fa-clipboard fa-fw"></i> How It Works</a>
+              </li>
+            </ul>
+          </div>
+          <!-- End Megamenu -->
+        </li>
+        <li ><a class="active" href="signIn.html"><i class="fa-solid fa-user-plus fs-16 mr-5 "></i> Sign in</a></li>
+      </ul>
+    </div>
+  </div>
+  </div>
+  <!-- End Header -->
+  <!-- Start Home -->
+    <div class="signUp">
+        <div class="containerU" >
+            <div class="intro">
+                <h1 class="c-white">Welcome Back!</h1>
+                <p class="fw-bold c-white">To keep connected with us please login with your personal info</p>
+                <a href="signIn.html"><button class="dif mt-20">SIGN IN</button></a>
+            </div>
+            <div class="content">
+              <form id="signupForm">
+                    <h1 class="fw-bold mb-30">Create Account</h1>
+                    <div class="text">
+                    <input id="username" class="one" type="text" placeholder="Username">
+                    <input id="email" class="one" type="email" placeholder="Your email">
+                    <input id="password" class="one" type="password" placeholder="Your password">
+                    <input id="confirmPassword" class="one" type="password" placeholder="Confirm your password">
+                    <div class="gender d-flex">
+                        <input class="mr-10" type="radio" name="Gender" value="male" id="Male">
+                        <label class="mr-30" for="Male">Male</label>
+                        <input class="mr-10" type="radio" name="Gender" value="female" id="female">
+                        <label for="female">female</label>
+                    </div>
+                    <div class="d-flex mt-15">
+                    <label class="mr-5" for="Language">Sign Language Speaker?</label>
+                    <input class="p-15" type="checkbox" name="Language">
+                    </div>
+                    <button class="mt-20" type="submit">SIGN UP</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  <!-- End Home -->
+  <script src="js/signUp.js"></script>
+</body>
+
+</html>

@@ -7,7 +7,7 @@
     <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="css/all.min.css" />
-    <!-- <link rel="stylesheet" href="css/framework.css" /> -->
+    <link rel="stylesheet" href="css/framework.css" />
     <link rel="stylesheet" href="css/master.css" />
     <link rel="stylesheet" href="css/course-lessons.css" />
     <!-- Google Fonts -->
@@ -33,8 +33,7 @@
         </a>
         <ul class="main-nav">
           <li><a href="index.html">Home</a></li>
-          <li><a href="courses.html" class="active">Education</a></li>
-          <li><a href="proflie.html">Profile</a></li>
+          <li id="education"><a href="courses.html" class="active">Education</a></li>
           <li>
             <a href="#">Other Links</a>
             <!-- Start Megamenu -->
@@ -57,6 +56,16 @@
                   >
                 </li>
               </ul>
+              <li id="signInLink">
+                <a href="signIn.html"
+                  ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
+                >
+              </li>
+              <li id="logoutLink" class="logout">
+                <a href="index.html" onclick="logout()"
+                  ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+                >
+              </li>
             </div>
             <!-- End Megamenu -->
           </li>
@@ -79,5 +88,6 @@
     </section>
     <!-- Start Lessons -->
     <script src="js/courses-lessons.js"></script>
+    <script src="js/logout.js"></script>
   </body>
 </html>
