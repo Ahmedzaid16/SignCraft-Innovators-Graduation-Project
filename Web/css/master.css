@@ -943,6 +943,122 @@ ul {
   font-size: 18px;
 }
 /* End Footer */
+
+/* Start translate */
+.translate {
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.translate .T1 {
+  color: white;
+  flex-basis: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../images/translate.png);
+  position: relative;
+  z-index: 1;
+  animation: change-background 10s linear infinite;
+}
+
+@media (max-width: 991px) {
+  .translate .T1 {
+    flex-basis: 100%;
+  }
+}
+
+.translate .T1::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(46 196 182 / 97%);
+  z-index: -1;
+}
+
+.translate .content {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.translate .T1 h1 {
+  font-size: 40px;
+  letter-spacing: -2;
+}
+
+.translate .T1 p {
+  margin: 0 55px;
+  text-align: center;
+  line-height: 1.7;
+  font-size: 20px;
+}
+
+.translate .T1 img {
+  max-width: 300px;
+  padding-top: 20px;
+}
+
+.translate .T2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 50%;
+  padding-bottom: 50px;
+}
+
+@media (max-width: 991px) {
+  .translate .T2 {
+    flex-basis: 100%;
+  }
+}
+
+.translate form .input {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 15px;
+  margin-bottom: 25px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #ccc;
+}
+
+.translate .content h2 {
+  font-size: 40px;
+  letter-spacing: -2;
+}
+
+.translate form textarea.input {
+  resize: none;
+  height: 200px;
+}
+
+.translate form .input:focus {
+  outline-color: var(--main-color);
+}
+
+.translate form [type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: var(--main-color);
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  transition: var(--main-transition);
+}
+
+.translate form [type="submit"]:hover {
+  background-color: var(--main-color-alt);
+}
+
+/* End translate */
+
 /* Start animation */
 
 @keyframes left-move {
