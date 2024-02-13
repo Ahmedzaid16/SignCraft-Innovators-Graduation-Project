@@ -1,98 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/framework.css" />
+    <link rel="stylesheet" href="css/master.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sign Language</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="website icon" type="png" href="" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="css/all.min.css" />
-  <link rel="stylesheet" href="css/framework.css" />
-  <link rel="stylesheet" href="css/master.css" />
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet" />
-  <title>Sign Language</title>
-</head>
-
-<body>
-  <!-- Start header -->
-  <style>
-    body{
-      height: 90vh;
-    }
-  </style>
-  <div class="header">
-    <div class="container">
-      <a href="#" class="logo">
-        <i class="fa-solid fa-hands-asl-interpreting"></i>
-        <h3>Sign Language</h3>
-      </a>
-      <ul class="main-nav">
-        <li><a href="index.html">Home</a></li>
-        <li><a class="active" href="translate.html">Translate</a></li>
-        <li><a href="courses.html">Education</a></li>
-        <li><a href="signIn.html"><i class="fa-solid fa-user-plus fs-16 mr-5 "></i> Sign in</a></li>
-        <li>
-          <a href="#">Other Links</a>
-          <!-- Start Megamenu -->
-          <div class="mega-menu">
-            <ul class="links">
-              <li>
-                <a href="#"><i class="fa-solid fa-graduation-cap"></i> Courses</a>
-              </li>
-              <li>
-                <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
-              </li>
-              <li>
-                <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
-              </li>
-              <li>
-                <a href="#"><i class="far fa-clipboard fa-fw"></i> How It Works</a>
-              </li>
-              <li>
-                <a href="proflie.html"><i class="fa-solid "></i>Profile</a>
-              </li>
-            </ul>
-          </div>
-          <!-- End Megamenu -->
-        </li>
-      </ul>
-    </div>
-  </div>
-  </div>
-  <!-- End Header -->
-  <!-- Start translate page -->
-  <div class="translate">
-    <div class="T1">
-      <div class="content">
-        <h1>Translate</h1>
-        <p>You can translate from text to sign language and vice versa.
-          <br>
-          You can use convert audio and video to sign language.
-        </p>
-        <img src="images/chatbot.png" alt="">
+  <body>
+    <!-- Start header -->
+    <style>
+      body {
+        height: 90vh;
+      }
+    </style>
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-hands-asl-interpreting"></i>
+          <h3>Sign Language</h3>
+        </a>
+        <ul class="main-nav">
+          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="translate.html">Translate</a></li>
+          <li id="education"><a href="signUp.html">Education</a></li>
+          <li>
+            <a href="#">Other Links</a>
+            <!-- Start Megamenu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
+                  >
+                </li>
+                <li>
+                  <a href="proflie.html"><i class="fa-solid"></i>Profile</a>
+                </li>
+              </ul>
+            </div>
+            <!-- End Megamenu -->
+          </li>
+          <li id="signInLink">
+            <a href="signIn.html"
+              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
+            >
+          </li>
+          <li id="logoutLink" style="display: none" class="logout">
+            <a href="index.html" onclick="logout()"
+              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+            >
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="T2">
-      <div class="content">
-        <h2>Do the translate</h2>
-        <form action="">
-          <input class="input" type="text" placeholder="Enter your text">
-          <textarea class="input" placeholder="Tell Us About Your Needs"></textarea>
-          <input type="submit" value="Translate">
-        </form>
+    <!-- End Header -->
+    <!-- Start translate page -->
+    <div class="translate">
+      <div class="T1">
+        <div class="content">
+          <h1>Translate</h1>
+          <p>
+            You can translate from text to sign language and vice versa.
+            <br />
+            You can use convert audio and video to sign language.
+          </p>
+          <img src="images/chatbot.png" alt="" />
+        </div>
+      </div>
+      <div class="T2">
+        <div class="content">
+          <h2>Do the translate</h2>
+          <form action="">
+            <div>
+              <input
+                class="input voice"
+                type="text"
+                placeholder="Enter your text"
+              />
+              <i class="fa-solid fa-microphone"></i>
+            </div>
+            <input type="submit" value="Translate" />
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  <!-- End translate page -->
-</body>
-
+    <!-- End translate page -->
+    <script src="js/logout.js"></script>
+    <script src="js/check.js"></script>
+  </body>
 </html>

@@ -4,26 +4,22 @@
 }
 section {
   position: relative;
-  height: 120vh;
-  background-image: url(../images/profile-sign.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+  height: 100vh;
+  /* background-image: url(../images/profile-sign.jpg); */
   border-color: #011627;
 }
 
 .profile-section {
   background-image: linear-gradient(0deg, #011627 0%, #2ec3b6 100%);
   color: #fdfffc;
-  /* height: 90vh;
-    width: 80vh; */
   width: 60%;
   height: 80%;
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 45%;
   transform: translate(-50%, -50%);
   border-radius: 20px;
-  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 /*Start Change Password style */
@@ -173,7 +169,7 @@ section {
 }
 .profile-section .profile-container .nav-section {
   grid-row-start: 2;
-  width: 90%;
+  width: 80%;
   font-size: 18px;
   font-weight: bold;
 }
@@ -214,10 +210,11 @@ section {
 .profile-section .profile-container .information .profile-form .gender-section,
 .profile-section .profile-container .information .profile-form .save-section {
   display: grid;
-  grid-template-columns: 40% auto 15%;
-  align-items: center;
-  width: 100%;
+  grid-template-columns: 38% auto 15%;
+  width: 90%;
   height: 100%;
+  justify-items: center;
+  align-items: center;
 }
 .profile-section
   .profile-container

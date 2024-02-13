@@ -153,8 +153,8 @@ app.post("/getemail", async (req, res) => {
 
     // If the user email is found, send it in the response
     if (userRecord.email) {
-      const email=userRecord.email;
-      res.json({email});
+      const email = userRecord.email;
+      res.json({ email });
     } else {
       // If the user email is not found, send a 404 status
       res.status(404).json({ msg: "User email not found" });
