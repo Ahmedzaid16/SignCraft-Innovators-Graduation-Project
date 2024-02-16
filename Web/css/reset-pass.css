@@ -1,0 +1,70 @@
+#canvas {
+  position: absolute;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+}
+.main {
+  margin: 80px 0px;
+}
+.card {
+  position: relative;
+  background-image: linear-gradient(0deg, #011627 0%, #2ec3b6 100%);
+  color: #fdfffc;
+  border-radius: 20px;
+  border: 1px solid #2ec3b6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 40px 70px;
+  width: 50%;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  margin: auto;
+  z-index: 2;
+}
+
+.hfor {
+  font-size: 1.5rem;
+  margin-top: 30px;
+  text-transform: uppercase;
+}
+
+.card div {
+  width: 80%;
+  display: flex;
+  align-items: baseline;
+}
+.passInput {
+  margin-top: 60px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #2ec3b6;
+  color: #fdfffc;
+  font-size: 18px;
+  outline: none;
+}
+
+.fa-lock,
+.fa-unlock {
+  font-size: 18px;
+  color: #e71d36;
+  cursor: pointer;
+  width: 0%;
+  translate: -15px;
+}
+
+.save-pass {
+  border: none;
+  margin-top: 50px;
+  width: 80%;
+  background-color: #2ec3b6;
+  padding: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #fdfffc;
+  box-shadow: 0 24px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.save-pass:hover {
+  background-color: #e71d36;
+}
