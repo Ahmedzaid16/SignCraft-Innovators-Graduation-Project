@@ -1,5 +1,4 @@
 # Graduation-Project
-<<<<<<< HEAD
 
 ## This repo will contain all the work Associated to our graduation project
 
@@ -9,21 +8,18 @@
 
 Before you begin, ensure you have the following installed:
 
-- Install [Node.js](https://nodejs.org/) which includes [Node Package Manager](https://docs.npmjs.com/getting-started/)
+- [Node.js](https://nodejs.org/) (which includes [Node Package Manager](https://docs.npmjs.com/getting-started/))
 
 ### Setting Up the Project
 
 1-Install project dependencies locally:
 
 ```bash
- npm install
+    npm install
 ```
 
 2-To start the application, run:
 
 ```bash
- npx nodemon js/index.js
+    npx nodemon js/index.js
 ```
-=======
-## This repo will contain all the work Associated to our graduation project 
->>>>>>> parent of 42f05b1 (readme)
