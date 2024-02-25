@@ -310,4 +310,25 @@ app.post("/delete", async (req, res) => {
   await User.doc(id).delete();
   res.send({ msg: "Deleted" });
 });
+
+const Typo = require("typo-js");
+// Create a dictionary for the English language
+const dictionary = new Typo("en_US");
+
+app.post("/search", async (req, res) => {
+  const inputText = req.body.text;
+    // Split the input text into words
+    const words = inputText.split(/\s+/);
+
+    // Correct each word using the dictionary
+    const correctedWords = words.map(
+      (word) => dictionary.suggest(word)[0] || word
+    );
+
+    // Join the corrected words back into a string
+    const correctedText = correctedWords.join(" ");
+
+    res.json({ correctedText });
+});
+
 app.listen(4000, () => console.log("Up & RUnning *4000"));

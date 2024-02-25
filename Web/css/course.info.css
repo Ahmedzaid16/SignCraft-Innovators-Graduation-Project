@@ -1,6 +1,9 @@
 .edu {
   color: #2ec4b6 !important;
 }
+.content {
+  background-color: #2ec4b6 !important;
+}
 .course-head {
   position: relative;
   display: grid;
@@ -143,6 +146,7 @@
 .benefit .bottom {
   display: flex;
   column-gap: 30px;
+  flex-wrap: wrap;
 }
 
 .benefit .center .one,
@@ -162,9 +166,6 @@
 .benefit .bottom div {
   width: 260px;
   height: 260px;
-}
-.benefit .bottom .five {
-  width: 550px;
 }
 .benefit .two img,
 .benefit .five img {
@@ -287,22 +288,26 @@
   .course-head {
     justify-content: center;
     grid-template-columns: auto;
+    padding-left: 0px;
+    padding-right: 0px;
     height: auto;
   }
   .right-head {
     width: 100% !important;
   }
-  #bottom {
-    left: 40%;
-  }
   .course-content .about {
     flex-direction: column;
+  }
+  .benefit {
+    row-gap: 0px;
   }
 }
 @media (min-width: 568px) and (max-width: 767px) {
   .course-head {
     justify-content: center;
     grid-template-columns: auto;
+    padding-left: 0px;
+    padding-right: 0px;
     height: auto;
   }
   .right-head {
@@ -310,6 +315,9 @@
   }
   .course-content .about {
     flex-direction: column;
+  }
+  .benefit {
+    row-gap: 0px;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
