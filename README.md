@@ -1,5 +1,4 @@
 # Graduation-Project
-<<<<<<< HEAD
 
 ## This repo will contain all the work Associated to our graduation project
 
@@ -24,6 +23,3 @@ Before you begin, ensure you have the following installed:
 ```bash
  npx nodemon js/index.js
 ```
-=======
-## This repo will contain all the work Associated to our graduation project 
->>>>>>> parent of 42f05b1 (readme)
