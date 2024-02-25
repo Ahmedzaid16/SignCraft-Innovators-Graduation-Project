@@ -21,5 +21,5 @@ Before you begin, ensure you have the following installed:
 2-To start the application, run:
 
 ```bash
-    npm start
+    npx nodemon js/index.js
 ```
