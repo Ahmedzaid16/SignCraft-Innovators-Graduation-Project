@@ -11,7 +11,11 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: "gs://signlanguage-users.appspot.com",
 });
-const { updatePassword, signInWithEmailAndPassword } = require("firebase/auth");
+const {
+  getUserByEmail,
+  updatePassword,
+  signInWithEmailAndPassword,
+} = require("firebase/auth");
 const { auth } = require("firebase");
 const storage = admin.storage();
 const bucket = storage.bucket();
@@ -73,6 +77,41 @@ app.post("/create", async (req, res) => {
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send({ msg: "Error adding user" });
+  }
+});
+
+app.post("/sendemail", async (req, res) => {
+  const userEmail = req.body.email; // Change variable name here
+
+  try {
+    const user = await admin.auth().getUserByEmail(userEmail); // Change variable name here
+    if (user) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "signlanguage568@gmail.com",
+          pass: "revg gkmi visi kdet",
+        },
+      });
+
+      const mailOptions = {
+        from: "signlanguage568@gmail.com",
+        to: userEmail, // Use the correct variable name here
+        subject: "ResetPassword",
+        html: `<p>Please click on the following link to reset your password:</p>
+          <a href="http://127.0.0.1:5501/reset-password.html?email=${userEmail}">ResetPassword</a>`,
+      };
+      await transporter.sendMail(mailOptions);
+      res.send({ userEmail: userEmail });
+      // Rest of your code for sending the email
+    } else {
+      res.status(404).json({ msg: "User email not found" });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ msg: "Internal server error" });
   }
 });
 
@@ -247,9 +286,49 @@ app.post("/updatePass", async (req, res) => {
   }
 });
 
+app.post("/resetPass", async (req, res) => {
+  const userEmail = req.body.email;
+  const newPassword = req.body.newPassword;
+
+  try {
+    const user = await admin.auth().getUserByEmail(userEmail);
+
+    // Update user properties, including password
+    await admin.auth().updateUser(user.uid, {
+      password: newPassword,
+    });
+
+    res.send({ msg: "Password updated successfully!" });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).send({ msg: "An error occurred while updating password" });
+  }
+});
+
 app.post("/delete", async (req, res) => {
   const id = req.body.id;
   await User.doc(id).delete();
   res.send({ msg: "Deleted" });
 });
+
+const Typo = require("typo-js");
+// Create a dictionary for the English language
+const dictionary = new Typo("en_US");
+
+app.post("/search", async (req, res) => {
+  const inputText = req.body.text;
+    // Split the input text into words
+    const words = inputText.split(/\s+/);
+
+    // Correct each word using the dictionary
+    const correctedWords = words.map(
+      (word) => dictionary.suggest(word)[0] || word
+    );
+
+    // Join the corrected words back into a string
+    const correctedText = correctedWords.join(" ");
+
+    res.json({ correctedText });
+});
+
 app.listen(4000, () => console.log("Up & RUnning *4000"));

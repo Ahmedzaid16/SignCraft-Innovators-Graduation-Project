@@ -122,12 +122,16 @@
           </div>
         </div>
       </div>
-
       <div class="courses">
         <div class="head-courses">
           <h3 class="rectangular-animation2">ArSL Courses</h3>
         </div>
-
+        <input
+          type="text"
+          id="myInput"
+          onkeyup="search()"
+          placeholder="Search for Courses.."
+        />
         <div class="adult-courses line" id="adultCourses">
           <div class="adult-info-content">
             <h4>Adult ArSL Courses</h4>
@@ -149,7 +153,7 @@
                     <span>24 Lessons</span>
                   </div>
                   <div class="course-info">
-                    <h4>Getting Started with ArESL</h4>
+                    <h4 id="course-name">Getting Started with ArESL</h4>
                     <p>
                       A perfect introduction to Arabic Egyptian Sign Language
                       (ArESL), gain basic conversation skills and a foundational
@@ -207,13 +211,13 @@
                   <div class="primary-info">
                     <h4>Primary School ArSL</h4>
                     <p>
-                      This course is the perfect introduction to the enchanting
-                      world of Arabic Sign Language (ArSL). Young learners will
-                      acquire fundamental conversation skills while building a
-                      solid foundation in Arabic Sign Language (ArSL) vocabulary
-                      and grammar. With fun practice activities and expert
-                      guidance, your child will be signing confidently in no
-                      time.
+                      This course is the perfect introduction for kids to the
+                      enchanting world of Arabic Sign Language (ArSL). Young
+                      learners will acquire fundamental conversation skills
+                      while building a solid foundation in Arabic Sign Language
+                      (ArSL) vocabulary and grammar. With fun practice
+                      activities and expert guidance, your child will be signing
+                      confidently in no time.
                     </p>
                   </div>
                 </div>
@@ -276,5 +280,6 @@
     <script src="js/chatbot.js"></script>
     <script src="js/courses.js"></script>
     <script src="js/logout.js"></script>
+    <script src="js/search.js"></script>
   </body>
 </html>

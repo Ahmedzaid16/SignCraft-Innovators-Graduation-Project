@@ -4,6 +4,8 @@
   right: 0;
   bottom: 0;
   padding: 1rem;
+}
+.chatbot-start {
   width: 420px;
 }
 .chatbot-ready {
@@ -72,7 +74,9 @@
   margin: 1rem;
   padding: 0;
   color: #fdfffc;
-  background-color: #011627;
+  /* background-color: #011627; */
+  background-image: url(/images/chatback.jpg);
+  background-size: cover;
   top: 600px;
   /* height: 83.5%; */
   height: 550px;
@@ -102,7 +106,7 @@
   flex-direction: column;
   row-gap: 15px;
   overflow: scroll;
-  height: 500px;
+  height: 100%;
 }
 .chatbot-start .message,
 .chatbot-start .robo-message,
@@ -191,4 +195,19 @@
 }
 .dis {
   display: none;
+}
+@media (max-width: 768px) {
+  .courses .adult-courses .adult-courses-videos,
+  .courses .kids-courses .kids-courses-videos {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .chatbot-ready {
+    right: auto;
+  }
+  .chatbot-start {
+    left: 0;
+    transform: none;
+    height: auto;
+    margin: 0;
+  }
 }
