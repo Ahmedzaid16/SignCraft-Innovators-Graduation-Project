@@ -317,18 +317,48 @@ const dictionary = new Typo("en_US");
 
 app.post("/search", async (req, res) => {
   const inputText = req.body.text;
-    // Split the input text into words
-    const words = inputText.split(/\s+/);
+  // Split the input text into words
+  const words = inputText.split(/\s+/);
 
-    // Correct each word using the dictionary
-    const correctedWords = words.map(
-      (word) => dictionary.suggest(word)[0] || word
-    );
+  // Correct each word using the dictionary
+  const correctedWords = words.map(
+    (word) => dictionary.suggest(word)[0] || word
+  );
 
-    // Join the corrected words back into a string
-    const correctedText = correctedWords.join(" ");
+  // Join the corrected words back into a string
+  const correctedText = correctedWords.join(" ");
 
-    res.json({ correctedText });
+  res.json({ correctedText });
+});
+
+const bodyParser = require("body-parser");
+const { spawn } = require("child_process");
+
+app.post("/correct", async (req, res) => {
+  var inputText = req.body.text;
+  console.log(inputText);
+
+  // Execute the Python script
+  const pythonProcess = spawn("python", ["py/spell_correction.py", inputText]);
+
+  let correctedText = "";
+
+  // Collect data from the Python process
+  pythonProcess.stdout.on("data", (data) => {
+    correctedText += data;
+  });
+
+  // Handle errors
+  pythonProcess.stderr.on("data", (data) => {
+    console.error(`Error: ${data}`);
+  });
+
+  // When the process exits
+  pythonProcess.on("close", (code) => {
+    console.log(`Python process exited with code ${code}`);
+    console.log(correctedText);
+    res.json(correctedText); // Send the corrected text back to the client
+  });
 });
 
 app.listen(4000, () => console.log("Up & RUnning *4000"));

@@ -2,13 +2,13 @@ async function search() {
   // Declare variables
   var input, filter, ulAdult, ulKids, aAdult, aKids, i, txtValue;
   input = document.getElementById("myInput");
-  filter = input.value.trim().toUpperCase();
+  filter = input.value.trim().toLowerCase();
   ulAdult = document.getElementById("adultCourses");
   ulKids = document.getElementById("kidsCourses");
   aAdult = ulAdult.getElementsByTagName("a");
   aKids = ulKids.getElementsByTagName("a");
   try {
-    const correct = await fetch(`http://localhost:4000/search`, {
+    const correct = await fetch(`http://localhost:4000/correct`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -18,8 +18,8 @@ async function search() {
       }),
     });
 
-    const correctedResult = await correct.json();
-    var result = correctedResult.correctedText;
+    var result = await correct.json();
+    result = result.trim();
     console.log(result);
 
     // Loop through all adult course items, and hide those who don't match the search query
