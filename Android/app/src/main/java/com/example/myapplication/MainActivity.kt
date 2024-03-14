@@ -10,6 +10,7 @@ import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.ActivitySingUpBinding
 
 lateinit var profile_icon: ImageView
+lateinit var Education_icon: ImageView
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,9 +27,15 @@ class MainActivity : AppCompatActivity() {
 
         profile_icon = binding.profileIcon
         profile_icon.setOnClickListener{
-            var intent = Intent(this, Profile_page::class.java)
+            val intent = Intent(this, Profile_page::class.java)
             startActivity(intent)
         }
+        Education_icon = binding.educaitonIcon
+        Education_icon.setOnClickListener {
+            val intent = Intent(this , Courses_Page::class.java)
+            startActivity(intent)
+        }
+
     }
     override fun onBackPressed() {
         val currentTime = System.currentTimeMillis()

@@ -1,19 +1,18 @@
 package com.example.myapplication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivitySingUpBinding
-import com.google.firebase.Firebase
-import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import kotlin.system.exitProcess
 
 lateinit var singin_clk_txt:TextView
-
+lateinit var profile_img : ImageView
 class SingUp : AppCompatActivity() {
 
     private var lastBackPressedTime = 0L
@@ -32,6 +31,11 @@ class SingUp : AppCompatActivity() {
         singin_clk_txt.setOnClickListener{
             var intent = Intent(this,SingIn::class.java)
             startActivity(intent)
+        }
+        profile_img = binding.profileImg
+        profile_img.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, 3)
         }
 
         firebaseAuth = FirebaseAuth.getInstance()

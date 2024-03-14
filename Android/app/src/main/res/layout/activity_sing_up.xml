@@ -33,7 +33,14 @@
                 android:textColor="@color/RichBlack"
                 android:textSize="28sp"
                 android:textStyle="bold" />
-
+            <ImageView
+                android:id="@+id/profile_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_person_24"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                />
             <EditText
                 android:id="@+id/username_edt"
                 android:layout_width="match_parent"
