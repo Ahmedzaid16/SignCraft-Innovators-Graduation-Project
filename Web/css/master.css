@@ -13,6 +13,7 @@
   --purple-alt: #6610f2;
   --purple: #6f42c1;
   --main-transition: 0.3s;
+  --model-duration: 1s;
 }
 
 * {
@@ -1069,6 +1070,158 @@ ul {
 
 /* End translate */
 
+/* Start control courses */
+.controlCourses h1 {
+  display: flex;
+  justify-content: center;
+}
+
+.controlCourses .content {
+  margin: auto;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.controlCourses .content button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  color: var(--white-color);
+  background-color: var(--main-color);
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.controlCourses .content button:hover {
+  background-color: var(--white-color);
+  color: var(--main-color);
+  outline: 2px solid var(--main-color);
+  transition: 0.2s ease;
+}
+
+.controlCourses .content button:active {
+  transform: scale(0.98);
+  transition: 0.3s ease;
+}
+
+.modal-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.modal-container.show-modal {
+  display: block;
+}
+
+.modal {
+  background-color: #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  overflow: hidden;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+  width: 400px;
+  animation-name: modalOpen;
+  animation-duration: var(--model-duration);
+}
+
+.modal-header {
+  background: var(--main-color);
+  color: #fff;
+  padding: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.modal-content {
+  padding: 20px;
+}
+.modal-content p {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-form div {
+  margin: 15px 0;
+}
+
+.modal-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.modal-form .choose {
+  width: 60%;
+  margin-right: -10px;
+}
+
+.modal-form .form-input {
+  padding: 8px;
+  width: 100%;
+}
+
+.modal-content .modal-form textarea {
+  resize: none;
+  width: 100%;
+  height: 80px;
+  outline-color: var(--main-color);
+}
+
+.modal-content .modal-form input {
+  outline-color: var(--main-color);
+}
+
+.close-btn {
+  background-color: transparent;
+  font-size: 25px;
+  position: absolute;
+  top: 15px;
+  right: 0;
+  border: none;
+  cursor: pointer;
+  color: var(--white-color);
+}
+
+.modal-content .submit-btn {
+  width: 100%;
+  cursor: pointer;
+  color: var(--white-color);
+  background-color: var(--main-color);
+  padding: 10px 15px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+}
+
+.modal-content .submit-btn:hover {
+  background-color: var(--white-color);
+  color: var(--main-color);
+  outline: 2px solid var(--main-color);
+  transition: 0.2s ease;
+}
+
+.modal-content .submit-btn:active {
+  transform: scale(0.98);
+  transition: 0.3s ease;
+}
+/* End control courses */
+
 /* Start animation */
 
 @keyframes left-move {
@@ -1113,4 +1266,12 @@ ul {
   }
 }
 
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 /* End animation */

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/framework.css" />
+    <link rel="stylesheet" href="css/master.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Control Courses</title>
+  </head>
+  <body>
+    <div class="controlCourses">
+      <h1>Control any course as you need!</h1>
+      <div class="content">
+        <div class="add">
+          <button class="add" id="open">Add</button>
+        </div>
+        <div class="modify">
+          <button class="Modify">Modify</button>
+        </div>
+        <div class="remove">
+          <button class="remove">Remove</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-container" id="modal">
+      <div class="modal">
+        <button class="close-btn" id="close">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Add course</h3>
+        </div>
+        <div class="modal-content">
+          <p>Enter this required info to add any course:</p>
+          <form class="modal-form">
+            <div style="display: flex">
+              <label for="custom-image-upload" class="choose"
+                >Choose an Image:</label
+              >
+              <input
+                type="file"
+                id="custom-image-upload"
+                accept="image/*"
+                class="choose-btn"
+                required
+              />
+            </div>
+            <div>
+              <label for="name">Course name</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Enter Name"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="textarea">Course description</label>
+              <textarea
+                name="textarea"
+                id="textarea"
+                cols="35"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <input type="submit" value="Submit" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="js/controlCourses.js"></script>
+  </body>
+</html>
