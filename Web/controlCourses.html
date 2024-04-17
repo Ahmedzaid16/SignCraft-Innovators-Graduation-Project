@@ -78,7 +78,7 @@
                 required
               ></textarea>
             </div>
-            <input type="submit" value="Submit" class="submit-btn" />
+            <input type="submit" value="Add" class="submit-btn" />
           </form>
         </div>
       </div>
@@ -105,10 +105,30 @@
               />
             </div>
             <div>
+              <label for="name">Course title</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Enter course ID"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
               <label for="textarea">Edit course description</label>
               <textarea name="textarea" id="textarea" required></textarea>
             </div>
-            <input type="submit" value="Submit" class="submit-btn" />
+            <div>
+              <label for="name">number of lessons</label>
+              <input
+                type="number"
+                id="name"
+                placeholder="Enter number of lesson"
+                class="form-input"
+                required
+              />
+            </div>
+            <input type="submit" value="Modify" class="submit-btn" />
           </form>
         </div>
       </div>
@@ -122,41 +142,19 @@
           <h3>Add course</h3>
         </div>
         <div class="modal-content">
-          <p>Enter this required info to add any course:</p>
+          <p>Enter course ID to removed:</p>
           <form class="modal-form">
-            <div style="display: flex">
-              <label for="custom-image-upload" class="choose"
-                >Choose an Image:</label
-              >
-              <input
-                type="file"
-                id="custom-image-upload"
-                accept="image/*"
-                class="choose-btn"
-                required
-              />
-            </div>
             <div>
-              <label for="name">Course name</label>
+              <label for="name">Course ID</label>
               <input
-                type="text"
+                type="number"
                 id="name"
-                placeholder="Enter Name"
+                placeholder="Enter course ID"
                 class="form-input"
                 required
               />
             </div>
-            <div>
-              <label for="textarea">Course description</label>
-              <textarea
-                name="textarea"
-                id="textarea"
-                cols="35"
-                rows="5"
-                required
-              ></textarea>
-            </div>
-            <input type="submit" value="Submit" class="submit-btn" />
+            <input type="submit" value="Remove" class="submit-btn" />
           </form>
         </div>
       </div>
