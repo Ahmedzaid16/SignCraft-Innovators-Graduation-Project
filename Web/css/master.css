@@ -1125,6 +1125,7 @@ ul {
 .modal-container.show-modal,
 .modal-container-rem.show-modal {
   display: block;
+  overflow-y: scroll;
 }
 
 .modal {

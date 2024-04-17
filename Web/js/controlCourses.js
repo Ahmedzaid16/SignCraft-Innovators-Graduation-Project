@@ -7,7 +7,10 @@ const closeRem = document.getElementById("close-rem");
 const modalAdd = document.getElementById("modal-add");
 const modalMod = document.getElementById("modal-mod");
 const modalRem = document.getElementById("modal-rem");
-const upload = document.getElementById("custom-image-upload");
+const uploadAdd = document.getElementById("custom-image-upload-add");
+const formAdd = document.getElementById("addform");
+const formMod = document.getElementById("form-mod");
+const formRem = document.getElementById("form-rem");
 
 // Function to remove the "show-modal" class
 const closeModal = () => {
@@ -64,7 +67,7 @@ window.addEventListener("click", (e) =>
 );
 
 // Upload allow to upload images only
-upload.addEventListener("change", function (event) {
+uploadAdd.addEventListener("change", function (event) {
   const file = event.target.files[0];
   const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
   if (file && allowedTypes.includes(file.type)) {
@@ -72,5 +75,129 @@ upload.addEventListener("change", function (event) {
     // Invalid file type
     alert("Please select a valid image file (JPEG, PNG, JPG or GIF).");
     event.target.value = ""; // Clear the input
+  }
+});
+
+// Handle form submission
+formAdd.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Prevent default form submission
+
+  // Extracting values from form fields
+  const code = document.getElementById("codeAdd").value;
+  const name = document.getElementById("nameAdd").value;
+  const lesson = document.getElementById("lessonAdd").value;
+  const Categories = document.getElementById("CategoriesAdd").value;
+  const description = document.getElementById("descriptionAdd").value;
+  const imageFile = document.getElementById("custom-image-upload-add").files[0];
+
+  // Read the image file as a data URL
+  const reader = new FileReader();
+  reader.onload = async (event) => {
+    const imageBase64 = event.target.result;
+
+    // Construct JSON object
+    const data = {
+      code: code,
+      name: name,
+      lesson: lesson,
+      categories: Categories,
+      description: description,
+      image: imageBase64,
+    };
+
+    try {
+      const response = await fetch("http://localhost:4000/create-course", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        // Course created successfully
+        alert("Course created successfully!");
+        modalAdd.classList.remove("show-modal");
+        formAdd.reset();
+      } else {
+        // Error creating course
+        const data = await response.json();
+        alert(`Error: ${data.msg}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while creating the course.");
+    }
+  };
+
+  reader.readAsDataURL(imageFile);
+});
+
+formMod.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Prevent default form submission
+
+  // Extract updated course data from the form
+  const imageFile = document.getElementById("custom-image-upload-mod").files[0];
+
+  // Read the image file as a data URL
+  const reader = new FileReader();
+  reader.onload = async (event) => {
+    const imageBase64 = event.target.result;
+    const updatedData = {
+      name: document.getElementById("name-mod").value,
+      categories: document.getElementById("Categories-mod").value,
+      lesson: document.getElementById("lesson-mod").value, // Assuming lesson is a number
+      description: document.getElementById("description-mod").value,
+      imageUrl: "",
+    };
+
+    // Extract course code from the form
+    const code = document.getElementById("code-mod").value;
+
+    try {
+      // Send a request to update the course data
+      const response = await fetch("http://localhost:4000/updateCourse", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code, updatedData, imageBase64 }),
+      });
+
+      if (response.ok) {
+        alert("Course updated successfully!");
+      } else {
+        const data = await response.json();
+        alert(`Error: ${data.msg}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while updating the course.");
+    }
+  };
+  reader.readAsDataURL(imageFile);
+});
+
+formRem.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const code = document.getElementById("code-rem").value;
+  try {
+    const response = await fetch("http://localhost:4000/deleteCourse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code }),
+    });
+
+    if (response.ok) {
+      alert("Course deleted successfully!");
+    } else {
+      const data = await response.json();
+      alert(`Error: ${data.msg}`);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while deleting the course.");
   }
 });

@@ -89,50 +89,50 @@ section {
   align-items: center;
   margin-top: 3rem;
 }
+
 .courses .head-courses h3 {
   font-size: 40px;
   font-weight: bold;
 }
-.courses .adult-courses .adult-info-content h4,
-.courses .kids-courses .kids-info-content h4 {
+
+.courses .div-courses .adult-info-content h4 {
   font-size: 25px;
   font-weight: 700;
 }
-.courses .adult-courses .adult-info-content p,
-.courses .kids-courses .kids-info-content p {
+
+.courses .div-courses .adult-info-content p {
   font-size: 15px;
   font-weight: 400;
   line-height: 25px;
   opacity: 0.8;
 }
-.courses .adult-courses .adult-courses-videos,
-.courses .kids-courses .kids-courses-videos {
+
+.courses .div-courses .div-courses-videos {
   padding-top: 10px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 20px;
 }
-.courses .adult-courses .adult-courses-videos a,
-.courses .kids-courses .kids-courses-videos a {
+
+.courses .div-courses .div-courses-videos a {
   color: #011627;
 }
-.courses .adult-courses .adult-courses-videos .course:hover,
-.courses .kids-courses .kids-courses-videos .primary:hover {
+
+.courses .div-courses .div-courses-videos .course:hover {
   opacity: 0.8;
 }
-.courses .adult-courses .adult-courses-videos .course-content .course-img,
-.courses .kids-courses .kids-courses-videos .primary-content .primary-img {
+
+.courses .div-courses .div-courses-videos .course-content .course-img {
   display: flex;
   align-items: flex-end;
 }
-.courses .adult-courses .adult-courses-videos .course-content .course-img img,
-.courses .kids-courses .kids-courses-videos .primary-content .primary-img img {
+
+.courses .div-courses .div-courses-videos .course-content .course-img img {
   width: 100%;
   height: 100%;
   border-radius: 20px;
 }
-.courses .adult-courses .adult-courses-videos .course-content .course-img span,
-.courses .kids-courses .kids-courses-videos .primary-content .primary-img span {
+.courses .div-courses .div-courses-videos .course-content .course-img span {
   position: absolute;
   color: #fdfffc;
   background-color: #2ec3b6;
@@ -140,20 +140,21 @@ section {
   padding: 5px 10px;
   transform: translate(10px, -10px);
 }
-.courses .adult-courses .adult-courses-videos .course-content .course-info p,
-.courses .kids-courses .kids-courses-videos .primary-content .primary-info p {
+.courses .div-courses .div-courses-videos .course-content .course-info p {
   line-height: 20px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   margin-top: -25px;
+  font-size: 15px;
 }
 
-.courses .adult-courses .adult-courses-videos .course-content .course-info h4,
-.courses .kids-courses .kids-courses-videos .primary-content .primary-info h4 {
+.courses .div-courses .div-courses-videos .course-content .course-info h4 {
   margin-top: 10px;
+  font-size: 25px;
 }
+
 .rectangular-animation::before {
   content: "";
   border: 3px solid #2ec3b6;
@@ -163,6 +164,7 @@ section {
   transform: translate(-8px, -10px);
   animation: spin 0.7s linear infinite;
 }
+
 .rectangular-animation2::before {
   content: "";
   border: 3px solid #2ec3b6;

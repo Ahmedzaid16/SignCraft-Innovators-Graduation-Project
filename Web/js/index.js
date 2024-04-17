@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const User = require("./config");
 const admin = require("firebase-admin");
+const bodyParser1 = require("body-parser");
 const serviceAccount = require("../signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
 const multer = require("multer");
 const upload = multer(); // You can pass options to configure multer if needed
@@ -20,6 +21,8 @@ const { auth } = require("firebase");
 const storage = admin.storage();
 const bucket = storage.bucket();
 const app = express();
+app.use(bodyParser1.json({ limit: "50mb" }));
+app.use(bodyParser1.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
 app.use(cors());
 
@@ -339,7 +342,7 @@ app.post("/correct", async (req, res) => {
   console.log(inputText);
 
   // Execute the Python script
-  const pythonProcess = spawn("python", ["py/spell_correction.py", inputText]);
+  const pythonProcess = spawn("python", ["js/spell_correction.py", inputText]);
 
   let correctedText = "";
 
@@ -361,4 +364,161 @@ app.post("/correct", async (req, res) => {
   });
 });
 
-app.listen(4000, () => console.log("Up & RUnning *4000"));
+// ----------------------- admin section -------------------------------
+
+const { v4: uuidv4 } = require("uuid");
+
+app.post("/create-course", async (req, res) => {
+  const data = req.body;
+  const imageBase64 = data.image;
+
+  try {
+    // Generate a unique filename for the image
+    const imageName = uuidv4() + ".jpg";
+
+    // Upload image to Firebase Storage
+    const storageRef = admin
+      .storage()
+      .bucket()
+      .file("images/" + imageName);
+    const base64EncodedImage = imageBase64.replace(
+      /^data:image\/\w+;base64,/,
+      ""
+    );
+    const imageBuffer = Buffer.from(base64EncodedImage, "base64");
+
+    await storageRef.save(imageBuffer, {
+      metadata: {
+        contentType: "image/jpeg",
+      },
+    });
+
+    // Get the URL of the uploaded image
+    const imageUrlArray = await storageRef.getSignedUrl({
+      action: "read",
+      expires: "03-09-2491", // Set an expiration date or duration
+    });
+
+    const imageUrl = imageUrlArray[0];
+
+    // Create a new document in the 'courses' collection
+    await admin.firestore().collection("courses").add({
+      code: data.code,
+      name: data.name,
+      lesson: data.lesson,
+      categories: data.categories,
+      description: data.description,
+      imageUrl: imageUrl,
+    });
+
+    res.status(200).json({ msg: "Course created successfully" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ msg: "Error creating course" });
+  }
+});
+
+const db = admin.firestore();
+// Endpoint to fetch course data from Firebase Firestore
+app.get("/courses", async (req, res) => {
+  try {
+    const coursesSnapshot = await db.collection("courses").get();
+    const courses = [];
+    coursesSnapshot.forEach((doc) => {
+      courses.push({ ...doc.data() });
+    });
+    res.json(courses);
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    res.status(500).json({ error: "Error fetching courses" });
+  }
+});
+
+app.post("/updateCourse", async (req, res) => {
+  const code = req.body.code; // Extract the course code from the request body
+  const updatedData = req.body.updatedData; // Extract the updated course data
+  const imageBase64 = req.body.imageBase64; // Extract the base64-encoded image data
+
+  try {
+    // Search for the course with the provided code
+    const courseSnapshot = await db
+      .collection("courses")
+      .where("code", "==", code)
+      .get();
+
+    if (courseSnapshot.empty) {
+      // If no course found with the provided code, return an error
+      res.status(404).json({ msg: "Course not found with the provided code." });
+      return;
+    }
+
+    // Generate a unique filename for the image
+    const imageName = uuidv4() + ".jpg";
+
+    // Upload image to Firebase Storage
+    const storageRef = admin
+      .storage()
+      .bucket()
+      .file("images/" + imageName);
+    const base64EncodedImage = imageBase64.replace(
+      /^data:image\/\w+;base64,/,
+      ""
+    );
+    const imageBuffer = Buffer.from(base64EncodedImage, "base64");
+
+    await storageRef.save(imageBuffer, {
+      metadata: {
+        contentType: "image/jpeg",
+      },
+    });
+
+    // Get the URL of the uploaded image
+    const imageUrlArray = await storageRef.getSignedUrl({
+      action: "read",
+      expires: "03-09-2491", // Set an expiration date or duration
+    });
+
+    const imageUrl = imageUrlArray[0];
+
+    // Add imageUrl to the updatedData
+    updatedData.imageUrl = imageUrl;
+
+    // Update the course information
+    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
+    await db.collection("courses").doc(courseId).update(updatedData);
+
+    res.status(200).json({ msg: "Course updated successfully." });
+  } catch (error) {
+    console.error("Error updating course:", error);
+    res.status(500).json({ msg: "An error occurred while updating course." });
+  }
+});
+
+app.post("/deleteCourse", async (req, res) => {
+  const code = req.body.code; // Extract the course code from the request body
+
+  try {
+    // Search for the course with the provided code
+    const courseSnapshot = await db
+      .collection("courses")
+      .where("code", "==", code)
+      .get();
+
+    if (courseSnapshot.empty) {
+      // If no course found with the provided code, return an error
+      res.status(404).json({ msg: "Course not found with the provided code." });
+      return;
+    }
+
+    // Delete the course
+    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
+    await db.collection("courses").doc(courseId).delete();
+
+    res.status(200).json({ msg: "Course deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting course:", error);
+    res.status(500).json({ msg: "An error occurred while deleting course." });
+  }
+});
+
+app.listen(4000, () => console.log("Up & Running *4000"));

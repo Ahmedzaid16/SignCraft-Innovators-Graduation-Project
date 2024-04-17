@@ -45,40 +45,70 @@
         </div>
         <div class="modal-content">
           <p>Enter this required info to add any course:</p>
-          <form class="modal-form">
+          <form class="modal-form" id="addform">
             <div style="display: flex">
-              <label for="custom-image-upload" class="choose"
+              <label for="custom-image-upload-add" class="choose"
                 >Choose an Image:</label
               >
               <input
                 type="file"
-                id="custom-image-upload"
+                id="custom-image-upload-add"
                 accept="image/*"
                 class="choose-btn"
                 required
               />
             </div>
             <div>
-              <label for="name">Course name</label>
+              <label for="codeAdd">Course code</label>
+              <input
+                type="number"
+                id="codeAdd"
+                placeholder="Enter code"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="nameAdd">Course name</label>
               <input
                 type="text"
-                id="name"
+                id="nameAdd"
                 placeholder="Enter Name"
                 class="form-input"
                 required
               />
             </div>
             <div>
-              <label for="textarea">Course description</label>
+              <label for="CategoriesAdd">Course Category</label>
+              <input
+                type="text"
+                id="CategoriesAdd"
+                placeholder="Enter Category"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="lessonAdd">Number of Lesson</label>
+              <input
+                type="number"
+                id="lessonAdd"
+                placeholder="Enter Number"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="descriptionAdd">Course description</label>
               <textarea
                 name="textarea"
-                id="textarea"
+                id="descriptionAdd"
                 cols="35"
                 rows="5"
                 required
               ></textarea>
             </div>
-            <input type="submit" value="Add" class="submit-btn" />
+            <input type="submit" value="Submit" class="submit-btn" />
           </form>
         </div>
       </div>
@@ -93,52 +123,66 @@
         </div>
         <div class="modal-content">
           <p>Enter this required info to modify any course:</p>
-          <form class="modal-form">
+          <form class="modal-form" id="form-mod">
             <div style="display: flex">
-              <label for="custom-image-upload" class="choose"
+              <label for="custom-image-upload-mod" class="choose"
                 >Choose an Image:</label
               >
               <input
                 type="file"
-                id="custom-image-upload"
+                id="custom-image-upload-mod"
                 accept="image/*"
                 class="choose-btn"
                 required
               />
             </div>
             <div>
-              <label for="name">Course ID</label>
+              <label for="code-mod">Course Code</label>
               <input
                 type="number"
-                id="name"
-                placeholder="Enter course ID"
+                id="code-mod"
+                placeholder="Enter course Code"
                 class="form-input"
                 required
               />
             </div>
             <div>
-              <label for="name">Course title</label>
+              <label for="name-mod">Course name</label>
               <input
                 type="text"
-                id="name"
-                placeholder="Enter course ID"
+                id="name-mod"
+                placeholder="Enter course name"
                 class="form-input"
                 required
               />
             </div>
             <div>
-              <label for="textarea">Edit course description</label>
-              <textarea name="textarea" id="textarea" required></textarea>
+              <label for="Categories-mod">Course Category</label>
+              <input
+                type="text"
+                id="Categories-mod"
+                placeholder="Enter Category"
+                class="form-input"
+                required
+              />
             </div>
             <div>
-              <label for="name">number of lessons</label>
+              <label for="lesson-mod">Number of Lessons</label>
               <input
                 type="number"
-                id="name"
+                id="lesson-mod"
                 placeholder="Enter number of lesson"
                 class="form-input"
                 required
               />
+            </div>
+            <div>
+              <label for="description-mod">Edit course description</label>
+              <textarea
+                name="textarea"
+                id="description-mod"
+                required
+              ></textarea>
             </div>
             <input type="submit" value="Modify" class="submit-btn" />
           </form>
@@ -154,14 +198,14 @@
           <h3>Remove course</h3>
         </div>
         <div class="modal-content">
-          <p>Enter course ID to removed:</p>
-          <form class="modal-form">
+          <p>Enter course code to removed:</p>
+          <form class="modal-form" id="form-rem">
             <div>
-              <label for="name">Course ID</label>
+              <label for="code-rem">Course code</label>
               <input
                 type="number"
-                id="name"
-                placeholder="Enter course ID"
+                id="code-rem"
+                placeholder="Enter course code"
                 class="form-input"
                 required
               />

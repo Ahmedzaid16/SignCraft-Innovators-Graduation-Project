@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
   For example, if the URL is "/course-info.html?course=primary", courseLink will be "primary" */
   var courseLink = urlParams.get("course");
   // Update HTML content if courseLink = primary (content for kids)
-  if (courseLink === "primary") {
+  if (courseLink === "2003") {
     intro.innerHTML = `<video src="videos/kids-intro.mp4" controls autoplay muted></video>`;
     courseName.innerHTML = `Primary School ArSL`;
     categorie.innerHTML = `Categories: Kids`;
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
     <p>Lesson 22: Tension - 😬</p>
     <p class="last">Lesson 23: Determination - 🎨💪</p>
     `;
-  } else if (courseLink === "arsl-with-caption") {
+  } else if (courseLink === "2002") {
     intro.innerHTML = `<video src="videos/adult-intro2.mp4" controls autoplay muted></video>`;
     courseName.innerHTML = `ArSL With Caption`;
     duration.innerHTML = `Duration: 22m 53s / 15 lessons`;

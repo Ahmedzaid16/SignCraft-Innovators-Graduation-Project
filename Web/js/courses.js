@@ -7,17 +7,81 @@ function scrollToElement(elementId) {
   element.scrollIntoView({ behavior: "smooth" });
 }
 
-// // This Function Show or Hide an image Based on the Scroll Position
-// function showImageOnScroll() {
-//   // Define the scroll threshold (in pixels) to trigger the image visibility.
-//   const scrollThreshold = 200;
-//   // Check if the User has Scrolled beyond the defined threshold
-//   const isScrolled = window.scrollY > scrollThreshold;
-//   // Select the image element with the class "bottom-left-image"
-//   const bottomLeftImage = document.querySelector(".bottom-left-image");
-//   /* Set the opacity of the image based on the scroll condition
-//   If scrolled, set opacity to 1 (visible); otherwise, set it to 0 (hidden) */
-//   bottomLeftImage.style.opacity = isScrolled ? 1 : 0;
-// }
-// // Add a scroll event listener to trigger the function when the user scrolls.
-// window.addEventListener("scroll", showImageOnScroll);
+// Modify fetchCourses function to fetch course data from the new endpoint
+async function fetchCourses() {
+  try {
+    const response = await fetch("http://localhost:4000/courses");
+    const courses = await response.json();
+    return courses;
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    return [];
+  }
+}
+
+// Modify populateCourses function to use the fetched course data
+async function populateCourses() {
+  try {
+    const courses = await fetchCourses();
+    const adultCoursesContainer = document.getElementById(
+      "adult-courses-videos"
+    );
+    const kidsCoursesContainer = document.getElementById("kids-courses-videos");
+
+    // Clear existing content
+    adultCoursesContainer.innerHTML = "";
+    kidsCoursesContainer.innerHTML = "";
+
+    // Populate HTML with course data
+    courses.forEach((course) => {
+      const courseLink = document.createElement("a");
+      courseLink.href = `course-info.html?course=${course.code}`;
+      courseLink.classList.add("course");
+
+      const courseContent = document.createElement("div");
+      courseContent.classList.add("course-content");
+
+      const courseImg = document.createElement("div");
+      courseImg.classList.add("course-img");
+
+      const img = document.createElement("img");
+      img.src = course.imageUrl; // Assuming you have an 'imageUrl' field in your course data
+      img.alt = "course img";
+
+      const span = document.createElement("span");
+      span.textContent = `${course.lesson} Lessons`; // Assuming you have a 'lesson' field in your course data
+
+      courseImg.appendChild(img);
+      courseImg.appendChild(span);
+
+      const courseInfo = document.createElement("div");
+      courseInfo.classList.add("course-info");
+
+      const h4 = document.createElement("h4");
+      h4.textContent = course.name; // Assuming you have a 'name' field in your course data
+
+      const p = document.createElement("p");
+      p.textContent = course.description; // Assuming you have a 'description' field in your course data
+
+      courseInfo.appendChild(h4);
+      courseInfo.appendChild(p);
+
+      courseContent.appendChild(courseImg);
+      courseContent.appendChild(courseInfo);
+
+      courseLink.appendChild(courseContent);
+
+      // Check if the course is for adults or kids and append it to the respective container
+      if (course.categories === "adult") {
+        adultCoursesContainer.appendChild(courseLink);
+      } else if (course.categories === "kids") {
+        kidsCoursesContainer.appendChild(courseLink);
+      }
+    });
+  } catch (error) {
+    console.error("Error populating courses:", error);
+  }
+}
+
+// Call the populateCourses function when the DOM is loaded
+document.addEventListener("DOMContentLoaded", populateCourses);
