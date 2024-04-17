@@ -1109,7 +1109,9 @@ ul {
   transition: 0.3s ease;
 }
 
-.modal-container {
+.modal-container,
+.modal-container-mod,
+.modal-container-rem {
   background-color: rgba(0, 0, 0, 0.6);
   display: none;
   position: fixed;
@@ -1119,7 +1121,9 @@ ul {
   left: 0;
 }
 
-.modal-container.show-modal {
+.modal-container-mod.show-modal,
+.modal-container.show-modal,
+.modal-container-rem.show-modal {
   display: block;
 }
 
@@ -1198,7 +1202,7 @@ ul {
   color: var(--white-color);
 }
 
-.modal-content .submit-btn {
+.submit-btn {
   width: 100%;
   cursor: pointer;
   color: var(--white-color);
@@ -1209,14 +1213,14 @@ ul {
   border-radius: 5px;
 }
 
-.modal-content .submit-btn:hover {
+.submit-btn:hover {
   background-color: var(--white-color);
   color: var(--main-color);
   outline: 2px solid var(--main-color);
   transition: 0.2s ease;
 }
 
-.modal-content .submit-btn:active {
+.submit-btn:active {
   transform: scale(0.98);
   transition: 0.3s ease;
 }

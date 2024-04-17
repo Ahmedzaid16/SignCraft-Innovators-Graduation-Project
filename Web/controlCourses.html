@@ -25,19 +25,97 @@
       <h1>Control any course as you need!</h1>
       <div class="content">
         <div class="add">
-          <button class="add" id="open">Add</button>
+          <button class="add" id="openAdd">Add</button>
         </div>
         <div class="modify">
-          <button class="Modify">Modify</button>
+          <button class="Modify" id="modify">Modify</button>
         </div>
         <div class="remove">
-          <button class="remove">Remove</button>
+          <button class="remove" id="remove">Remove</button>
         </div>
       </div>
     </div>
-    <div class="modal-container" id="modal">
+    <div class="modal-container" id="modal-add">
       <div class="modal">
         <button class="close-btn" id="close">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Add course</h3>
+        </div>
+        <div class="modal-content">
+          <p>Enter this required info to add any course:</p>
+          <form class="modal-form">
+            <div style="display: flex">
+              <label for="custom-image-upload" class="choose"
+                >Choose an Image:</label
+              >
+              <input
+                type="file"
+                id="custom-image-upload"
+                accept="image/*"
+                class="choose-btn"
+                required
+              />
+            </div>
+            <div>
+              <label for="name">Course name</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Enter Name"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="textarea">Course description</label>
+              <textarea
+                name="textarea"
+                id="textarea"
+                cols="35"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <input type="submit" value="Submit" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-container-mod" id="modal-mod">
+      <div class="modal">
+        <button class="close-btn" id="close-mod">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Add course</h3>
+        </div>
+        <div class="modal-content">
+          <p>Enter this required info to modify any course:</p>
+          <form class="modal-form">
+            <div>
+              <label for="name">Course ID</label>
+              <input
+                type="number"
+                id="name"
+                placeholder="Enter course ID"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="textarea">Edit course description</label>
+              <textarea name="textarea" id="textarea" required></textarea>
+            </div>
+            <input type="submit" value="Submit" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-container-rem" id="modal-rem">
+      <div class="modal">
+        <button class="close-btn" id="close-rem">
           <i class="fa-regular fa-circle-xmark"></i>
         </button>
         <div class="modal-header">
