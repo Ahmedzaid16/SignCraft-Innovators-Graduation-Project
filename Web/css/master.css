@@ -1142,6 +1142,15 @@ ul {
   animation-duration: var(--model-duration);
 }
 
+@media (max-width: 550px) {
+  .modal {
+    width: 320px;
+  }
+  .controlCourses h1 {
+    text-align: center;
+  }
+}
+
 .modal-header {
   background: var(--main-color);
   color: #fff;
