@@ -1,68 +1,342 @@
-section {
-  background-image: url(../images/courses-lessons-bg.jpg);
-  background-size: cover;
+/* Start Global Rules */
+:root {
+  --blue-color: #0075ff;
+  --blue-alt-color: #0d69d5;
+  --orange-color: #ff9f1c;
+  --green-color: #22c55e;
+  --red-color: #e71d36;
+  --grey-color: #888;
+  --black-color: #011627;
+  --white-color: #fdfffc;
+  --main-color: #2ec4b6;
+  --main-color-alt: #3c7671;
+  --purple-alt: #6610f2;
+  --purple: #6f42c1;
+  --main-transition: 0.3s;
+  --model-duration: 1s;
 }
 
-.edu {
-  color: #2ec4b6 !important;
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.content {
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--main-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--main-color-alt);
+}
+
+.page {
+  background-color: #f1f5f9;
+  min-height: 100vh;
+}
+
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Small */
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+/* Medium */
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+/* Large */
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+.main-title {
+  text-transform: uppercase;
+  margin: 0 auto 80px;
+  border: 2px solid black;
+  padding: 10px 20px;
+  font-size: 30px;
+  width: fit-content;
+  position: relative;
+  z-index: 1;
+  transition: var(--main-transition);
+}
+
+.main-title::before,
+.main-title::after {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background-color: var(--main-color);
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.main-title::before {
+  left: -30px;
+}
+
+.main-title::after {
+  right: -30px;
+}
+
+.main-title:hover::before {
+  z-index: -1;
+  animation: left-move 0.5s linear forwards;
+}
+
+.main-title:hover::after {
+  z-index: -1;
+  animation: right-move 0.5s linear forwards;
+}
+
+.main-title:hover {
+  color: white;
+  border: 2px solid white;
+  transition-delay: 0.5s;
+}
+
+/* End Global Rules */
+/* Start header */
+.header {
+  background-color: var(--white-color);
+  position: relative;
+  -webkit-box-shadow: 0 0 10px #ddd;
+  -moz-box-shadow: 0 0 10px #ddd;
+  box-shadow: 0 0 10px #ddd;
+}
+
+.header .container {
   display: flex;
-  padding: 6rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.header .logo {
+  color: var(--main-color);
+  font-size: 20px;
+  font-weight: bold;
+  height: 72px;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
-.content .lessons {
-  flex-basis: 20%;
-  background-color: #011627;
-  padding: 20px;
-  border-radius: 15px;
-  height: 500px;
-  overflow: auto;
-  direction: rtl;
-  text-align: end;
-}
-.content .lessons h2,
-.content .lessons li {
-  color: #2ec3b6;
-}
-.content .lessons li {
-  cursor: pointer;
-  border: 2px solid #2ec3b6;
-  padding: 10px;
+
+.header .logo i {
+  color: var(--white-color);
+  background-color: var(--main-color);
+  font-size: 20px;
+  font-weight: bold;
+  width: 40px;
+  height: 36px;
+  padding-right: 0px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
 }
 
-.content .lessons li:hover,
-.active-lesson {
-  background-color: #e71d36 !important;
-  color: #fdfffc !important;
-  border-color: #011627 !important;
+@media (max-width: 767px) {
+  .header .logo {
+    width: 100%;
+    height: 50%;
+  }
 }
 
-.content .video-container {
-  flex-basis: 80%;
+.header .main-nav {
+  display: flex;
 }
 
-iframe,
-video {
+@media (max-width: 767px) {
+  .header .main-nav {
+    margin: auto;
+  }
+}
+
+.header .main-nav > li:hover .mega-menu {
+  opacity: 1;
+  z-index: 100;
+  top: calc(50%);
+}
+
+.header .main-nav > li > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  position: relative;
+  padding: 0 30px;
+  color: var(--black-color);
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: bold;
+  transition: var(--main-transition);
+}
+
+.header .main-nav li.active {
+  color: var(--main-color);
+}
+
+/*  I added this because when I was reduce the page, 
+    only the links that had been activated were showing, 
+    But the rest does not.  */
+.header .main-nav li {
+  background-color: #fafafa;
+}
+
+.header .main-nav > li > a::before {
+  content: "";
+  position: absolute;
   width: 100%;
-  height: 500px;
-  border-radius: 15px;
+  height: 4px;
+  background-color: var(--main-color);
+  top: 0;
+  left: -100%;
+  transition: var(--main-transition);
 }
-@media (max-width: 957px) {
-  .content {
-    padding: 0;
+
+.header .main-nav > li > a:hover {
+  color: var(--main-color);
+  background-color: #fafafa;
+}
+
+.header .main-nav > li > a.active {
+  color: var(--main-color);
+  background-color: #fafafa;
+}
+
+.header .main-nav > li > a:hover::before {
+  left: 0;
+}
+
+@media (max-width: 767px) {
+  .header .main-nav > li > a {
+    padding: 10px;
+    font-size: 14px;
+    height: 40px;
+  }
+}
+
+.header .mega-menu {
+  position: absolute;
+  width: 250px;
+  background-color: white;
+  padding: 30px;
+  border-bottom: 3px solid var(--main-color);
+  margin-top: 40px;
+  z-index: -1;
+  display: flex;
+  gap: 40px;
+  top: calc(100% + 50px);
+  opacity: 0;
+  transition: top var(--main-transition), opacity var(--main-transition);
+}
+
+@media (max-width: 767px) {
+  .header .mega-menu {
     flex-direction: column;
-    align-items: normal;
-  }
-  .content .lessons {
-    flex-basis: 30%;
-  }
-  .content .lessons ul {
-    height: 300px;
-    overflow: auto;
-  }
-  .content .video-container {
-    flex-basis: 70%;
+    gap: 0;
+    padding: 5px;
+    margin-top: 60px;
   }
 }
+
+.header .mega-menu .LINKS {
+  min-width: 100px;
+  padding-right: -50px;
+  flex: 1;
+}
+
+.header .mega-menu .links li {
+  position: relative;
+}
+
+.header .mega-menu .links li:not(:last-child) {
+  border-bottom: 1px solid #e9e6e6;
+}
+
+@media (max-width: 767px) {
+  .header .mega-menu .links:first-of-type li:last-child {
+    border-bottom: 1px solid #e9e6e6;
+  }
+}
+
+.header .mega-menu .links li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background-color: #fafafa;
+  z-index: -1;
+  transition: var(--main-transition);
+}
+
+.header .mega-menu .links li:hover::before {
+  width: 100%;
+}
+
+.header .mega-menu .links li a {
+  color: var(--black-color);
+  padding: 15px;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  transition: var(--main-transition);
+}
+
+.header .mega-menu .links li a:hover {
+  color: var(--main-color);
+}
+
+.header .mega-menu .links li a i {
+  margin-right: 10px;
+  color: var(--main-color);
+}
+
+/* End header */

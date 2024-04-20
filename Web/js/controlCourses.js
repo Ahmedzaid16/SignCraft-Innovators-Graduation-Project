@@ -1,13 +1,20 @@
 const openAdd = document.getElementById("openAdd");
+const openAddInfo = document.getElementById("openAddInfo");
+const openAddVideo = document.getElementById("openAddVideo");
 const modify = document.getElementById("modify");
 const remove = document.getElementById("remove");
 const close = document.getElementById("close");
+const closeInfo = document.getElementById("close-info");
+const closeVideo = document.getElementById("close-video");
 const closeMod = document.getElementById("close-mod");
 const closeRem = document.getElementById("close-rem");
 const modalAdd = document.getElementById("modal-add");
+const modalAddInfo = document.getElementById("modal-add-info");
+const modalAddVideo = document.getElementById("modal-add-video");
 const modalMod = document.getElementById("modal-mod");
 const modalRem = document.getElementById("modal-rem");
 const uploadAdd = document.getElementById("custom-image-upload-add");
+const uploadAddInfo = document.getElementById("custom-video-upload-add");
 const formAdd = document.getElementById("addform");
 const formMod = document.getElementById("form-mod");
 const formRem = document.getElementById("form-rem");
@@ -16,15 +23,27 @@ const formRem = document.getElementById("form-rem");
 const closeModal = () => {
   modalAdd.classList.remove("show-modal");
 };
-
 // Attach the event listener to the "close" button for Add modal
 close.addEventListener("click", closeModal);
+
+// Function to remove the "show-modal" class
+const closeModalInfo = () => {
+  modalAddInfo.classList.remove("show-modal");
+};
+// Attach the event listener to the "close" button for Add modal
+closeInfo.addEventListener("click", closeModalInfo);
+
+// Function to remove the "show-modal" class
+const closeModalVideo = () => {
+  modalAddVideo.classList.remove("show-modal");
+};
+// Attach the event listener to the "close" button for Add modal
+closeVideo.addEventListener("click", closeModalVideo);
 
 // Function to remove the "show-modal" class for Modify modal
 const closeModalMod = () => {
   modalMod.classList.remove("show-modal");
 };
-
 // Attach the event listener to the "close" button for Modify modal
 closeMod.addEventListener("click", closeModalMod);
 
@@ -32,13 +51,18 @@ closeMod.addEventListener("click", closeModalMod);
 const closeModalRem = () => {
   modalRem.classList.remove("show-modal");
 };
-
 // Attach the event listener to the "close" button for Remove modal
 closeRem.addEventListener("click", closeModalRem);
 
 // Function to  show modal
 const addModal = () => {
   modalAdd.classList.add("show-modal");
+};
+const addModalInfo = () => {
+  modalAddInfo.classList.add("show-modal");
+};
+const addModalVideo = () => {
+  modalAddVideo.classList.add("show-modal");
 };
 const modModal = () => {
   modalMod.classList.add("show-modal");
@@ -49,6 +73,8 @@ const remModal = () => {
 
 // Show Add modal
 openAdd.addEventListener("click", addModal);
+openAddInfo.addEventListener("click", addModalInfo);
+openAddVideo.addEventListener("click", addModalVideo);
 modify.addEventListener("click", modModal);
 remove.addEventListener("click", remModal);
 
@@ -57,10 +83,24 @@ remove.addEventListener("click", remModal);
 window.addEventListener("click", (e) =>
   e.target == modalAdd ? modalAdd.classList.remove("show-modal") : false
 );
+
+// Hide modal on outside click
+window.addEventListener("click", (e) =>
+  e.target == modalAddInfo ? modalAddInfo.classList.remove("show-modal") : false
+);
+
+// Hide modal on outside click
+window.addEventListener("click", (e) =>
+  e.target == modalAddVideo
+    ? modalAddVideo.classList.remove("show-modal")
+    : false
+);
+
 // Hide modal on outside click
 window.addEventListener("click", (e) =>
   e.target == modalMod ? modalMod.classList.remove("show-modal") : false
 );
+
 // Hide modal on outside click
 window.addEventListener("click", (e) =>
   e.target == modalRem ? modalRem.classList.remove("show-modal") : false
@@ -74,6 +114,33 @@ uploadAdd.addEventListener("change", function (event) {
   } else {
     // Invalid file type
     alert("Please select a valid image file (JPEG, PNG, JPG or GIF).");
+    event.target.value = ""; // Clear the input
+  }
+});
+
+// Upload allow to upload images only
+uploadAddInfo.addEventListener("change", function (event) {
+  const file = event.target.files[0];
+  const allowedTypes = [
+    "video/jpeg",
+    "video/omv",
+    "video/wmv",
+    "video/mpg",
+    "video/webm",
+    "video/ogv",
+    "video/mov",
+    "video/asx",
+    "video/mpeg",
+    "video/mp4",
+    "video/m4v",
+    "video/avi",
+  ];
+  if (file && allowedTypes.includes(file.type)) {
+  } else {
+    // Invalid file type
+    alert(
+      "Please select a valid video file (omv, wmv, mpg, webm, ogv, mov, asx, mpeg, mp4, m4v or avi)."
+    );
     event.target.value = ""; // Clear the input
   }
 });

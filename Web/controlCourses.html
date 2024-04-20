@@ -25,7 +25,13 @@
       <h1>Control any course as you need!</h1>
       <div class="content">
         <div class="add">
-          <button class="add" id="openAdd">Add</button>
+          <button class="add" id="openAdd">Add course</button>
+        </div>
+        <div class="add-info">
+          <button class="add" id="openAddInfo">Add course info</button>
+        </div>
+        <div class="add-video">
+          <button class="addVideo" id="openAddVideo">Add course videos</button>
         </div>
         <div class="modify">
           <button class="Modify" id="modify">Modify</button>
@@ -108,11 +114,98 @@
                 required
               ></textarea>
             </div>
-            <input type="submit" value="Submit" class="submit-btn" />
+            <input type="submit" value="Add" class="submit-btn" />
           </form>
         </div>
       </div>
     </div>
+
+    <div class="modal-container" id="modal-add-info">
+      <div class="modal">
+        <button class="close-btn" id="close-info">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Add course info</h3>
+        </div>
+        <div class="modal-content">
+          <p>Enter this required info to add course info:</p>
+          <form class="modal-form" id="addFormInfo">
+            <div>
+              <label for="codeAdd">Course code</label>
+              <input
+                type="number"
+                id="codeAdd"
+                placeholder="Enter code"
+                class="form-input"
+                required
+              />
+            </div>
+            <div style="display: flex">
+              <label for="custom-video-upload-add" class="choose"
+                >Choose an video:</label
+              >
+              <input
+                type="file"
+                id="custom-video-upload-add"
+                accept="video/*"
+                class="chooseVideo-btn"
+                required
+              />
+            </div>
+            <div>
+              <label for="nameAdd">Course duration</label>
+              <input
+                type="text"
+                id="nameAdd"
+                placeholder="Enter course time"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="descriptionAdd">Course lesson</label>
+              <textarea
+                name="textarea"
+                id="descriptionAddInfo"
+                cols="35"
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <input type="submit" value="Add" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-container" id="modal-add-video">
+      <div class="modal">
+        <button class="close-btn" id="close-video">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Add course video</h3>
+        </div>
+        <div class="modal-content">
+          <p>Enter this required info to add course video:</p>
+          <form class="modal-form" id="addFormInfo">
+            <div>
+              <label for="codeAdd">Course code</label>
+              <input
+                type="number"
+                id="codeAdd"
+                placeholder="Enter code"
+                class="form-input"
+                required
+              />
+            </div>
+            <input type="submit" value="Add" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-container-mod" id="modal-mod">
       <div class="modal">
         <button class="close-btn" id="close-mod">

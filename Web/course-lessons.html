@@ -2,14 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="css/all.min.css" />
     <link rel="stylesheet" href="css/framework.css" />
     <link rel="stylesheet" href="css/master.css" />
-    <link rel="stylesheet" href="css/course-lessons.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,22 +18,20 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Course Lessons</title>
+    <title>Control Courses</title>
   </head>
   <body>
     <!-- Start header -->
     <div class="header">
       <div class="container">
-        <a href="index.html" class="logo">
+        <a href="#" class="logo">
           <i class="fa-solid fa-hands-asl-interpreting"></i>
           <h3>Sign Language</h3>
         </a>
         <ul class="main-nav">
-          <li><a href="index.html">Home</a></li>
+          <li><a class="active" href="#">Home</a></li>
           <li><a href="translate.html">Translate</a></li>
-          <li id="education">
-            <a href="courses.html" class="active">Education</a>
-          </li>
+          <li id="education"><a href="signUp.html">Education</a></li>
           <li>
             <a href="#">Other Links</a>
             <!-- Start Megamenu -->
@@ -58,88 +53,27 @@
                     ><i class="far fa-clipboard fa-fw"></i> How It Works</a
                   >
                 </li>
+                <li>
+                  <a href="proflie.html"><i class=""></i>Profile</a>
+                </li>
               </ul>
-              <li id="signInLink">
-                <a href="signIn.html"
-                  ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
-                >
-              </li>
-              <li id="logoutLink" class="logout">
-                <a href="index.html" onclick="logout()"
-                  ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
-                >
-              </li>
             </div>
             <!-- End Megamenu -->
+          </li>
+          <li id="signInLink">
+            <a href="signIn.html"
+              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
+            >
+          </li>
+          <li id="logoutLink" style="display: none" class="logout">
+            <a href="index.html" onclick="logout()"
+              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+            >
           </li>
         </ul>
       </div>
     </div>
     <!-- End Header -->
-    <!-- Start Lessons -->
-    <section>
-      <div class="content">
-        <div class="lessons">
-          <h2>Lessons</h2>
-          <ul id="lessons-video" class="lessons-vid"></ul>
-        </div>
-
-        <div class="video-container" id="videos">
-          <iframe id="lesson-iframe" src=""> </iframe>
-        </div>
-      </div>
-    </section>
-    <div class="footer">
-      <div class="content">
-        <div class="one">
-          <a href="#" class="logo">
-            <i class="fa-solid fa-hands-asl-interpreting"></i>
-            <h3>Sign Language</h3>
-          </a>
-          <ul class="social">
-            <li>
-              <a href="#" class="face">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="linkedin">
-                <i class="fab fa-linkedin"></i>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="github">
-                <i class="fab fa-github"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="two">
-          <ul class="links">
-            <li><a class="one" href="#">Menu</a></li>
-            <li><a href="#">Home Page</a></li>
-            <li><a href="#">Translate page</a></li>
-            <li><a href="courses.html">Education Page</a></li>
-            <li><a href="course-info.html">Courses</a></li>
-          </ul>
-        </div>
-        <div class="three">
-          <div class="email">
-            <i class="fa-solid fa-envelope fa-fw"></i>
-            <h3>Contact Us</h3>
-          </div>
-          <a href="#">hello@signlanguage.com</a>
-        </div>
-      </div>
-      <div class="copy-right">
-        <p>Copyright &copy; 2024 Sign Language</p>
-      </div>
-      <div class="made">
-        <p>Made by SignCraft Innovators</p>
-      </div>
-    </div>
-    <!-- Start Lessons -->
     <script src="js/courses-lessons.js"></script>
-    <script src="js/logout.js"></script>
   </body>
 </html>
