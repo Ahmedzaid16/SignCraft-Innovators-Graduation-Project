@@ -200,6 +200,43 @@
                 required
               />
             </div>
+            <h3 style="margin: 0">Upload videos</h3>
+            <div style="display: flex; justify-content: space-around">
+              <div style="display: flex; margin-left: -20px">
+                <input
+                  type="radio"
+                  name="choose"
+                  value="upload"
+                  id="radio-upload"
+                />
+                <label style="margin: 0" for="radio-upload">Upload video</label>
+              </div>
+              <div style="display: flex">
+                <input type="radio" name="choose" value="url" id="radio-url" />
+                <label style="margin: 0" for="radio-url">Url</label>
+              </div>
+            </div>
+
+            <div class="device-video" id="device-video">
+              <label for="custom-video-upload-add" class="choose"
+                >Choose an video:</label
+              >
+              <input
+                type="file"
+                id="custom-video-upload-add"
+                accept="video/*"
+                class="chooseVideo-btn"
+              />
+            </div>
+            <div class="url-video" id="url-video">
+              <label for="url">Video url</label>
+              <input
+                type="url"
+                id="url"
+                placeholder="Enter url"
+                class="form-input"
+              />
+            </div>
             <input type="submit" value="Add" class="submit-btn" />
           </form>
         </div>
