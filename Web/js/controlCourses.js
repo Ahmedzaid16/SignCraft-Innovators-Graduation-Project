@@ -289,3 +289,7 @@ formRem.addEventListener("submit", async (e) => {
     alert("An error occurred while deleting the course.");
   }
 });
+
+function ok() {
+  Swal.fire("Done");
+}
