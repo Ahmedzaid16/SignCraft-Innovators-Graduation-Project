@@ -1212,6 +1212,16 @@ ul {
   color: var(--white-color);
 }
 
+.modal-content .device-video,
+.modal-content .url-video {
+  display: none;
+}
+
+.modal-content .device-video.show-video,
+.modal-content .url-video.show-url {
+  display: block;
+}
+
 .submit-btn {
   width: 100%;
   cursor: pointer;

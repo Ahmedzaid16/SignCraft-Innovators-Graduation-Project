@@ -15,6 +15,10 @@ const modalMod = document.getElementById("modal-mod");
 const modalRem = document.getElementById("modal-rem");
 const uploadAdd = document.getElementById("custom-image-upload-add");
 const uploadAddInfo = document.getElementById("custom-video-upload-add");
+const deviceVideo = document.getElementById("device-video");
+const urlVideo = document.getElementById("url-video");
+const radioUpload = document.getElementById("radio-upload");
+const radioUrl = document.getElementById("radio-url");
 const formAdd = document.getElementById("addform");
 const formMod = document.getElementById("form-mod");
 const formRem = document.getElementById("form-rem");
@@ -143,6 +147,23 @@ uploadAddInfo.addEventListener("change", function (event) {
       "Please select a valid video file (omv, wmv, mpg, webm, ogv, mov, asx, mpeg, mp4, m4v or avi)."
     );
     event.target.value = ""; // Clear the input
+  }
+});
+
+// Event listener for radio buttons
+radioUpload.addEventListener("change", () => {
+  if (radioUpload.checked) {
+    console.log("ok");
+    deviceVideo.classList.add("show-video");
+    urlVideo.classList.remove("show-url");
+  }
+});
+
+radioUrl.addEventListener("change", () => {
+  if (radioUrl.checked) {
+    console.log("ok");
+    urlVideo.classList.add("show-url");
+    deviceVideo.classList.remove("show-video");
   }
 });
 
@@ -304,3 +325,7 @@ forminfo.addEventListener("submit", async (e) => {
     alert("An error occurred while updating the course.");
   }
 });
+
+function ok() {
+  Swal.fire("Done");
+}
