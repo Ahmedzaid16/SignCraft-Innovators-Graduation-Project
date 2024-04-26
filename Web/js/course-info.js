@@ -31,88 +31,86 @@ function showImageOnScroll() {
   bottomLeftImage.style.display = isScrolled ? "block" : "none";
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Call the function to handle initial state
-  showImageOnScroll();
-  // Add a scroll event listener to trigger the function when the user scrolls.
-  window.addEventListener("scroll", showImageOnScroll);
+// Call the function to handle initial state
+showImageOnScroll();
+// Add a scroll event listener to trigger the function when the user scrolls.
+window.addEventListener("scroll", showImageOnScroll);
 
-  // Select the Elements with their IDs
-  var intro = document.getElementById("intro");
-  var courseName = document.getElementById("course-name");
-  var categorie = document.getElementById("categorie");
-  var duration = document.getElementById("duration");
-  var about = document.getElementById("about");
-  var aboutImg = document.getElementById("about-img");
-  var benfitImg = document.getElementById("benfit-img");
-  var learn = document.getElementById("learn");
-  var bottom = document.getElementById("bottom");
-  var contentLessons = document.getElementById("section1-content");
+// Select the Elements with their IDs
+var intro = document.getElementById("intro");
+var courseName = document.getElementById("course-name");
+var categorie = document.getElementById("categorie");
+var duration = document.getElementById("duration");
+var about = document.getElementById("about");
+var aboutImg = document.getElementById("about-img");
+var benfitImg = document.getElementById("benfit-img");
+var learn = document.getElementById("learn");
+var bottom = document.getElementById("bottom");
+var contentLessons = document.getElementById("section1-content");
 
-  // Create a URLSearchParams object to handle query parameters in the current URL
-  var urlParams = new URLSearchParams(window.location.search);
-  /* Retrieve the value associated with the "course" parameter from the query string
+// Create a URLSearchParams object to handle query parameters in the current URL
+var urlParams = new URLSearchParams(window.location.search);
+/* Retrieve the value associated with the "course" parameter from the query string
   For example, if the URL is "/course-info.html?course=primary", courseLink will be "primary" */
-  var courseLink = urlParams.get("course");
-  // Update HTML content if courseLink = primary (content for kids)
-  if (courseLink === "2003") {
-    intro.innerHTML = `<video src="videos/kids-intro.mp4" controls autoplay muted></video>`;
-    courseName.innerHTML = `Primary School ArSL`;
-    categorie.innerHTML = `Categories: Kids`;
-    duration.innerHTML = `Duration: 14m 18s / 23 lessons`;
-    about.innerHTML = `Today, we're going to learn a cool game - it's called "Sign Language," and it's going to be a lot of fun! Explore New Words! We'll be learning new words that you use every day, like letters, days, colors, and even fruits! Why Learn Sign Language? Learning sign language helps us communicate better with our friends and family who might use it. It helps us understand each other and be even better friends! And that's not all! If you learn sign language, you'll be able to discover a whole new world of friends and exciting adventures! Are you ready to start? Let's kick off the fun and learn sign language together!`;
-    aboutImg.innerHTML = `<img src="images/kids-about.png" alt="man img" />`;
-    benfitImg.innerHTML = `<img src="images/benfit-head-kids.jpg" alt="kids" />`;
-    learn.innerHTML = `<a href="course-lessons.html?course=primary"><button>Learn Now</button></a>`;
-    bottom.innerHTML = `<a href="course-lessons.html?course=primary" class="img-link"><div class="bottom-left-image"><img src="images/learn-now-kids.png" alt="Bottom Left Image" class="kids-img" /><button class="learn-buttom">Learn Now</button></div></a>`;
-    contentLessons.innerHTML = `<p>Lesson 1: Stop - 🤚</p>
-    <p>Lesson 2: Notice - 👀</p>
-    <p>Lesson 3: Think - 🤔</p>
-    <p>Lesson 4: Respect - 👏</p>
-    <p>Lesson 5: Are you okay? - 🤔👍</p>
-    <p>Lesson 6: Good evening - 🌆</p>
-    <p>Lesson 7: Hello - 👋</p>
-    <p>Lesson 8: How are you? - 🤔👋</p>
-    <p>Lesson 9: Thank you - 🙏</p>
-    <p>Lesson 10: What's your name? - 🤔👂</p>
-    <p>Lesson 11: Encouragement - 👏💪</p>
-    <p>Lesson 12: Tolerance - ☮️</p>
-    <p>Lesson 13: Kindness towards others - 😊🤝</p>
-    <p>Lesson 14: Kindness to oneself - 😌💕</p>
-    <p>Lesson 15: Self-confidence - 💪🙂</p>
-    <p>Lesson 16: Self-forgiveness - ☮️😌</p>
-    <p>Lesson 17: Frustration - 😟</p>
-    <p>Lesson 18: Sadness - 😢</p>
-    <p>Lesson 19: Jealousy - 😠</p>
-    <p>Lesson 20: Interest - ❤️</p>
-    <p>Lesson 21: Fear - 😨</p>
-    <p>Lesson 22: Tension - 😬</p>
-    <p class="last">Lesson 23: Determination - 🎨💪</p>
-    `;
-  } else if (courseLink === "2002") {
-    intro.innerHTML = `<video src="videos/adult-intro2.mp4" controls autoplay muted></video>`;
-    courseName.innerHTML = `ArSL With Caption`;
-    duration.innerHTML = `Duration: 22m 53s / 15 lessons`;
-    learn.innerHTML = `<a href="course-lessons.html?course=arsl-with-caption"><button>Learn Now</button></a>`;
-    bottom.innerHTML = `<a href="course-lessons.html?course=arsl-with-caption" class="img-link"><div class="bottom-left-image"><img src="images/learn-now.png" alt="Bottom Left Image" /><button>Learn Now</button></div></a>`;
-    contentLessons.innerHTML = `<p>Lesson 1: The Letters</p>
-    <p>Lesson 2: The Feeling Is</p>
-    <p>Lesson 3: The Numbers Are</p>
-    <p>Lesson 4: The Colors Are</p>
-    <p>Lesson 5: Prayer</p>
-    <p>Lesson 6: The Hospital Is</p>
-    <p>Lesson 7: Fast Food</p>
-    <p>Lesson 8: Currencies</p>
-    <p>Lesson 9: The Family</p>
-    <p>Lesson 10: The House Is</p>
-    <p>Lesson 11: The Foods Are</p>
-    <p>Lesson 12: Introduce Yourself</p>
-    <p>Lesson 13: A Week</p>
-    <p>Lesson 14: City Streets</p>
-    <p class="last">Lesson 15: Basic Means of Transportation</p>    
-    `;
+var code = urlParams.get("course");
+
+async function fetchCourses() {
+  try {
+    const response = await fetch("http://localhost:4000/findcourse", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code }),
+    });
+    const course = await response.json();
+    // Wrap the single course object into an array
+    return Array.isArray(course) ? course : [course];
+  } catch (error) {
+    console.error("Error fetching course:", error);
+    return [];
   }
-});
+}
+
+// Modify populateCourses function to use the fetched course data
+async function populateCourses() {
+  try {
+    const courses = await fetchCourses();
+    console.log("Courses data type:", typeof courses);
+    console.log("Courses data:", courses);
+    // Check if courses is an array
+    if (!Array.isArray(courses)) {
+      throw new Error("Courses data is not an array");
+    }
+    // Populate HTML with course data
+    courses.forEach((course) => {
+      intro.innerHTML = `<video src=${course.videoUrl} controls autoplay muted></video>`;
+      courseName.innerHTML = `${course.name}`;
+      categorie.innerHTML = `Categories: ${course.categories}`;
+      duration.innerHTML = `Duration: ${course.duration} / ${course.lesson} lessons`;
+      about.innerHTML = `Today, we're going to learn a cool game - it's called "Sign Language," and it's going to be a lot of fun! Explore New Words! We'll be learning new words that you use every day, like letters, days, colors, and even fruits! Why Learn Sign Language? Learning sign language helps us communicate better with our friends and family who might use it. It helps us understand each other and be even better friends! And that's not all! If you learn sign language, you'll be able to discover a whole new world of friends and exciting adventures! Are you ready to start? Let's kick off the fun and learn sign language together!`;
+      if (course.categories == "kids") {
+        aboutImg.innerHTML = `<img src="images/kids-about.png" alt="man img" />`;
+        benfitImg.innerHTML = `<img src="images/benfit-head-kids.jpg" alt="kids" />`;
+        learn.innerHTML = `<a href="course-lessons.html?course=primary"><button>Learn Now</button></a>`;
+        bottom.innerHTML = `<a href="course-lessons.html?course=primary" class="img-link"><div class="bottom-left-image"><img src="images/learn-now-kids.png" alt="Bottom Left Image" class="kids-img" /><button class="learn-buttom">Learn Now</button></div></a>`;
+      }
+      let lessonHTML = "";
+      course.Lessondescription.forEach((lesson, index) => {
+        lessonHTML += `<p${
+          index === course.Lessondescription.length - 1 ? ' class="last"' : ""
+        }>${lesson}</p>\n`;
+      });
+      // Set the HTML content for the contentLessons element
+      contentLessons.innerHTML = lessonHTML;
+    });
+  } catch (error) {
+    console.error("Error populating courses:", error);
+  }
+}
+
+// Call the populateCourses function when the DOM is loaded
+document.addEventListener("DOMContentLoaded", populateCourses);
 
 // Function to open the share window when click on share course
 function openShareModal() {

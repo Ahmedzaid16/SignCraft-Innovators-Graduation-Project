@@ -18,6 +18,7 @@ const uploadAddInfo = document.getElementById("custom-video-upload-add");
 const formAdd = document.getElementById("addform");
 const formMod = document.getElementById("form-mod");
 const formRem = document.getElementById("form-rem");
+const forminfo = document.getElementById("addFormInfo");
 
 // Function to remove the "show-modal" class
 const closeModal = () => {
@@ -266,5 +267,40 @@ formRem.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error("Error:", error);
     alert("An error occurred while deleting the course.");
+  }
+});
+
+forminfo.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Prevent default form submission
+
+  // Extract updated course data from the form
+  const description = document.getElementById("descriptionAddinfo").value;
+  const descriptionArray = description.split(/\r?\n/);
+  const videoFile = document.getElementById("custom-video-upload-add").files[0];
+
+  const formData = new FormData(); // Create FormData object
+  formData.append("video", videoFile); // Append video file to FormData
+
+  // Add other form data to FormData
+  formData.append("duration", document.getElementById("durationAddinfo").value);
+  formData.append("Lessondescription", JSON.stringify(descriptionArray));
+  formData.append("code", document.getElementById("codeAddinfo").value);
+
+  try {
+    // Send a request to update the course data
+    const response = await fetch("http://localhost:4000/updateCourseinfo", {
+      method: "POST",
+      body: formData, // Use FormData as body
+    });
+
+    if (response.ok) {
+      alert("Course updated successfully!");
+    } else {
+      const data = await response.json();
+      alert(`Error: ${data.msg}`);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while updating the course.");
   }
 });

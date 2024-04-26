@@ -434,6 +434,36 @@ app.get("/courses", async (req, res) => {
   }
 });
 
+// Define the findcourse endpoint
+app.post("/findcourse", async (req, res) => {
+  const coursecode = req.body.code;
+
+  try {
+    // Query the database to find the course with the provided courseLink
+    const courseSnapshot = await db
+      .collection("courses")
+      .where("code", "==", coursecode)
+      .get();
+
+    if (courseSnapshot.empty) {
+      // If no course found with the provided courseLink, return an error
+      res
+        .status(404)
+        .json({ msg: "Course not found with the provided coursecode." });
+      return;
+    }
+
+    // Extract the course data
+    const courseData = courseSnapshot.docs[0].data();
+
+    // Return the course data in the response
+    res.json(courseData);
+  } catch (error) {
+    console.error("Error finding course:", error);
+    res.status(500).json({ msg: "An error occurred while finding course." });
+  }
+});
+
 app.post("/updateCourse", async (req, res) => {
   const code = req.body.code; // Extract the course code from the request body
   const updatedData = req.body.updatedData; // Extract the updated course data
@@ -491,6 +521,70 @@ app.post("/updateCourse", async (req, res) => {
   } catch (error) {
     console.error("Error updating course:", error);
     res.status(500).json({ msg: "An error occurred while updating course." });
+  }
+});
+
+app.use(express.urlencoded({ extended: true }));
+// Update course info endpoint
+// Update course info endpoint
+app.post("/updateCourseinfo", upload.single("video"), async (req, res) => {
+  // Extract course data from the request body
+  const { duration, Lessondescription, code } = req.body;
+  const video = req.file;
+
+  try {
+    // Search for the course with the provided code
+    const courseSnapshot = await db
+      .collection("courses")
+      .where("code", "==", code)
+      .get();
+
+    if (courseSnapshot.empty) {
+      // If no course found with the provided code, return an error
+      return res
+        .status(404)
+        .json({ msg: "Course not found with the provided code." });
+    }
+
+    // Convert the Lessondescription back to an array
+    const lessonDescriptionArray = JSON.parse(Lessondescription);
+    // Generate a unique filename for the video
+    const videoName = uuidv4() + ".mp4";
+
+    // Upload video to Firebase Storage
+    const storageRef = admin
+      .storage()
+      .bucket()
+      .file("courseVideos/" + videoName);
+    const videoBuffer = video.buffer;
+    await storageRef.save(videoBuffer, {
+      metadata: {
+        contentType: "video/mp4",
+      },
+    });
+
+    // Get the URL of the uploaded video
+    const videoUrlArray = await storageRef.getSignedUrl({
+      action: "read",
+      expires: "03-09-2491", // Set an expiration date or duration
+    });
+
+    const videoUrl = videoUrlArray[0];
+
+    // Update the course information
+    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
+    await db.collection("courses").doc(courseId).update({
+      duration,
+      Lessondescription: lessonDescriptionArray,
+      videoUrl,
+    });
+
+    return res.status(200).json({ msg: "Course updated successfully." });
+  } catch (error) {
+    console.error("Error updating course:", error);
+    return res
+      .status(500)
+      .json({ msg: "An error occurred while updating course." });
   }
 });
 
