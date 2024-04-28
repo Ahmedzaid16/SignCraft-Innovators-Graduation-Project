@@ -41,6 +41,16 @@
         </div>
       </div>
     </div>
+
+    <div class="controlCourses">
+      <h1>Manage User Account</h1>
+      <div class="content">
+        <div class="delete-account">
+          <button class="del" id="DelAccountBtn">Delete Account</button>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-container" id="modal-add">
       <div class="modal">
         <button class="close-btn" id="close">
@@ -341,6 +351,31 @@
               />
             </div>
             <input type="submit" value="Remove" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-container" id="showDeleteAccount">
+      <div class="modal">
+        <button class="close-btn" id="close-acc">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Delete account</h3>
+        </div>
+        <div class="modal-content">
+          <p>Enter email account to deleted:</p>
+          <form class="modal-form" id="form-rem">
+            <div>
+              <input
+                type="email"
+                id="acc-del"
+                placeholder="Enter user email"
+                class="form-input"
+                required
+              />
+            </div>
+            <input type="submit" value="Delete" class="submit-btn" />
           </form>
         </div>
       </div>

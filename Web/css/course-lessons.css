@@ -340,3 +340,110 @@ ul {
 }
 
 /* End header */
+
+/* Start courses */
+.container-course {
+  display: flex;
+  background-color: var(--white-color);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  margin: 40px 60px;
+  padding: 40px 60px;
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+@media (max-width: 767px) {
+  .container-course {
+    flex-direction: column;
+    margin: 20px 30px;
+  }
+  .container-course .course-description {
+    margin-bottom: 30px;
+  }
+}
+
+.container-course .course-description {
+  margin-right: 80px;
+  background-color: #f8f9fa;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  border-radius: 8px;
+  height: 100%;
+  width: 100%;
+  flex: 2;
+}
+
+.container-course .course-body {
+  background-color: #f8f9fa;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  flex: 3;
+}
+
+.container-course .course-description .title .icon {
+  display: flex;
+  align-items: center;
+}
+.container-course .course-description .title .icon i {
+  margin-right: 10px;
+  font-size: 30px;
+  padding: 12px;
+  background-color: var(--main-color);
+  color: var(--white-color);
+  border-radius: 50%;
+}
+.container-course .course-description .title .icon h2 {
+  margin: 0;
+}
+
+.container-course .course-description .time {
+  display: flex;
+  align-items: center;
+  color: var(--main-color);
+}
+
+.container-course .course-description .time i {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.container-course .course-description .limit {
+  display: flex;
+  align-items: center;
+  margin-top: -25px;
+}
+
+.container-course .course-description .limit .rate {
+  margin-right: 10px;
+}
+.container-course .course-description .limit .rate span {
+  display: inline-block;
+  margin: -3px;
+  width: 7px;
+  height: 15px;
+  background-color: #83efe5;
+}
+
+.container-course .course-description .rate span.one {
+  height: 5px;
+}
+
+.container-course .course-description .rate span.two {
+  height: 10px;
+  background-color: var(--main-color);
+}
+
+.container-course .course-description .learn .complete {
+  display: flex;
+  align-items: center;
+}
+
+.container-course .course-description .learn .complete i {
+  margin-right: 10px;
+  font-weight: bold;
+  color: var(--main-color);
+}
+
+/* End courses  */

@@ -8,11 +8,14 @@ const closeInfo = document.getElementById("close-info");
 const closeVideo = document.getElementById("close-video");
 const closeMod = document.getElementById("close-mod");
 const closeRem = document.getElementById("close-rem");
+const closeAcc = document.getElementById("close-acc");
+const DelAccountBtn = document.getElementById("DelAccountBtn");
 const modalAdd = document.getElementById("modal-add");
 const modalAddInfo = document.getElementById("modal-add-info");
 const modalAddVideo = document.getElementById("modal-add-video");
 const modalMod = document.getElementById("modal-mod");
 const modalRem = document.getElementById("modal-rem");
+const showDeleteAccount = document.getElementById("showDeleteAccount");
 const uploadAdd = document.getElementById("custom-image-upload-add");
 const uploadAddInfo = document.getElementById("custom-video-upload-add");
 const deviceVideo = document.getElementById("device-video");
@@ -59,6 +62,13 @@ const closeModalRem = () => {
 // Attach the event listener to the "close" button for Remove modal
 closeRem.addEventListener("click", closeModalRem);
 
+// Function to remove the "show-modal" class for Remove modal
+const deleteUserAccount = () => {
+  showDeleteAccount.classList.remove("show-modal");
+};
+// Attach the event listener to the "close" button for Remove modal
+closeAcc.addEventListener("click", deleteUserAccount);
+
 // Function to  show modal
 const addModal = () => {
   modalAdd.classList.add("show-modal");
@@ -75,6 +85,9 @@ const modModal = () => {
 const remModal = () => {
   modalRem.classList.add("show-modal");
 };
+const showManage = () => {
+  showDeleteAccount.classList.add("show-modal");
+};
 
 // Show Add modal
 openAdd.addEventListener("click", addModal);
@@ -82,6 +95,7 @@ openAddInfo.addEventListener("click", addModalInfo);
 openAddVideo.addEventListener("click", addModalVideo);
 modify.addEventListener("click", modModal);
 remove.addEventListener("click", remModal);
+DelAccountBtn.addEventListener("click", showManage);
 
 ////////////////////////////////
 // Hide modal on outside click
@@ -109,6 +123,13 @@ window.addEventListener("click", (e) =>
 // Hide modal on outside click
 window.addEventListener("click", (e) =>
   e.target == modalRem ? modalRem.classList.remove("show-modal") : false
+);
+
+// Hide modal on outside click
+window.addEventListener("click", (e) =>
+  e.target == showDeleteAccount
+    ? showDeleteAccount.classList.remove("show-modal")
+    : false
 );
 
 // Upload allow to upload images only
