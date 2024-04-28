@@ -1,0 +1,34 @@
+<!-- view_courses.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Courses</title>
+  </head>
+  <body>
+    <div id="allCourses"></div>
+    <script>
+      // Retrieve courses data from local storage
+      const courses = JSON.parse(localStorage.getItem("courses"));
+      const coursesView = document.getElementById("allCourses");
+      // Display courses data
+      if (courses) {
+        courses.forEach((course) => {
+          const courseElement = document.createElement("div");
+          courseElement.classList.add("course-info");
+          for (const [key, value] of Object.entries(course)) {
+            const propertyElement = document.createElement("p");
+            propertyElement.classList.add("course-property");
+            propertyElement.textContent = `${key}: ${value}`;
+            courseElement.appendChild(propertyElement);
+          }
+          coursesView.appendChild(courseElement);
+        });
+      } else {
+        // Handle case when no courses are available
+        coursesView.textContent = "No courses available.";
+      }
+    </script>
+  </body>
+</html>

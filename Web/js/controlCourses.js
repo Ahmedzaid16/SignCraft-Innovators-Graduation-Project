@@ -347,6 +347,28 @@ forminfo.addEventListener("submit", async (e) => {
   }
 });
 
+// Update the getCourses function to navigate to a new page with course info
+const getCourses = async () => {
+  try {
+    const response = await fetch("http://localhost:4000/courses");
+    if (response.ok) {
+      const courses = await response.json();
+      // Store courses data in local storage
+      localStorage.setItem("courses", JSON.stringify(courses));
+      // Redirect to the new page
+      window.location.href = "controlCoursesView.html"; // Replace with the actual URL of your new page
+    } else {
+      console.error("Failed to fetch courses");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+// Attach the getCourses function to the "View Course" button click event
+const viewCourseButton = document.getElementById("view-course");
+viewCourseButton.addEventListener("click", getCourses);
+
 function ok() {
   Swal.fire("Done");
 }
