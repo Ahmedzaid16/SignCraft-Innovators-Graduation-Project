@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/all.min.css" />
     <link rel="stylesheet" href="css/framework.css" />
     <link rel="stylesheet" href="css/course-lessons.css" />
+    <link rel="stylesheet" href="css/progress.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -113,8 +114,11 @@
         </div>
       </div>
       <div class="course-body">
-        <h2>Course content</h2>
-        <div class="box">
+        <div class="logo">
+          <i class="fa-regular fa-file-video"></i>
+          <h2>Course content</h2>
+        </div>
+        <div class="box" id="one">
           <i class="fa-solid fa-circle-play"></i>
           <p>1.Lesson</p>
         </div>
@@ -157,6 +161,37 @@
         <div class="box">
           <i class="fa-solid fa-circle-play"></i>
           <p>11.Lesson</p>
+        </div>
+      </div>
+    </div>
+    <div class="video-display" id="video-display">
+      <div class="content">
+        <video
+          src="videos/adult-courses/ArSl-with-caption/arsi_with_caption_1.mp4"
+          id="video"
+          class="screen"
+          poster="image/poster.png"
+        ></video>
+        <div class="controls">
+          <button class="btn" id="play">
+            <i class="fa-solid fa-play fa-2x"></i>
+          </button>
+          <button class="btn" id="stop">
+            <i class="fa-solid fa-stop fa-2x"></i>
+          </button>
+          <input
+            type="range"
+            id="progress"
+            class="progress"
+            min="0"
+            max="100"
+            step="0.1"
+            value="0"
+          />
+          <span class="timestamp" id="timestamp">00:00</span>
+          <button class="btn full" id="full">
+            <i class="fa-solid fa-expand"></i>
+          </button>
         </div>
       </div>
     </div>

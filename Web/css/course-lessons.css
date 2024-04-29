@@ -373,15 +373,6 @@ ul {
   flex: 2;
 }
 
-.container-course .course-body {
-  background-color: #f8f9fa;
-  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
-  padding: 30px;
-  border-radius: 8px;
-  width: 100%;
-  flex: 3;
-}
-
 .container-course .course-description .title .icon {
   display: flex;
   align-items: center;
@@ -446,4 +437,165 @@ ul {
   color: var(--main-color);
 }
 
+.container-course .course-body {
+  background-color: #f8f9fa;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  flex: 3;
+}
+
+.container-course .course-body .logo {
+  display: flex;
+  align-items: center;
+}
+
+.container-course .course-body .logo i {
+  margin-right: 10px;
+  font-size: 30px;
+  padding: 10px;
+  background-color: var(--main-color);
+  color: var(--white-color);
+  border-radius: 3px;
+}
+
+.container-course .course-body .logo h2 {
+  margin: 0;
+}
+
+.container-course .course-body .box {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--main-color);
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 0 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background: linear-gradient(to right, var(--main-color) 50%, white 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+}
+
+.container-course .course-body .box i {
+  padding-right: 10px;
+  color: var(--main-color);
+}
+.container-course .course-body .box:hover i {
+  color: var(--white-color);
+}
+
+.container-course .course-body .box:hover {
+  background-color: var(--main-color);
+  color: white;
+  background-position: left bottom;
+}
+
+.container-course .course-body .box:active {
+  transform: scale(0.99);
+}
+
+.video-display {
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.video-display .content {
+  position: absolute;
+  overflow: hidden;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 950px;
+  animation-name: modalOpen;
+  animation-duration: var(--model-duration);
+}
+
+.video-display.show {
+  display: block;
+}
+
+.screen {
+  cursor: pointer;
+  width: 100%;
+  height: 500px;
+  background-color: #000 !important;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-bottom: -5px;
+}
+
+.controls {
+  background-color: #333;
+  width: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.controls .btn {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.controls .fa-play {
+  color: #28a745;
+}
+
+.controls .fa-stop {
+  color: #dc3545;
+}
+
+.controls .fa-pause {
+  color: #fff;
+}
+
+.controls .timestamp {
+  color: #fff;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.controls .full {
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 5px;
+  transition: 0.3s;
+}
+
+.controls .full:hover {
+  transform: scale(1.1);
+}
+
+.btn:focus {
+  outline: 0;
+}
+
+@media (max-width: 800px) {
+  .screen,
+  .controls {
+    width: 90%;
+  }
+}
+
+/* Animation */
+@keyframes modalOpen {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 /* End courses  */

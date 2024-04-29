@@ -368,7 +368,3 @@ const getCourses = async () => {
 // Attach the getCourses function to the "View Course" button click event
 const viewCourseButton = document.getElementById("view-course");
 viewCourseButton.addEventListener("click", getCourses);
-
-function ok() {
-  Swal.fire("Done");
-}
