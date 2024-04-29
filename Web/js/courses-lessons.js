@@ -6,6 +6,9 @@ const timestamp = document.getElementById("timestamp");
 const videoDisplay = document.getElementById("video-display");
 const videoOne = document.getElementById("one");
 const full = document.getElementById("full");
+const videoDuration = document.getElementById("video-duration");
+const volumeBtn = document.querySelector(".controls .volume i");
+const volumeSlider = document.querySelector(".controls .volume input");
 
 videoOne.addEventListener("click", () => {
   videoDisplay.classList.add("show");
@@ -69,9 +72,12 @@ stop.addEventListener("click", stopVideo);
 progress.addEventListener("change", setVideoProgress);
 
 // Hide modal on outside click
-window.addEventListener("click", (e) =>
-  e.target == videoDisplay ? videoDisplay.classList.remove("show") : false
-);
+window.addEventListener("click", (e) => {
+  if (e.target == videoDisplay) {
+    videoDisplay.classList.remove("show");
+    video.pause();
+  }
+});
 
 full.addEventListener("click", function () {
   if (video.requestFullscreen) {
@@ -86,4 +92,23 @@ full.addEventListener("click", function () {
     /* IE/Edge */
     video.msRequestFullscreen();
   }
+});
+
+volumeBtn.addEventListener("click", () => {
+  if (!volumeBtn.classList.contains("fa-volume-high")) {
+    video.volume = 0.5;
+    volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
+  } else {
+    video.volume = 0.0;
+    volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
+  }
+  volumeSlider.value = video.volume;
+});
+
+volumeSlider.addEventListener("input", (e) => {
+  video.volume = e.target.value;
+  if (e.target.value == 0) {
+    return volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
+  }
+  volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
 });
