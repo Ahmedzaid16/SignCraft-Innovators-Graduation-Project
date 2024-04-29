@@ -352,13 +352,20 @@ ul {
   font-size: 18px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .container-course {
     flex-direction: column;
     margin: 20px 30px;
   }
   .container-course .course-description {
     margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container-course {
+    margin: 10px 15px;
+    padding: 15px 20px;
   }
 }
 
@@ -482,6 +489,7 @@ ul {
   padding-right: 10px;
   color: var(--main-color);
 }
+
 .container-course .course-body .box:hover i {
   color: var(--white-color);
 }
@@ -494,6 +502,69 @@ ul {
 
 .container-course .course-body .box:active {
   transform: scale(0.99);
+}
+
+.progress-courses {
+  margin-left: 20px;
+  height: 4px;
+  width: 100%;
+  top: 10px;
+}
+
+.progress-courses > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: var(--main-color);
+}
+
+.container-course .course-body .box:hover .progress-courses > span {
+  background-color: var(--white-color);
+}
+
+.progress-courses > span span {
+  position: absolute;
+  bottom: 16px;
+  right: -16px;
+  color: var(--white-color);
+  padding: 2px 5px;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: var(--main-color);
+}
+
+.container-course .course-body .box:hover .progress-courses > span span {
+  background-color: var(--white-color);
+  color: var(--main-color);
+}
+
+.progress-courses > span span::after {
+  content: "";
+  border-color: transparent;
+  border-width: 5px;
+  border-style: solid;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.progress-courses > .blue span::after {
+  border-top-color: var(--main-color);
+}
+
+.container-course
+  .course-body
+  .box:hover
+  .progress-courses
+  > .blue
+  span::after {
+  border-top-color: var(--white-color);
+}
+
+.progress-courses {
+  background-color: #dddbdb;
 }
 
 .video-display {
