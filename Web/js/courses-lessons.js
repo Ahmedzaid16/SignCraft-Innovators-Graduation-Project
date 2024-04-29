@@ -3,10 +3,10 @@ const play = document.getElementById("play");
 const stop = document.getElementById("stop");
 const progress = document.getElementById("progress");
 const timestamp = document.getElementById("timestamp");
+const videoDuration = document.getElementById("video-duration");
 const videoDisplay = document.getElementById("video-display");
 const videoOne = document.getElementById("one");
 const full = document.getElementById("full");
-const videoDuration = document.getElementById("video-duration");
 const volumeBtn = document.querySelector(".controls .volume i");
 const volumeSlider = document.querySelector(".controls .volume input");
 
@@ -42,6 +42,9 @@ function updateProgress() {
     mins = "0" + String(mins);
   }
 
+  let currentMins = Math.floor(video.duration / 60);
+  let currentSecs = Math.floor(video.duration % 60);
+
   // Get minutes
   let secs = Math.floor(video.currentTime % 60);
   if (secs < 10) {
@@ -49,6 +52,7 @@ function updateProgress() {
   }
 
   timestamp.innerHTML = `${mins}:${secs}`;
+  videoDuration.innerHTML = `${currentMins}:${currentSecs}`;
 }
 
 //Set video time to progress
@@ -112,3 +116,5 @@ volumeSlider.addEventListener("input", (e) => {
   }
   volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
 });
+
+console.log(video.duration);
