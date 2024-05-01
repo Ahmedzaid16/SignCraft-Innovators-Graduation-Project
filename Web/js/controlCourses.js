@@ -26,6 +26,7 @@ const formAdd = document.getElementById("addform");
 const formMod = document.getElementById("form-mod");
 const formRem = document.getElementById("form-rem");
 const forminfo = document.getElementById("addFormInfo");
+const formvideos = document.getElementById("addCourseVideos");
 
 // Function to remove the "show-modal" class
 const closeModal = () => {
@@ -347,6 +348,40 @@ forminfo.addEventListener("submit", async (e) => {
   }
 });
 
+formvideos.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Prevent default form submission
+
+  const videoFiles = document.getElementById(
+    "custom-video-upload-course"
+  ).files;
+  const formData = new FormData(); // Create FormData object
+
+  // Append each video file to FormData
+  for (let i = 0; i < videoFiles.length; i++) {
+    formData.append("videos", videoFiles[i]);
+  }
+  // Add other form data to FormData
+  formData.append("code", document.getElementById("codeAddVideos").value);
+
+  try {
+    // Send a request to update the course data
+    const response = await fetch("http://localhost:4000/updateCourseVideos", {
+      method: "POST",
+      body: formData, // Use FormData as body
+    });
+
+    if (response.ok) {
+      alert("Course Video updated successfully!");
+    } else {
+      const data = await response.json();
+      alert(`Error: ${data.msg}`);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while updating the course Video.");
+  }
+});
+
 // Update the getCourses function to navigate to a new page with course info
 const getCourses = async () => {
   try {
@@ -365,6 +400,25 @@ const getCourses = async () => {
   }
 };
 
-// Attach the getCourses function to the "View Course" button click event
+const getUsers = async () => {
+  try {
+    const response = await fetch("http://localhost:4000/Users");
+    if (response.ok) {
+      const Users = await response.json();
+      // Store courses data in local storage
+      localStorage.setItem("Users", JSON.stringify(Users));
+      // Redirect to the new page
+      window.location.href = "controlCoursesAccount.html"; // Replace with the actual URL of your new page
+    } else {
+      console.error("Failed to fetch Users");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
+// Attach the getCourses,getUsers function to the "View Course And View Accounts" button click event
 const viewCourseButton = document.getElementById("view-course");
 viewCourseButton.addEventListener("click", getCourses);
+const viewAccountButton = document.getElementById("view-account");
+viewAccountButton.addEventListener("click", getUsers);

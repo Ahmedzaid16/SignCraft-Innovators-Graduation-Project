@@ -50,6 +50,9 @@
     <div class="controlCourses">
       <h1>Manage User Account</h1>
       <div class="content">
+        <div class="view-account">
+          <button class="view-account" id="view-account">View Accounts</button>
+        </div>
         <div class="delete-account">
           <button class="del" id="DelAccountBtn">Delete Account</button>
         </div>
@@ -204,12 +207,12 @@
         </div>
         <div class="modal-content">
           <p>Enter this required info to add course video:</p>
-          <form class="modal-form" id="addFormInfo">
+          <form class="modal-form" id="addCourseVideos">
             <div>
-              <label for="codeAdd">Course code</label>
+              <label for="codeAddVideos">Course code</label>
               <input
                 type="number"
-                id="codeAdd"
+                id="codeAddVideos"
                 placeholder="Enter code"
                 class="form-input"
                 required
@@ -233,14 +236,15 @@
             </div>
 
             <div class="device-video" id="device-video">
-              <label for="custom-video-upload-add" class="choose"
+              <label for="custom-video-upload-course" class="choose"
                 >Choose an video:</label
               >
               <input
                 type="file"
-                id="custom-video-upload-add"
+                id="custom-video-upload-course"
                 accept="video/*"
                 class="chooseVideo-btn"
+                multiple
               />
             </div>
             <div class="url-video" id="url-video">

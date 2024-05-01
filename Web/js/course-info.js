@@ -92,14 +92,16 @@ async function populateCourses() {
       if (course.categories == "kids") {
         aboutImg.innerHTML = `<img src="images/kids-about.png" alt="man img" />`;
         benfitImg.innerHTML = `<img src="images/benfit-head-kids.jpg" alt="kids" />`;
-        learn.innerHTML = `<a href="course-lessons.html?course=primary"><button>Learn Now</button></a>`;
-        bottom.innerHTML = `<a href="course-lessons.html?course=primary" class="img-link"><div class="bottom-left-image"><img src="images/learn-now-kids.png" alt="Bottom Left Image" class="kids-img" /><button class="learn-buttom">Learn Now</button></div></a>`;
+        learn.innerHTML = `<a href="course-lessons.html?course=${code}"><button>Learn Now</button></a>`;
+        bottom.innerHTML = `<a href="course-lessons.html?course=${code}" class="img-link"><div class="bottom-left-image"><img src="images/learn-now-kids.png" alt="Bottom Left Image" class="kids-img" /><button class="learn-buttom">Learn Now</button></div></a>`;
+      } else {
+        bottom.innerHTML = `<a href="course-lessons.html?course=${code}" class="img-link"><div class="bottom-left-image"><img src="images/learn-now.png" alt="Bottom Left Image" /><button class="learn-buttom">Learn Now</button></div></a>`;
       }
       let lessonHTML = "";
       course.Lessondescription.forEach((lesson, index) => {
         lessonHTML += `<p${
           index === course.Lessondescription.length - 1 ? ' class="last"' : ""
-        }>${lesson}</p>\n`;
+        }>lesson ${index + 1} : ${lesson}</p>\n`;
       });
       // Set the HTML content for the contentLessons element
       contentLessons.innerHTML = lessonHTML;

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Accounts</title>
+  </head>
+  <body>
+    <div id="allAccounts"></div>
+
+    <script>
+      // Retrieve user data from local storage
+      const users = JSON.parse(localStorage.getItem("Users"));
+      const usersView = document.getElementById("allAccounts");
+
+      // Display user data
+      if (users) {
+        users.forEach((user, index) => {
+          const accountElement = document.createElement("div");
+          accountElement.classList.add("user-info");
+
+          // Display user number
+          const userNumber = document.createElement("h2");
+          userNumber.textContent = `User ${index + 1}`;
+          accountElement.appendChild(userNumber);
+
+          // Display user properties
+          for (const [key, value] of Object.entries(user)) {
+            const propertyElement = document.createElement("p");
+            propertyElement.classList.add("user-property");
+            propertyElement.textContent = `${key}: ${value}`;
+            accountElement.appendChild(propertyElement);
+          }
+
+          // Create button to delete account
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "Delete Account";
+          deleteButton.classList.add("del");
+          deleteButton.addEventListener("click", () => {});
+          accountElement.appendChild(deleteButton);
+
+          usersView.appendChild(accountElement);
+        });
+      } else {
+        // Handle case when no user data is available
+        usersView.textContent = "No user accounts available.";
+      }
+    </script>
+  </body>
+</html>
