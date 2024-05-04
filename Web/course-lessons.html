@@ -26,14 +26,16 @@
     <!-- Start header -->
     <div class="header">
       <div class="container">
-        <a href="#" class="logo">
+        <a href="index.html" class="logo">
           <i class="fa-solid fa-hands-asl-interpreting"></i>
           <h3>Sign Language</h3>
         </a>
         <ul class="main-nav">
-          <li><a class="active" href="#">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="translate.html">Translate</a></li>
-          <li id="education"><a href="signUp.html">Education</a></li>
+          <li id="education">
+            <a href="courses.html" class="active">Education</a>
+          </li>
           <li>
             <a href="#">Other Links</a>
             <!-- Start Megamenu -->
@@ -55,22 +57,19 @@
                     ><i class="far fa-clipboard fa-fw"></i> How It Works</a
                   >
                 </li>
-                <li>
-                  <a href="proflie.html"><i class=""></i>Profile</a>
-                </li>
               </ul>
+              <li id="signInLink">
+                <a href="signIn.html"
+                  ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
+                >
+              </li>
+              <li id="logoutLink" class="logout">
+                <a href="index.html" onclick="logout()"
+                  ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+                >
+              </li>
             </div>
             <!-- End Megamenu -->
-          </li>
-          <li id="signInLink">
-            <a href="signIn.html"
-              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
-            >
-          </li>
-          <li id="logoutLink" style="display: none" class="logout">
-            <a href="index.html" onclick="logout()"
-              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
-            >
           </li>
         </ul>
       </div>
@@ -82,7 +81,7 @@
         <div class="title">
           <div class="icon">
             <i class="fa-solid fa-hands"></i>
-            <h2>ArESL Course</h2>
+            <h2 id="course-name">ArESL Course</h2>
           </div>
           <p style="margin-bottom: 0">
             You will learn sign language and practice it well.
@@ -90,7 +89,7 @@
           <div>
             <div class="time">
               <i class="fa-regular fa-clock"></i>
-              <p>3 hours</p>
+              <p id="durationCourse"></p>
             </div>
             <div class="limit">
               <div class="rate">
@@ -119,6 +118,7 @@
           <i class="fa-regular fa-file-video"></i>
           <h2>Course content</h2>
         </div>
+<<<<<<< HEAD
         <div class="box" id="one">
           <i class="fa-solid fa-circle-play"></i>
           <p>1.Lesson</p>
@@ -218,6 +218,9 @@
             </span>
           </div>
         </div>
+=======
+        <div class="coures-content" id="coures-content"></div>
+>>>>>>> d66aff25250a18f2e039bed3f478e14d61450ca9
       </div>
     </div>
     <div class="video-display" id="video-display">
@@ -314,5 +317,6 @@
     <!-- End Footer -->
 
     <script src="js/courses-lessons.js"></script>
+    <script src="js/logout.js"></script>
   </body>
 </html>

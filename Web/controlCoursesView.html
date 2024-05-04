@@ -1,4 +1,3 @@
-<!-- view_courses.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -96,6 +95,15 @@
             propertyElement.textContent = `${key}: ${value}`;
             courseElement.appendChild(propertyElement);
           }
+          // Create buttons for each course
+          const buttons = `<div class="modify">
+            <button class="Modify" id="modify">Modify</button>
+          </div>
+          <div class="remove">
+            <button class="remove" id="remove">Remove</button>
+          </div>`;
+          // Append buttons along with course information
+          courseElement.insertAdjacentHTML('beforeend', buttons);
           coursesView.appendChild(courseElement);
         });
       } else {

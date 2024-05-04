@@ -488,6 +488,7 @@ ul {
 .container-course .course-body .box i {
   padding-right: 10px;
   color: var(--main-color);
+  flex-basis: 10%;
 }
 
 .container-course .course-body .box:hover i {
@@ -509,6 +510,7 @@ ul {
   height: 4px;
   width: 100%;
   top: 10px;
+  flex-basis: 60%;
 }
 
 .progress-courses > span {
@@ -689,5 +691,9 @@ ul {
   to {
     opacity: 1;
   }
+}
+
+.lesson {
+  flex-basis: 30%;
 }
 /* End courses  */
