@@ -4,22 +4,95 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/all.min.css" />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/master.css" />
+    <link rel="stylesheet" href="css/control-courses-view.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <title>View Courses</title>
   </head>
   <body>
+    <!-- Start header -->
+    <div class="header">
+      <div class="container">
+        <a href="#" class="logo">
+          <i class="fa-solid fa-hands-asl-interpreting"></i>
+          <h3>Sign Language</h3>
+        </a>
+        <ul class="main-nav">
+          <li><a class="active" href="#">Home</a></li>
+          <li><a href="translate.html">Translate</a></li>
+          <li id="education"><a href="signUp.html">Education</a></li>
+          <li>
+            <a href="#">Other Links</a>
+            <!-- Start Megamenu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
+                  >
+                </li>
+                <li>
+                  <a href="proflie.html"><i class=""></i>Profile</a>
+                </li>
+              </ul>
+            </div>
+            <!-- End Megamenu -->
+          </li>
+          <li id="signInLink">
+            <a href="signIn.html"
+              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
+            >
+          </li>
+          <li id="logoutLink" style="display: none" class="logout">
+            <a href="index.html" onclick="logout()"
+              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Header -->
     <div id="allCourses"></div>
     <script>
       // Retrieve courses data from local storage
       const courses = JSON.parse(localStorage.getItem("courses"));
       const coursesView = document.getElementById("allCourses");
+
       // Display courses data
       if (courses) {
-        courses.forEach((course) => {
+        courses.forEach((course, courseIndex) => {
           const courseElement = document.createElement("div");
-          courseElement.classList.add("course-info");
+          courseElement.classList.add(`course-${courseIndex}`);
           for (const [key, value] of Object.entries(course)) {
-            const propertyElement = document.createElement("p");
-            propertyElement.classList.add("course-property");
+            const propertyElement = document.createElement("div");
+            propertyElement.classList.add(
+              `course-property-${courseIndex}-${key
+                .toLowerCase()
+                .replace(/\s/g, "-")}`
+            );
             propertyElement.textContent = `${key}: ${value}`;
             courseElement.appendChild(propertyElement);
           }
