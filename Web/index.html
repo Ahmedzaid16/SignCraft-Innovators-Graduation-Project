@@ -32,46 +32,52 @@
           <h3>Sign Language</h3>
         </a>
         <ul class="main-nav">
-          <li><a class="active" href="#">Home</a></li>
-          <li><a href="translate.html">Translate</a></li>
-          <li id="education"><a href="signUp.html">Education</a></li>
-          <li>
-            <a href="#">Other Links</a>
-            <!-- Start Megamenu -->
-            <div class="mega-menu">
-              <ul class="links">
-                <li>
-                  <a href="#"
-                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
-                  >
-                </li>
-                <li>
-                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
-                </li>
-                <li>
-                  <a href="#"
-                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
-                  >
-                </li>
-                <li>
-                  <a href="proflie.html"><i class=""></i>Profile</a>
-                </li>
-              </ul>
-            </div>
-            <!-- End Megamenu -->
+          <li class="header-pages"><a class="active" href="#">Home</a></li>
+          <li class="header-pages"><a href="translate.html">Translate</a></li>
+          <li class="header-pages" id="education">
+            <a href="signUp.html">Education</a>
           </li>
           <li id="signInLink">
             <a href="signIn.html"
-              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
-            >
+              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i
+            ></a>
           </li>
           <li id="logoutLink" style="display: none" class="logout">
             <a href="index.html" onclick="logout()"
               ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
             >
+          </li>
+          <li>
+            <a id="menu-icon" href="#"><i class="fa-solid fa-bars"></i></a>
+            <!-- Start Megamenu -->
+            <div id="menu" class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-house"></i> Home</a
+                  >
+                </li>
+                <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-hands"></i> Translate</a
+                  >
+                </li>
+                <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-user-graduate"></i> Education</a
+                  >
+                </li>
+                <li>
+                  <a href="#"
+                    ><i class="fa-solid fa-book-open-reader"></i> Courses</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
+                </li>
+              </ul>
+            </div>
+            <!-- End Megamenu -->
           </li>
         </ul>
       </div>
@@ -94,8 +100,6 @@
           <source src="images/sign_animation.mp4" type="video/mp4" />
         </video>
       </div>
-      <!-- End intro -->
-      <!-- End Home -->
     </div>
     <!-- Start About Section -->
     <div class="about">
@@ -251,6 +255,7 @@
     <!-- End Footer -->
     <script src="js/logout.js"></script>
     <script src="js/check.js"></script>
+    <script src="js/header.js"></script>
     <!-- <script src="js/footer.js"></script> -->
   </body>
 </html>

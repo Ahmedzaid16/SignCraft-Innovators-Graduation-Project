@@ -181,9 +181,8 @@ ul {
 }
 
 @media (max-width: 767px) {
-  .header .logo {
-    width: 100%;
-    height: 50%;
+  .header .container a h3 {
+    display: none;
   }
 }
 
@@ -191,17 +190,11 @@ ul {
   display: flex;
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
   .header .main-nav {
     margin: auto;
   }
-}
-
-.header .main-nav > li:hover .mega-menu {
-  opacity: 1;
-  z-index: 100;
-  top: calc(50%);
-}
+} */
 
 .header .main-nav > li > a {
   display: flex;
@@ -253,13 +246,13 @@ ul {
   left: 0;
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
   .header .main-nav > li > a {
     padding: 10px;
     font-size: 14px;
     height: 40px;
   }
-}
+} */
 
 .header .mega-menu {
   position: absolute;
@@ -267,21 +260,29 @@ ul {
   background-color: white;
   padding: 30px;
   border-bottom: 3px solid var(--main-color);
-  margin-top: 40px;
-  z-index: -1;
+  margin-top: 50px;
   display: flex;
   gap: 40px;
-  top: calc(100% + 50px);
-  opacity: 0;
+  top: 20px;
+  right: 10px;
   transition: top var(--main-transition), opacity var(--main-transition);
+  z-index: 100;
+  opacity: 0;
 }
 
-@media (max-width: 767px) {
-  .header .mega-menu {
-    flex-direction: column;
-    gap: 0;
-    padding: 5px;
-    margin-top: 60px;
+.header .main-nav > li .show-menu {
+  opacity: 1;
+}
+
+@media (max-width: 991px) {
+  .header .main-nav .header-pages {
+    display: none;
+  }
+}
+
+@media (min-width: 992px) {
+  .header .container .mega-menu .menu-home-icon {
+    display: none;
   }
 }
 
@@ -299,11 +300,11 @@ ul {
   border-bottom: 1px solid #e9e6e6;
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
   .header .mega-menu .links:first-of-type li:last-child {
     border-bottom: 1px solid #e9e6e6;
   }
-}
+} */
 
 .header .mega-menu .links li::before {
   content: "";
@@ -327,6 +328,7 @@ ul {
   display: block;
   font-size: 18px;
   font-weight: bold;
+  width: 200px;
   transition: var(--main-transition);
 }
 
@@ -354,7 +356,6 @@ ul {
   .home {
     flex-direction: column;
     padding: 5px;
-    margin-top: 60px;
   }
 }
 

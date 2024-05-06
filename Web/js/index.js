@@ -8,6 +8,7 @@ const serviceAccount = require("../signlanguage-users-firebase-adminsdk-dr983-e8
 const multer = require("multer");
 const upload = multer(); // You can pass options to configure multer if needed
 const User = require("./config");
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: "gs://signlanguage-users.appspot.com",
