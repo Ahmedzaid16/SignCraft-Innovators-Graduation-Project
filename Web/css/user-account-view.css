@@ -26,6 +26,11 @@
   margin: 20px;
 }
 
+div.user-property-avatarurl div {
+  padding: 0;
+  margin: 0;
+}
+
 .user-info div {
   border-radius: 8px;
   margin: 20px;
@@ -135,39 +140,16 @@ button.del:active {
 .modal-content {
   padding: 20px;
 }
-.modal-content p {
-  margin-top: 0;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.modal-form div {
-  margin: 15px 0;
-}
-
-.modal-form label {
-  display: block;
-  margin-bottom: 5px;
-}
 
 .modal-form .choose {
   width: 60%;
   margin-right: -10px;
 }
 
-.modal-form .form-input {
+.modal-container .form-input input {
+  margin: 5px 0 10px 0;
   padding: 8px;
   width: 100%;
-}
-
-.modal-content .modal-form textarea {
-  resize: none;
-  width: 100%;
-  height: 80px;
-  outline-color: var(--main-color);
-}
-
-.modal-content .modal-form input {
   outline-color: var(--main-color);
 }
 

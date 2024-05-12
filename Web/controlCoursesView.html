@@ -75,6 +75,7 @@
     </div>
     <!-- End Header -->
     <div id="allCourses"></div>
+
     <script>
       // Retrieve courses data from local storage
       const courses = JSON.parse(localStorage.getItem("courses"));
@@ -83,6 +84,9 @@
       // Display courses data
       if (courses) {
         courses.forEach((course, courseIndex) => {
+          const url = course.videoUrl;
+          console.log(url);
+
           const courseElement = document.createElement("div");
           courseElement.classList.add(`course-${courseIndex}`);
           for (const [key, value] of Object.entries(course)) {
@@ -96,14 +100,16 @@
             courseElement.appendChild(propertyElement);
           }
           // Create buttons for each course
-          const buttons = `<div class="modify">
-            <button class="Modify" id="modify">Modify</button>
+          const buttons = `<div class="btn-control">
+          <div id="mod" class="modify">
+            <button class="modify" id="modify">Modify</button>
           </div>
-          <div class="remove">
+          <div id="rem" class="remove">
             <button class="remove" id="remove">Remove</button>
-          </div>`;
+          </div>
+          <div/>`;
           // Append buttons along with course information
-          courseElement.insertAdjacentHTML('beforeend', buttons);
+          courseElement.insertAdjacentHTML("beforeend", buttons);
           coursesView.appendChild(courseElement);
         });
       } else {

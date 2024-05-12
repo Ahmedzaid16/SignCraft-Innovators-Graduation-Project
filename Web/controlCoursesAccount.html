@@ -84,13 +84,15 @@
           <h3>Are you sure!</h3>
         </div>
         <div class="modal-content">
-          <input type="submit" value="yes" class="submit-btn" />
+          <form class="form-input">
+            <input type="password" placeholder="Enter your password" />
+          </form>
+          <input type="submit" value="Delete" class="submit-btn" />
         </div>
       </div>
     </div>
     <script>
       const close = document.getElementById("close");
-      const delBtn = document.getElementById("del");
       const modalAdd = document.getElementById("modal-add");
 
       // Retrieve user data from local storage
@@ -133,24 +135,53 @@
         usersView.textContent = "No user accounts available.";
       }
 
+      const delButtons = document.querySelectorAll(".del");
+      const avatarUrls = document.querySelectorAll(".user-property-avatarurl");
+
+      avatarUrls.forEach((avatarUrl) => {
+        const avatarUrlText = avatarUrl.textContent;
+        const startIndex = avatarUrlText.indexOf("https://");
+        if (startIndex !== -1) {
+          // Extract the substring starting from the index of "https://"
+          const text = avatarUrlText.substring(startIndex).trim();
+          // while (avatarUrl.firstChild) {
+          //   avatarUrl.removeChild(avatarUrl.firstChild);
+          // }
+          // const newDiv = document.createElement("div");
+          // const newLink = document.createElement("a");
+          // newLink.href = "Text";
+          // newLink.textContent = "Avatar";
+          // avatarUrl.appendChild(newLink);
+          const newLink = `<div>Avatar URL: <a href="${text}">Avatar</a>`;
+
+          // Set the innerHTML of the avatarUrl element to the new <a> tag
+          avatarUrl.innerHTML = newLink;
+        } else {
+          console.log("URL not found.");
+        }
+      });
+
+      // avatarUrls.classList.add("omar");
+
+      // Function to  show modal
+      const addModal = () => {
+        modalAdd.classList.add("show-modal");
+      };
+
       // Function to remove the "show-modal" class
       const closeModal = () => {
         modalAdd.classList.remove("show-modal");
       };
+
       // Attach the event listener to the "close" button for Add modal
       close.addEventListener("click", closeModal);
 
-      // // Function to  show modal
-      // const addModal = () => {
-      //   modalAdd.classList.add("show-modal");
-      // };
-      // // Show Add modal
-      // delBtn.addEventListener("click", addModal);
-
-      // Hide modal on outside click
-      window.addEventListener("click", (e) =>
-        e.target == modalAdd ? modalAdd.classList.remove("show-modal") : false
-      );
+      // Attach the event listener to all buttons with the class "del"
+      delButtons.forEach((button) => {
+        button.addEventListener("click", addModal);
+      });
+      // Show Add modal
+      // delButtons.addEventListener("click", addModal);
     </script>
   </body>
 </html>

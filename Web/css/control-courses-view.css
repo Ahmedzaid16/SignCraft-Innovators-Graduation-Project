@@ -22,6 +22,39 @@
   overflow: hidden;
 }
 
+.course-0 div.btn-control,
+.course-1 div.btn-control,
+.course-2 div.btn-control {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 0;
+}
+
+.btn-control .modify button,
+.btn-control .remove button {
+  padding: 10px 15px;
+  color: var(--main-color);
+  background-color: var(--white-color);
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  width: 200px;
+}
+
+.btn-control .modify button:hover,
+.btn-control .remove button:hover {
+  color: var(--main-color-alt);
+  transition: 0.2s ease;
+}
+
+.btn-control .modify button:active,
+.btn-control .remove button:active {
+  font-size: 19px;
+}
+
 .course-0 div,
 .course-1 div,
 .course-2 div {
