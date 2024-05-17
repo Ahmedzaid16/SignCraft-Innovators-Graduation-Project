@@ -2,13 +2,15 @@ const firebase = require("firebase");
 const nodemailer = require("nodemailer");
 const express = require("express");
 const cors = require("cors");
+const User = require("./config");
 const admin = require("firebase-admin");
 const bodyParser1 = require("body-parser");
 const serviceAccount = require("../signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
 const multer = require("multer");
+const ffmpeg = require ('ffmpeg');
+const fs = require ('fs');
+const http = require ('http');
 const upload = multer(); // You can pass options to configure multer if needed
-const User = require("./config");
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: "gs://signlanguage-users.appspot.com",
@@ -26,10 +28,9 @@ app.use(bodyParser1.json({ limit: "50mb" }));
 app.use(bodyParser1.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
 app.use(cors());
-const db = admin.firestore();
 
 app.get("/", async (req, res) => {
-  const snapshot = await db.collection("Users").get();
+  const snapshot = await User.get();
   const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   res.send(list);
 });
@@ -46,7 +47,7 @@ app.post("/create", async (req, res) => {
     const userId = userCredential.uid;
 
     // Step 2: Create user document in Firestore
-    const result = await db.collection("Users").doc(userId).set({
+    const result = await User.doc(userId).set({
       username: data.username,
       gender: data.gender,
       isSignLanguageSpeaker: data.isSignLanguageSpeaker,
@@ -71,7 +72,7 @@ app.post("/create", async (req, res) => {
       subject: "Email Verification",
       html:
         "<p>Please click on the following link to verify your email address:</p>" +
-        '<a href="http://127.0.0.1:5500/Web/verify.html' +
+        '<a href="http://127.0.0.1:5501/verify.html' +
         '">Email Verification' +
         "</a>",
     };
@@ -106,7 +107,7 @@ app.post("/sendemail", async (req, res) => {
         to: userEmail, // Use the correct variable name here
         subject: "ResetPassword",
         html: `<p>Please click on the following link to reset your password:</p>
-          <a href="http://127.0.0.1:5500/Web/reset-password.html?email=${userEmail}">ResetPassword</a>`,
+          <a href="http://127.0.0.1:5501/reset-password.html?email=${userEmail}">ResetPassword</a>`,
       };
       await transporter.sendMail(mailOptions);
       res.send({ userEmail: userEmail });
@@ -143,10 +144,7 @@ app.post("/upload", upload.single("avatar"), async (req, res) => {
         }/o/${encodeURIComponent(fileName)}?alt=media`;
 
         // Update the user's data in the Firestore database with the new avatar URL
-        await db
-          .collection("Users")
-          .doc(userId)
-          .update({ avatarUrl: imageUrl });
+        await User.doc(userId).update({ avatarUrl: imageUrl });
 
         res.status(200).json({ msg: "Image uploaded successfully", imageUrl });
       } catch (updateError) {
@@ -177,7 +175,7 @@ app.post("/signin", async (req, res) => {
     const userId = userCredential.user.uid;
 
     // Step 2: Retrieve additional user data from Firestore
-    const userDoc = await db.collection("Users").doc(userId).get();
+    const userDoc = await User.doc(userId).get();
 
     if (userDoc.exists) {
       // User found, respond with user data
@@ -205,40 +203,6 @@ app.post("/getemail", async (req, res) => {
     } else {
       // If the user email is not found, send a 404 status
       res.status(404).json({ msg: "User email not found" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ msg: "Internal server error" });
-  }
-});
-
-// Add a new endpoint to get user data by ID
-app.post("/getUserData", async (req, res) => {
-  const userId = req.body.userId; // Extract user ID from request body
-
-  try {
-    // Retrieve user data from Firebase Authentication
-    const userRecord = await admin.auth().getUser(userId);
-
-    // Extract email from the user record
-    const email = userRecord.email;
-    // Query Firestore to get the user document
-    const userDoc = await db.collection("Users").doc(userId).get();
-
-    if (userDoc.exists) {
-      // If user document exists, extract required fields
-      const userData = {
-        avatarUrl: userDoc.data().avatarUrl || "images/dark-avatar.jpg",
-        email: email,
-        name: userDoc.data().username,
-        gender: userDoc.data().gender,
-      };
-
-      // Send user data back as response
-      res.json(userData);
-    } else {
-      // If user document does not exist, return an error
-      res.status(404).json({ msg: "User not found" });
     }
   } catch (error) {
     console.error("Error:", error);
@@ -276,14 +240,14 @@ app.post("/uploadAvatar", async (req, res) => {
 app.post("/update", async (req, res) => {
   const id = req.body.id;
   const updatedData = req.body.data; // Access the updated data property
-  await db.collection("Users").doc(id).update(updatedData);
+  await User.doc(id).update(updatedData);
   res.send({ msg: "Updated" });
 });
 
 app.post("/verifyEmail", async (req, res) => {
   try {
     const userId = req.body.userId;
-    await db.collection("Users").doc(userId).update({ emailVerified: true });
+    await User.doc(userId).update({ emailVerified: true });
     res.send({ msg: "Email Varified" });
   } catch (error) {
     console.error("Error:", error);
@@ -294,7 +258,7 @@ app.post("/verifyEmail", async (req, res) => {
 app.post("/check", async (req, res) => {
   try {
     const userId = req.body.userId;
-    const userDoc = await db.collection("Users").doc(userId).get();
+    const userDoc = await User.doc(userId).get();
     if (userDoc.exists) {
       // Check if document exists
       const check = userDoc.data().emailVerified;
@@ -349,7 +313,7 @@ app.post("/resetPass", async (req, res) => {
 
 app.post("/delete", async (req, res) => {
   const id = req.body.id;
-  await db.collection("Users").doc(id).delete();
+  await User.doc(id).delete();
   res.send({ msg: "Deleted" });
 });
 
@@ -381,7 +345,7 @@ app.post("/correct", async (req, res) => {
   console.log(inputText);
 
   // Execute the Python script
-  const pythonProcess = spawn("python", ["py/spell_correction.py", inputText]);
+  const pythonProcess = spawn("python", ["js/spell_correction.py", inputText]);
 
   let correctedText = "";
 
@@ -457,6 +421,7 @@ app.post("/create-course", async (req, res) => {
   }
 });
 
+const db = admin.firestore();
 // Endpoint to fetch course data from Firebase Firestore
 app.get("/courses", async (req, res) => {
   try {
@@ -469,20 +434,6 @@ app.get("/courses", async (req, res) => {
   } catch (error) {
     console.error("Error fetching courses:", error);
     res.status(500).json({ error: "Error fetching courses" });
-  }
-});
-
-app.get("/Users", async (req, res) => {
-  try {
-    const snapshot = await db.collection("Users").get();
-    const Users = [];
-    snapshot.forEach((doc) => {
-      Users.push({ ...doc.data() });
-    });
-    res.json(Users);
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ msg: "Internal server error" });
   }
 });
 
@@ -640,78 +591,6 @@ app.post("/updateCourseinfo", upload.single("video"), async (req, res) => {
   }
 });
 
-app.post("/updateCourseVideos", upload.array("videos"), async (req, res) => {
-  // Extract course code from the request body
-  const code = req.body.code;
-  // Extract course videos from the request
-  const videos = req.files;
-
-  try {
-    // Search for the course with the provided code
-    const courseSnapshot = await db
-      .collection("courses")
-      .where("code", "==", code)
-      .get();
-
-    if (courseSnapshot.empty) {
-      // If no course found with the provided code, return an error
-      return res
-        .status(404)
-        .json({ msg: "Course not found with the provided code." });
-    }
-
-    // Array to store video URLs
-    const videoUrls = [];
-
-    // Loop through each uploaded video
-    for (const video of videos) {
-      // Generate a unique filename for the video
-      const videoName = uuidv4() + ".mp4";
-
-      // Upload video to Firebase Storage
-      const storageRef = admin
-        .storage()
-        .bucket()
-        .file("courseVideos/" + videoName);
-      const videoBuffer = video.buffer;
-      await storageRef.save(videoBuffer, {
-        metadata: {
-          contentType: "video/mp4",
-        },
-      });
-
-      // Get the URL of the uploaded video
-      const videoUrl = await storageRef.getSignedUrl({
-        action: "read",
-        expires: "03-09-2491", // Set an expiration date or duration
-      });
-
-      // Push the video URL to the array
-      videoUrls.push(videoUrl[0]);
-    }
-
-    // Update the course information to add the new video URLs to the array
-    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
-    const courseData = courseSnapshot.docs[0].data();
-
-    // Check if the course already has a list of videos
-    const existingVideos = courseData.listvideoUrl || [];
-    // Concatenate the new video URLs with the existing array
-    const updatedVideos = existingVideos.concat(videoUrls);
-
-    await db.collection("courses").doc(courseId).update({
-      listvideoUrl: updatedVideos,
-    });
-
-    return res.status(200).json({ msg: "Course updated successfully." });
-  } catch (error) {
-    console.error("Error updating course:", error);
-    return res
-      .status(500)
-      .json({ msg: "An error occurred while updating course." });
-  }
-});
-
 app.post("/deleteCourse", async (req, res) => {
   const code = req.body.code; // Extract the course code from the request body
 
@@ -736,85 +615,6 @@ app.post("/deleteCourse", async (req, res) => {
   } catch (error) {
     console.error("Error deleting course:", error);
     res.status(500).json({ msg: "An error occurred while deleting course." });
-  }
-});
-
-app.post("/updateProgress", async (req, res) => {
-  const { userId, videoUrl, currentTime, duration, progress } = req.body;
-  try {
-    // Encode the video URL to create a valid document ID
-    const encodedVideoUrl = encodeURIComponent(videoUrl);
-    // Check if user exists, if not, create user document
-    const userRef = admin.firestore().collection("Users").doc(userId);
-    // Check if progress data exists
-    const progressSnapshot = await userRef
-      .collection("progress")
-      .doc(encodedVideoUrl)
-      .get();
-
-    let progressData = progressSnapshot.data();
-    if (progressData.progress < progress) {
-      // Store progress data in Firebase Firestore
-      await db
-        .collection("Users")
-        .doc(userId)
-        .collection("progress")
-        .doc(encodedVideoUrl) // Use encoded URL
-        .set({
-          currentTime: currentTime,
-          duration: duration,
-          progress: progress,
-        });
-
-      res.status(200).json({ message: "Progress updated successfully" });
-    }
-  } catch (error) {
-    console.error("Error updating progress:", error);
-    res.status(500).json({ error: error.message }); // Specific error message
-  }
-});
-
-app.post("/getProgress", async (req, res) => {
-  const { userId, videoUrl } = req.body;
-
-  try {
-    const encodedVideoUrl = encodeURIComponent(videoUrl);
-    // Check if user exists, if not, create user document
-    const userRef = admin.firestore().collection("Users").doc(userId);
-    const userDoc = await userRef.get();
-    if (!userDoc.exists) {
-      await userRef.set({});
-    }
-
-    // Check if progress data exists
-    const progressSnapshot = await userRef
-      .collection("progress")
-      .doc(encodedVideoUrl)
-      .get();
-    let progressData = progressSnapshot.data();
-
-    if (!progressData) {
-      // If progress data doesn't exist, create it with initial values
-      const initialProgressData = {
-        currentTime: 0, // Initial current time
-        duration: 0, // Initial duration
-        progress: 0, // Initial progress
-      };
-
-      await userRef
-        .collection("progress")
-        .doc(encodedVideoUrl)
-        .set(initialProgressData);
-
-      // Retrieve the newly created progress data
-      progressData = initialProgressData;
-    }
-
-    // Send progress data to the client
-    res.status(200).json(progressData);
-  } catch (error) {
-    console.error("Error retrieving or creating progress data:", error);
-    res.status(500).json({ error: "An error occurred" }); // Sending generic error message to client
   }
 });
 
