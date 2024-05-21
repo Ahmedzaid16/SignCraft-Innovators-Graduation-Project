@@ -1,5 +1,7 @@
 /* Start Global Rules */
 :root {
+  --error-massage: #ba181b;
+  --success-massage: #2ec4b6;
   --blue-color: #0075ff;
   --blue-alt-color: #0d69d5;
   --orange-color: #ff9f1c;
@@ -571,9 +573,8 @@ ul {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   position: relative;
   overflow: hidden;
-  width: 900px;
-  max-width: 100%;
-  min-height: 550px;
+  min-height: 80vh;
+  width: 750px;
   margin: auto;
   margin-top: 25px;
 }
@@ -581,6 +582,21 @@ ul {
   position: relative;
   display: flex;
   justify-content: space-between;
+  height: 100;
+}
+@media (max-width: 767px) {
+  .signIn {
+    margin-top: 41px;
+    min-height: 60vh;
+    width: 350px;
+  }
+  .signIn .containerS {
+    flex-direction: column-reverse;
+  }
+  .signIn .containerS .intro,
+  .signIn .containerS .content {
+    padding-bottom: 30px;
+  }
 }
 .signIn .containerS .content {
   position: relative;
@@ -588,8 +604,7 @@ ul {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100%;
-  height: 550px;
+  height: 80vh;
   flex: 1;
 }
 .signIn .containerS .content .social {
@@ -603,16 +618,55 @@ ul {
 .signIn .containerS .content .social:hover {
   background-color: var(--main-color);
   color: white;
+  border: 1px solid white;
 }
-.signIn .containerS .content input {
-  background-color: #eee;
-  border: none;
-  padding: 12px 15px;
-  margin: 8px 0;
-  width: 100%;
-  outline-color: var(--main-color);
+.signIn .containerS .content .social i {
+  width: 30px;
+  height: 30px;
 }
 
+.form-control {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.form-control input {
+  background-color: #eee;
+  border: 2px solid #fff;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 300px;
+  display: block;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-control input:focus {
+  outline: none;
+  border-color: var(--main-color);
+  transition: 0.4s;
+}
+
+.form-control.success input {
+  border-color: var(--success-massage);
+}
+
+.form-control.error input {
+  border-color: var(--error-massage);
+}
+
+.form-control.error small {
+  visibility: visible;
+}
+
+.form-control small {
+  color: var(--error-massage);
+  position: absolute;
+  bottom: -10;
+  left: 0;
+  visibility: hidden;
+}
 .signIn .containerS .content .text span a {
   transition: var(--main-transition);
   color: black;
@@ -650,8 +704,7 @@ ul {
   text-align: center;
   flex-direction: column;
   flex: 1;
-  width: 100%;
-  height: 550px;
+  height: 80vh;
   background-color: var(--main-color);
 }
 
@@ -681,9 +734,8 @@ ul {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   position: relative;
   overflow: hidden;
-  width: 900px;
-  max-width: 100%;
-  min-height: 550px;
+  min-height: 80vh;
+  width: 750px;
   margin: auto;
   margin-top: 25px;
 }
@@ -692,6 +744,22 @@ ul {
   display: flex;
   justify-content: space-between;
 }
+
+@media (max-width: 767px) {
+  .signUp {
+    margin-top: 41px;
+    min-height: 60vh;
+    width: 350px;
+  }
+  .signUp .containerU {
+    flex-direction: column-reverse;
+  }
+  .signUp .containerU .intro,
+  .signUp .containerU .content {
+    padding-bottom: 30px;
+  }
+}
+
 .signUp .containerU .content {
   position: relative;
   display: flex;
@@ -699,9 +767,10 @@ ul {
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: 550px;
+  height: 80vh;
   flex: 1;
 }
+
 .signUp .containerU .content .social {
   font-size: 25px;
   padding: 10px;
@@ -719,8 +788,19 @@ ul {
   border: none;
   padding: 12px 15px;
   margin: 10px;
-  width: 100%;
+  width: 300px;
   outline-color: var(--main-color);
+}
+
+@media (max-width: 400px) {
+  .signUp {
+    margin-top: 41px;
+    min-height: 60vh;
+    width: 300px;
+  }
+  .signUp .containerU .content input.one {
+    width: 260px;
+  }
 }
 
 .signUp .containerU .content .text .gender {
@@ -766,7 +846,7 @@ ul {
   flex-direction: column;
   flex: 1;
   width: 100%;
-  height: 550px;
+  height: 80vh;
   background-color: var(--main-color);
 }
 
