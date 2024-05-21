@@ -1211,6 +1211,15 @@ ul {
   border: none;
   cursor: pointer;
   color: var(--white-color);
+  transition: 0.4s ease;
+}
+
+.close-btn:hover {
+  color: var(--red-color);
+}
+
+.close-btn:active {
+  transform: scale(0.95);
 }
 
 .modal-content .device-video,
