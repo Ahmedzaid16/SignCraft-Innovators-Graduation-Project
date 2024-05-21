@@ -5,6 +5,7 @@ const cors = require("cors");
 const admin = require("firebase-admin");
 const bodyParser1 = require("body-parser");
 const serviceAccount = require("../signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
+const livereload = require("livereload");
 const multer = require("multer");
 const upload = multer(); // You can pass options to configure multer if needed
 const User = require("./config");
@@ -36,6 +37,23 @@ app.use(cookieParser());
 app.use(i18n.init);
 app.use(express.static(path.resolve(__dirname, "..")));
 app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+// app.use(express.static("public"));
+
+// Auto refresh livereload for All Files ===> there is script in package.json
+// const liveReloadServer = livereload.createServer();
+// liveReloadServer.watch(path.join(__dirname, "public"));
+
+// const connectLivereload = require("connect-livereload");
+// app.use(connectLivereload());
+
+// liveReloadServer.server.once("connection", () => {
+//   setTimeout(() => {
+//     liveReloadServer.refresh("/");
+//   }, 100);
+// });
+//////////////////////////////////////////////////////////////////////////////
+
 const storagePy = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.resolve(__dirname, "..", "py"));
@@ -849,53 +867,55 @@ app.post("/getProgress", async (req, res) => {
 
 // translate Page
 
-app.post('/api/video/upload', uploadPy.single('video'), (req, res) => {
+app.post("/api/video/upload", uploadPy.single("video"), (req, res) => {
   const vFileName = req.file.filename;
-  res.json({ videoUrl: '/api/video/download/' + vFileName });
+  res.json({ videoUrl: "/api/video/download/" + vFileName });
 });
 
-app.get('/api/video/download/:fname', (req, res) => {
+app.get("/api/video/download/:fname", (req, res) => {
   const filename = req.params.fname;
-  const filepath = path.resolve(__dirname, '..', 'py', filename);
-  const newfilepath = path.resolve(__dirname, '..', 'py', 'v.mp4');
+  const filepath = path.resolve(__dirname, "..", "py", filename);
+  const newfilepath = path.resolve(__dirname, "..", "py", "v.mp4");
 
   fs.rename(filepath, newfilepath, (err) => {
     if (err) {
-      console.log('Error:', err);
-      res.status(500).send('Error renaming file');
+      console.log("Error:", err);
+      res.status(500).send("Error renaming file");
     } else {
-      console.log('File renamed successfully');
+      console.log("File renamed successfully");
       res.download(newfilepath);
     }
   });
 });
 
-const scriptPath = path.resolve(__dirname, '..', 'py', 'script.py');
+const scriptPath = path.resolve(__dirname, "..", "py", "script.py");
 
-app.get('/api/video/gettranslate/', (req, res) => {
-  const vPath = path.resolve(__dirname, '..', 'py', 'v.mp4');
+app.get("/api/video/gettranslate/", (req, res) => {
+  const vPath = path.resolve(__dirname, "..", "py", "v.mp4");
   console.log(vPath);
 
-  const pythonExecutable = 'python'; // Adjust this if Python executable is named differently
+  const pythonExecutable = "python"; // Adjust this if Python executable is named differently
 
   execFile(pythonExecutable, [scriptPath, vPath], (error, stdout, stderr) => {
     if (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Failed to run script' });
+      console.error("Error:", error);
+      res.status(500).json({ error: "Failed to run script" });
       return;
     }
     if (stderr) {
-      console.error('Stderr:', stderr);
+      console.error("Stderr:", stderr);
     }
 
-    console.log('Results:', stdout);
+    console.log("Results:", stdout);
     res.status(200).json({ translate: stdout });
   });
 });
 
-app.get('/translate', (req, res) => {
-  res.writeHead("200", 'ok', { 'content-type': 'text/html;charset=utf-8' });
-  const translate = fs.readFileSync(path.resolve(__dirname, '..', 'translate.html'));
+app.get("/translate", (req, res) => {
+  res.writeHead("200", "ok", { "content-type": "text/html;charset=utf-8" });
+  const translate = fs.readFileSync(
+    path.resolve(__dirname, "..", "translate.html")
+  );
   res.write(translate);
   res.end();
 });
