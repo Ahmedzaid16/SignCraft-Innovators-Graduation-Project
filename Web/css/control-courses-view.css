@@ -83,3 +83,25 @@
     padding: 5px 10px;
   }
 }
+
+.modal-container .form-input input {
+  margin: 5px 0 10px 0;
+  padding: 8px;
+  width: 100%;
+  outline-color: var(--main-color);
+}
+
+div.course-property-imageurl div,
+div.course-property-videourl div {
+  padding: 0;
+  margin: 0;
+}
+
+.course-property-listvideourl p a {
+  color: white;
+  font-weight: bold;
+}
+
+.course-property-listvideourl p a:hover {
+  text-decoration: underline;
+}

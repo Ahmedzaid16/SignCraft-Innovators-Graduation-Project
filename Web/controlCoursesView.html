@@ -75,7 +75,98 @@
     </div>
     <!-- End Header -->
     <div id="allCourses"></div>
-
+    <div class="modal-container-mod" id="modal-mod">
+      <div class="modal" style="top: 50%">
+        <button class="close-btn" id="close">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Modify course</h3>
+        </div>
+        <div class="modal-content">
+          <p>Enter this required info to modify any course:</p>
+          <form class="modal-form" id="form-mod">
+            <div style="display: flex">
+              <label for="custom-image-upload-mod" class="choose"
+                >Choose an Image:</label
+              >
+              <input
+                type="file"
+                id="custom-image-upload-mod"
+                accept="image/*"
+                class="choose-btn"
+                required
+              />
+            </div>
+            <div>
+              <label for="code-mod">Course Code</label>
+              <input
+                type="number"
+                id="code-mod"
+                placeholder="Enter course Code"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="name-mod">Course name</label>
+              <input
+                type="text"
+                id="name-mod"
+                placeholder="Enter course name"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="Categories-mod">Course Category</label>
+              <input
+                type="text"
+                id="Categories-mod"
+                placeholder="Enter Category"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="lesson-mod">Number of Lessons</label>
+              <input
+                type="number"
+                id="lesson-mod"
+                placeholder="Enter number of lesson"
+                class="form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="description-mod">Edit course description</label>
+              <textarea
+                name="textarea"
+                id="description-mod"
+                required
+              ></textarea>
+            </div>
+            <input type="submit" value="Modify" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal-container" id="modal-add">
+      <div class="modal">
+        <button class="close-btn" id="close-rem">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Are you sure!</h3>
+        </div>
+        <div class="modal-content">
+          <form class="form-input">
+            <input type="password" placeholder="Enter your password" />
+          </form>
+          <input type="submit" value="Delete" class="submit-btn" />
+        </div>
+      </div>
+    </div>
     <script>
       // Retrieve courses data from local storage
       const courses = JSON.parse(localStorage.getItem("courses"));
@@ -92,9 +183,7 @@
           for (const [key, value] of Object.entries(course)) {
             const propertyElement = document.createElement("div");
             propertyElement.classList.add(
-              `course-property-${courseIndex}-${key
-                .toLowerCase()
-                .replace(/\s/g, "-")}`
+              `course-property-${key.toLowerCase().replace(/\s/g, "-")}`
             );
             propertyElement.textContent = `${key}: ${value}`;
             courseElement.appendChild(propertyElement);
@@ -107,7 +196,7 @@
           <div id="rem" class="remove">
             <button class="remove" id="remove">Remove</button>
           </div>
-          <div/>`;
+          </div>`;
           // Append buttons along with course information
           courseElement.insertAdjacentHTML("beforeend", buttons);
           coursesView.appendChild(courseElement);
@@ -116,6 +205,119 @@
         // Handle case when no courses are available
         coursesView.textContent = "No courses available.";
       }
+
+      const imageUrls = document.querySelectorAll(".course-property-imageurl");
+
+      imageUrls.forEach((imageUrl) => {
+        const imageUrlText = imageUrl.textContent;
+        const startIndex = imageUrlText.indexOf("https://");
+        if (startIndex !== -1) {
+          // Extract the substring starting from the index of "https://"
+          const text = imageUrlText.substring(startIndex).trim();
+          const newLink = `<div>image URL: <a href="${text}">Image</a>`;
+          imageUrl.innerHTML = newLink;
+        } else {
+          console.log("URL not found.");
+        }
+      });
+
+      const videoUrls = document.querySelectorAll(".course-property-videourl");
+
+      videoUrls.forEach((videoUrl) => {
+        const videoUrlText = videoUrl.textContent;
+        const startIndex = videoUrlText.indexOf("https://");
+        if (startIndex !== -1) {
+          // Extract the substring starting from the index of "https://"
+          const text = videoUrlText.substring(startIndex).trim();
+          const newLink = `<div>video URL: <a href="${text}">Video</a>`;
+          videoUrl.innerHTML = newLink;
+        } else {
+          console.log("URL not found.");
+        }
+      });
+
+      // Step 1: Select the element containing the list of video URLs from the HTML
+      const videoUrlsElements = document.querySelectorAll(
+        ".course-property-listvideourl"
+      );
+
+      // Iterate over each element
+      videoUrlsElements.forEach((videoUrlsElement, index) => {
+        // Get the text content of the element and split it into an array
+        const videoUrlsText = videoUrlsElement.textContent.trim();
+        const videoUrlsArray = videoUrlsText.split(",");
+
+        // Clear existing content
+        videoUrlsElement.innerHTML = "";
+
+        // Display each lesson with its corresponding video URL
+        videoUrlsArray.forEach((url, urlIndex) => {
+          const lessonNumber = urlIndex + 1;
+          const lessonName = `Lesson_${lessonNumber}`;
+          const lessonLink = document.createElement("a");
+          lessonLink.href = url;
+          lessonLink.textContent = `${lessonName}: Video`;
+          lessonLink.target = "_blank"; // Open link in a new tab
+
+          // Create a new paragraph element for each lesson and append it to the container
+          const lessonParagraph = document.createElement("p");
+          lessonParagraph.appendChild(lessonLink);
+          videoUrlsElement.appendChild(lessonParagraph);
+        });
+      });
+
+      const modify = document.querySelectorAll(".modify");
+      const remove = document.querySelectorAll(".remove");
+      const close = document.getElementById("close");
+      const closeRem = document.getElementById("close-rem");
+      const modalMod = document.getElementById("modal-mod");
+      const modalAdd = document.getElementById("modal-add");
+
+      // Function to  show modal
+      const addModal = () => {
+        modalMod.classList.add("show-modal");
+      };
+
+      // Function to remove the "show-modal" class
+      const closeModal = () => {
+        modalMod.classList.remove("show-modal");
+      };
+
+      // Attach the event listener to the "close" button for Add modal
+      close.addEventListener("click", closeModal);
+
+      // Attach the event listener to all buttons with the class "del"
+      modify.forEach((button) => {
+        button.addEventListener("click", addModal);
+      });
+
+      // Hide modal on outside click
+      window.addEventListener("click", (e) =>
+        e.target == modalMod ? modalMod.classList.remove("show-modal") : false
+      );
+
+      // Function to  show modal
+      const addRemModal = () => {
+        modalAdd.classList.add("show-modal");
+      };
+
+      // Function to remove the "show-modal" class
+      const closeRemModal = () => {
+        modalAdd.classList.remove("show-modal");
+      };
+
+      // Attach the event listener to the "close" button for Add modal
+      closeRem.addEventListener("click", closeRemModal);
+
+      // Attach the event listener to all buttons with the class "del"
+      remove.forEach((button) => {
+        button.addEventListener("click", addRemModal);
+      });
+
+      // Hide modal on outside click
+      window.addEventListener("click", (e) =>
+        e.target == modalAdd ? modalAdd.classList.remove("show-modal") : false
+      );
     </script>
   </body>
 </html>

@@ -408,7 +408,7 @@ const getUsers = async () => {
       // Store courses data in local storage
       localStorage.setItem("Users", JSON.stringify(Users));
       // Redirect to the new page
-      window.location.href = "controlCoursesAccount.html"; // Replace with the actual URL of your new page
+      window.location.href = "controlCoursesAccount.html";
     } else {
       console.error("Failed to fetch Users");
     }

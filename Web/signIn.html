@@ -32,38 +32,52 @@
           <h3>Sign Language</h3>
         </a>
         <ul class="main-nav">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="translate.html">Translate</a></li>
-          <li><a href="signUp.html">Education</a></li>
+          <li class="header-pages"><a class="active" href="#">Home</a></li>
+          <li class="header-pages"><a href="translate.html">Translate</a></li>
+          <li class="header-pages" id="education">
+            <a href="signUp.html">Education</a>
+          </li>
+          <li id="signInLink">
+            <a href="signIn.html"
+              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i
+            ></a>
+          </li>
+          <li id="logoutLink" style="display: none" class="logout">
+            <a href="index.html" onclick="logout()"
+              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+            >
+          </li>
           <li>
-            <a href="#">Other Links</a>
+            <a id="menu-icon" href="#"><i class="fa-solid fa-bars"></i></a>
             <!-- Start Megamenu -->
-            <div class="mega-menu">
+            <div id="menu" class="mega-menu">
               <ul class="links">
                 <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-house"></i> Home</a
+                  >
+                </li>
+                <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-hands"></i> Translate</a
+                  >
+                </li>
+                <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-user-graduate"></i> Education</a
+                  >
+                </li>
+                <li>
                   <a href="#"
-                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                    ><i class="fa-solid fa-book-open-reader"></i> Courses</a
                   >
                 </li>
                 <li>
                   <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
                 </li>
-                <li>
-                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
-                </li>
-                <li>
-                  <a href="#"
-                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
-                  >
-                </li>
               </ul>
             </div>
             <!-- End Megamenu -->
-          </li>
-          <li>
-            <a class="active" href="signIn.html"
-              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
-            >
           </li>
         </ul>
       </div>
@@ -86,12 +100,18 @@
             </div>
             <div class="text">
               <span class="mb-10 mt-10 fw-bold">or use your account</span>
-              <input type="email" id="email" placeholder="Your email" />
-              <input
-                type="password"
-                id="password"
-                placeholder="Your password"
-              />
+              <div class="form-control">
+                <input type="email" id="email" placeholder="Enter email" />
+                <small>Error message</small>
+              </div>
+              <div class="form-control">
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="Enter password"
+                />
+                <small>Error message</small>
+              </div>
               <span class="mt-15 fw-bold c-black"
                 ><a href="reset.html">Forgot your password?</a></span
               >
@@ -110,5 +130,6 @@
     </div>
     <!-- End Home -->
     <script src="js/signIn.js"></script>
+    <script src="js/header.js"></script>
   </body>
 </html>
