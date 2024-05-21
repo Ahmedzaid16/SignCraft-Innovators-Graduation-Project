@@ -4,7 +4,7 @@ import numpy as np
 import mediapipe as mp
 import multiprocessing
 from omegaconf import OmegaConf
-from openhands.apis.inference import InferenceModel
+# from openhands.apis.inference import InferenceModel
 from joblib import delayed
 from natsort import natsorted
 from glob import glob
@@ -132,11 +132,11 @@ def gen_keypoints_for_video(video_path):
 
 
 
-def init():
-    cfg = OmegaConf.load("E:/Web/py/decoupled_gcn.yaml")
-    model = InferenceModel(cfg=cfg)
-    model.init_from_checkpoint_if_available()
-    return model
+# def init():
+#     cfg = OmegaConf.load("E:/Web/py/decoupled_gcn.yaml")
+#     model = InferenceModel(cfg=cfg)
+#     model.init_from_checkpoint_if_available()
+#     return model
 
 def test_model(model):
     #model.my_test_inference(test_file)
@@ -151,10 +151,11 @@ def custom_test(model,test_file):
 if __name__ == '__main__':
 
     video_path = sys.argv[1]
-    inference_model = init()
-    output_to_script = gen_keypoints_for_video(video_path)
-    output_to_script = custom_test(inference_model,output_to_script)
-    print(output_to_script)
+    # inference_model = init()
+    # output_to_script = gen_keypoints_for_video(video_path)
+    # output_to_script = custom_test(inference_model,output_to_script)
+    # print(output_to_script)
+    print('OK')
     #sys.stdout.flush()
 
 # المسار الخاص بالفيديو 

@@ -7,10 +7,14 @@ const bodyParser1 = require("body-parser");
 const serviceAccount = require("../signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
 const multer = require("multer");
 const upload = multer(); // You can pass options to configure multer if needed
-//const User = require("./config");
-const ffmpeg = require ('ffmpeg');
-const fs = require ('fs');
-const http = require ('http');
+const User = require("./config");
+const ffmpeg = require("ffmpeg");
+const path = require("path");
+const fs = require("fs");
+const http = require("http");
+const cookieParser = require("cookie-parser");
+const i18n = require("./i18n");
+const { spawn, execFile } = require("child_process");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: "gs://signlanguage-users.appspot.com",
@@ -28,12 +32,38 @@ app.use(bodyParser1.json({ limit: "50mb" }));
 app.use(bodyParser1.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
+app.use(i18n.init);
+app.use(express.static(path.resolve(__dirname, "..")));
+app.use(express.urlencoded({ extended: true }));
+const storagePy = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.resolve(__dirname, "..", "py"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, "v.mp4");
+  },
+});
+const uploadPy = multer({ storage: storagePy });
 const db = admin.firestore();
 
-app.get("/", async (req, res) => {
-  const snapshot = await db.collection("Users").get();
-  const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-  res.send(list);
+// app.get("/", async (req, res) => {
+//   const snapshot = await db.collection("Users").get();
+//   const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+//   res.send(list);
+// });
+
+// Middleware to set language based on user preference
+app.use((req, res, next) => {
+  const lang = req.query.lang || req.cookies.lang || "en";
+  res.cookie("lang", lang, { maxAge: 900000, httpOnly: true });
+  i18n.setLocale(req, lang);
+  next();
+});
+
+// Route to display greeting message
+app.get("/greet", (req, res) => {
+  res.send(res.__("Hello")); // This will be translated based on the selected language
 });
 
 app.post("/create", async (req, res) => {
@@ -374,9 +404,6 @@ app.post("/search", async (req, res) => {
 
   res.json({ correctedText });
 });
-
-const bodyParser = require("body-parser");
-const { spawn } = require("child_process");
 
 app.post("/correct", async (req, res) => {
   var inputText = req.body.text;
@@ -818,6 +845,59 @@ app.post("/getProgress", async (req, res) => {
     console.error("Error retrieving or creating progress data:", error);
     res.status(500).json({ error: "An error occurred" }); // Sending generic error message to client
   }
+});
+
+// translate Page
+
+app.post('/api/video/upload', uploadPy.single('video'), (req, res) => {
+  const vFileName = req.file.filename;
+  res.json({ videoUrl: '/api/video/download/' + vFileName });
+});
+
+app.get('/api/video/download/:fname', (req, res) => {
+  const filename = req.params.fname;
+  const filepath = path.resolve(__dirname, '..', 'py', filename);
+  const newfilepath = path.resolve(__dirname, '..', 'py', 'v.mp4');
+
+  fs.rename(filepath, newfilepath, (err) => {
+    if (err) {
+      console.log('Error:', err);
+      res.status(500).send('Error renaming file');
+    } else {
+      console.log('File renamed successfully');
+      res.download(newfilepath);
+    }
+  });
+});
+
+const scriptPath = path.resolve(__dirname, '..', 'py', 'script.py');
+
+app.get('/api/video/gettranslate/', (req, res) => {
+  const vPath = path.resolve(__dirname, '..', 'py', 'v.mp4');
+  console.log(vPath);
+
+  const pythonExecutable = 'python'; // Adjust this if Python executable is named differently
+
+  execFile(pythonExecutable, [scriptPath, vPath], (error, stdout, stderr) => {
+    if (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Failed to run script' });
+      return;
+    }
+    if (stderr) {
+      console.error('Stderr:', stderr);
+    }
+
+    console.log('Results:', stdout);
+    res.status(200).json({ translate: stdout });
+  });
+});
+
+app.get('/translate', (req, res) => {
+  res.writeHead("200", 'ok', { 'content-type': 'text/html;charset=utf-8' });
+  const translate = fs.readFileSync(path.resolve(__dirname, '..', 'translate.html'));
+  res.write(translate);
+  res.end();
 });
 
 app.listen(4000, () => console.log("Up & Running *4000"));

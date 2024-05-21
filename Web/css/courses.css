@@ -246,3 +246,8 @@ section {
 #myInput:focus {
   border: 1px solid #e71d36; /* Change border color on hover and focus */
 }
+
+.header .main-nav > li > .btn-lang {
+  padding: 0;
+  cursor: pointer;
+}
