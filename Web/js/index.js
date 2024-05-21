@@ -7,8 +7,10 @@ const bodyParser1 = require("body-parser");
 const serviceAccount = require("../signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
 const multer = require("multer");
 const upload = multer(); // You can pass options to configure multer if needed
-const User = require("./config");
-
+//const User = require("./config");
+const ffmpeg = require ('ffmpeg');
+const fs = require ('fs');
+const http = require ('http');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: "gs://signlanguage-users.appspot.com",
