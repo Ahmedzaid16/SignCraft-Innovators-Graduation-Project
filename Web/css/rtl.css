@@ -1,0 +1,42 @@
+body {
+  direction: rtl;
+}
+
+.rectangular-animation::before {
+  width: 150px;
+}
+
+.rectangular-animation2::before {
+  width: 288px;
+}
+
+.chatbot-ready,
+.chatbot-start {
+  right: auto;
+  left: 0;
+}
+
+.chatbot-ready .chatbot-message {
+  border-radius: 15px 0px 15px;
+}
+
+.chatbot-start .message img,
+.chatbot-start .robo-message img {
+  right: -30px;
+}
+
+.chatbot-ready .chatbot-message::after {
+  right: auto;
+  left: -40px;
+  transform: rotateY(180deg);
+}
+
+.user-message {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.header .mega-menu {
+  right: auto;
+  left: 10px;
+}

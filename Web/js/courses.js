@@ -49,20 +49,25 @@ async function populateCourses() {
       img.alt = "course img";
 
       const span = document.createElement("span");
-      span.textContent = `${course.lesson} Lessons`; // Assuming you have a 'lesson' field in your course data
 
       courseImg.appendChild(img);
-      courseImg.appendChild(span);
 
       const courseInfo = document.createElement("div");
       courseInfo.classList.add("course-info");
-
+      
       const h4 = document.createElement("h4");
-      h4.textContent = course.name; // Assuming you have a 'name' field in your course data
-
       const p = document.createElement("p");
-      p.textContent = course.description; // Assuming you have a 'description' field in your course data
+      if (localStorage.getItem("lang") == "en") {
+        h4.textContent = course.name; // Assuming you have a 'name' field in your course data
+        p.textContent = course.description; // Assuming you have a 'description' field in your course data
+        span.textContent = `${course.lesson} Lessons`;
+      } else {
+        h4.textContent = course.name_ar;
+        p.textContent = course.description_ar;
+        span.textContent = `${course.lesson} درس`;
+      }
 
+      courseImg.appendChild(span);
       courseInfo.appendChild(h4);
       courseInfo.appendChild(p);
 

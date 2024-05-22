@@ -71,17 +71,24 @@ const db = admin.firestore();
 //   res.send(list);
 // });
 
+//***********************************Change Language***************************************** //
+/////////////////////////////////////////////////////////////////////////////////////////////////
 // Middleware to set language based on user preference
 app.use((req, res, next) => {
   const lang = req.query.lang || req.cookies.lang || "en";
-  res.cookie("lang", lang, { maxAge: 900000, httpOnly: true });
   i18n.setLocale(req, lang);
+  res.cookie("lang", lang, { maxAge: 900000, httpOnly: true });
+  console.log(`Locale set to: ${lang}`);
   next();
 });
 
-// Route to display greeting message
-app.get("/greet", (req, res) => {
-  res.send(res.__("Hello")); // This will be translated based on the selected language
+app.get("/translations", (req, res) => {
+  // Get the language from the query parameter or default to "en"
+  const lang = req.query.lang || "en";
+  // Get all keys and values for the specified language
+  const translations = i18n.getCatalog(lang);
+  // Send the translations as JSON response
+  res.json(translations);
 });
 
 app.post("/create", async (req, res) => {

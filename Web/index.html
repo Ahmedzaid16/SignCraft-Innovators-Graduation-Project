@@ -32,13 +32,17 @@
           <h3>Sign Language</h3>
         </a>
         <ul class="main-nav">
-          <li class="header-pages"><a class="active" href="#">Home</a></li>
-          <li class="header-pages"><a href="translate.html">Translate</a></li>
-          <li class="header-pages" id="education">
-            <a href="signUp.html">Education</a>
+          <li class="header-pages">
+            <a class="active" href="#" id="head_home">Home</a>
           </li>
-          <!-- <li>
-            <a href="/greet?lang=ar" id="ar" class="btn-lang">
+          <li class="header-pages">
+            <a href="translate.html" id="head_tran">Translate</a>
+          </li>
+          <li class="header-pages" id="education">
+            <a href="signUp.html" id="head_edu">Education</a>
+          </li>
+          <li>
+            <a href="#" id="btn-ar" class="btn-lang">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -57,12 +61,7 @@
                 />
               </svg>
             </a>
-            <a
-              href="/greet?lang=en"
-              id="eng"
-              style="display: none"
-              class="btn-lang"
-            >
+            <a href="#" id="btn-en" class="btn-lang" style="display: none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -74,24 +73,24 @@
                 version="1.0"
               >
                 <defs>
-                  <clipPath id="ed6f5418bb">
+                  <clipPath id="b9ab7f41a3">
                     <path
-                      d="M 284.308594 209.363281 L 525.808594 209.363281 L 525.808594 533.363281 L 284.308594 533.363281 Z M 284.308594 209.363281 "
+                      d="M 56 179.597656 L 754 179.597656 L 754 630.347656 L 56 630.347656 Z M 56 179.597656 "
                       clip-rule="nonzero"
                     />
                   </clipPath>
                 </defs>
-                <g clip-path="url(#ed6f5418bb)">
+                <g clip-path="url(#b9ab7f41a3)">
                   <path
                     fill="#000000"
-                    d="M 525.808594 268.675781 L 525.808594 209.402344 L 284.308594 209.402344 L 284.308594 533.339844 L 525.808594 533.339844 L 525.808594 474.050781 L 343.628906 474.050781 L 343.628906 401.003906 L 525.808594 401.003906 L 525.808594 341.726562 L 343.628906 341.726562 L 343.628906 268.675781 Z M 525.808594 268.675781 "
+                    d="M 688.6875 243.441406 L 688.6875 473.480469 L 458.449219 243.441406 L 458.449219 501.476562 L 121.386719 501.476562 L 121.386719 439.410156 L 316.214844 439.410156 L 316.214844 374.234375 L 121.386719 374.234375 L 121.386719 312.171875 L 381.257812 312.171875 L 381.257812 179.597656 L 339.179688 247.585938 L 56.34375 247.585938 L 56.34375 566.652344 L 523.195312 566.652344 L 523.195312 562.503906 L 523.492188 562.503906 L 523.492188 400.304688 L 753.730469 630.347656 L 753.730469 243.441406 Z M 688.6875 243.441406 "
                     fill-opacity="1"
                     fill-rule="nonzero"
                   />
                 </g>
               </svg>
             </a>
-          </li> -->
+          </li>
           <li id="signInLink">
             <a href="signIn.html"
               ><i class="fa-solid fa-user-plus fs-16 mr-5"></i
@@ -99,7 +98,8 @@
           </li>
           <li id="logoutLink" style="display: none" class="logout">
             <a href="index.html" onclick="logout()"
-              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
+              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i>
+              <span id="head_logout">Logout</span></a
             >
           </li>
           <li>
@@ -142,8 +142,8 @@
     <!-- Start intro -->
     <div class="home">
       <div class="content">
-        <h2>Artificial Itelligence Supported Sign Language Translator</h2>
-        <p>
+        <h2 class="home-title">Artificial Itelligence Supported Sign Language Translator</h2>
+        <p class="home-description">
           We enable hearing impaired and deaf individuals who have difficulty in
           understanding what they read or are illiterate to access information,
           services and video content with the ai powered sign language , which
@@ -158,11 +158,11 @@
     </div>
     <!-- Start About Section -->
     <div class="about">
-      <h2 class="main-title">About</h2>
+      <h2 class="main-title about-title">About</h2>
       <div class="container one">
         <div class="text text_left">
-          <h1>Sign Language Translator</h1>
-          <p>
+          <h1 class="sign-intro">Sign Language Translator</h1>
+          <p class="about-intro">
             Welcome to our Sign Language Translator Project! We aim to bridge
             the communication gap between individuals using sign language and
             those who use written text.
@@ -178,8 +178,8 @@
           <img src="images/sign-language-interpreter.jpg" alt="" />
         </div>
         <div class="text text_right">
-          <h1><span>Web</span> Sign Language Translator</h1>
-          <p>
+          <h1><span class="web-page">Web</span> <span class="sign-intro">Sign Language Translator</span></h1>
+          <p class="about-web-description">
             Our website aims to offer courses focusing on sign language
             education for schools and colleges, providing a comprehensive
             resource for learning and understanding sign language.
@@ -189,8 +189,8 @@
       </div>
       <div class="container one">
         <div class="text text_left">
-          <h1><span>App</span> Sign Language Translator</h1>
-          <p>
+          <h1><span class="app-page">App</span> <span class="sign-intro">Sign Language Translator</span></h1>
+          <p class="about-app-description">
             Welcome to our Sign Language Translator application! Our goal is to
             introduce a sign language translation feature facilitating
             communication between users. Additionally, we aim to provide courses
@@ -208,8 +208,8 @@
           <img src="images/persons.jpg" alt="" />
         </div>
         <div class="text text_right">
-          <h1><span>Education</span> Sign Language Translator</h1>
-          <p>
+          <h1><span class="edu-page">Education</span> <span class="sign-intro">Sign Language Translator</span></h1>
+          <p class="about-education-description">
             We provide rducational content for children and adults through a
             group of video lessons. Stay tuned for many updates.
           </p>
@@ -220,8 +220,8 @@
       </div>
       <div class="container one">
         <div class="text text_left">
-          <h1><span>Education</span> Sign Language Translator</h1>
-          <p>
+          <h1><span class="edu-page">Education</span> <span class="sign-intro">Sign Language Translator</span></h1>
+          <p class="about-education-description">
             We provide rducational content for children and adults through a
             group of video lessons. Stay tuned for many updates.
           </p>
@@ -242,8 +242,8 @@
           />
         </div>
         <div class="text text_right">
-          <h1><span>Support</span> Sign Language Translator</h1>
-          <p>
+          <h1><span class="sup-page">Support</span> <span class="sign-intro">Sign Language Translator</span></h1>
+          <p class="about-support-description">
             We designed chatbot support. It is a collection of questions and
             their answers, and you can write to the admin.<br />
             lets try it.
@@ -284,10 +284,9 @@
         <div class="two">
           <ul class="links">
             <li><a class="one" href="#">Menu</a></li>
-            <li><a href="#">Home Page</a></li>
-            <li><a href="#">Translate page</a></li>
-            <li><a href="courses.html">Education Page</a></li>
-            <li><a href="course-info.html">Courses</a></li>
+            <li><a href="#" id="home">Home Page</a></li>
+            <li><a href="translate.html" id="translate">Translate page</a></li>
+            <li><a href="courses.html" id="course">Education Page</a></li>
           </ul>
         </div>
         <div class="three">
@@ -311,6 +310,7 @@
     <script src="js/logout.js"></script>
     <script src="js/check.js"></script>
     <script src="js/header.js"></script>
+    <script src="js/lang.js"></script>
     <!-- <script src="js/footer.js"></script> -->
   </body>
 </html>

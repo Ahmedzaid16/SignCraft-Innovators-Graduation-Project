@@ -14,13 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
   document.body.appendChild(chatStart);
   // Populate chatReady section with initial HTML
   chatReady.innerHTML = `<div class="chatbot-close" id="close">
-    <button>Close <i class="fa-solid fa-xmark"></i></button>
+    <button><span id="close_mess">Close</span> <i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="chatbot-message" id="chatbot-message">
-    <p class="one">Help & Support</p>
-    <p class="two">
-      Hello, <br />
-      We're at your service, click here to start the conversation now!
+    <p class="one" id="help">Help & Support</p>
+    <p class="two" id="hello_service">
+    <span id="hello1">Hello</span>, <br />
+    <span id="hello2">We're at your service, click here to start the conversation now!</span>
     </p>
   </div>
   <div class="chatbot-img" id="chatbot-img">
@@ -28,53 +28,29 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>`;
   // Populate chatStart section with initial HTML
   chatStart.innerHTML = `<div class="chat">
-  <h4>Chat With Robo</h4>
+  <h4 id="chat_robo">Chat With Robo</h4>
   <i id="close-chat" class="fa-solid fa-xmark fa-lg"></i>
 </div>
 <div class="messages">
   <div class="new-message" onclick="scrollToBottom()">
     <i class="fa-solid fa-chevron-down"></i>
-    <p>New Message</p>
+    <p id="new_mess">New Message</p>
   </div>
   <div class="message">
     <img src="images/chatbot.png" alt="chatbot" />
-    <p>
+    <p id="greetings">
       Greetings. I am Robo, your dedicated personal assistant, ready and
       at your service to provide insightful answers to any inquiries you
       may have.
     </p>
   </div>
   <div class="message">
-    <p>
+    <p id="assist">
       How may I assist you today? Kindly choose from the following
       options to guide me in providing the support you require:
     </p>
   </div>
-  <div class="options">
-    <button
-      id="one"
-      onclick="chooseButton('Error in sign language App',\`Please take a screenshot of the error you encountered, whether it's related to avatar movement or written text (when using sign language), and send it to our <a = href='mailto: sherefalex34@gmail.com'>Email</a> along with details of the error. The error will be fixed as soon as possible.\`)"
-    >
-      Error in sign language App
-    </button>
-    <button
-      id="two"
-      onclick="chooseButton('Account-related Inquiries',\`1- If you have forgotten your account password, please go to the <a href='#'>Password Reset page</a>, enter your email, and a message with a link will be sent to your email. Click on the link to be able to set a new password.<br><br>2- If you are experiencing issues updating your personal information, please make sure to use a name that does not contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (<,>), or more than one period (.).\`)"
-    >
-      Account-related Inquiries
-    </button>
-    <button
-      id="three"
-      onclick="chooseButton('Education and Courses',\`1- If you are facing issues accessing the learning platform or if the course videos are unavailable, please send us the details via <a = href='mailto: sherefalex34@gmail.com'>Email</a> along with some screenshots illustrating the problem.<br><br>2- If you would like us to provide another course for you, please provide us with the course details through our <a = href='mailto: sherefalex34@gmail.com'>Email</a>.\`)"
-    >
-      Education and Courses
-    </button>
-    <button
-      id="four"
-      onclick="chooseButton('Other',\`Please contact us via <a = href='mailto: sherefalex34@gmail.com'>Email</a> if you are experiencing any unmentioned issues.\`)"
-    >
-      Other
-    </button>
+  <div class="options" id="options">
   </div>
 </div>`;
 });
@@ -147,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function chooseButton(buttonName, roboMessage) {
+  console.log(buttonName);
   // Select necessary elements from the DOM
   const messagesContainer = document.querySelector(".messages");
   var newMessageSection = document.querySelector(".new-message");
@@ -181,9 +158,10 @@ function chooseButton(buttonName, roboMessage) {
   messagesContainer.appendChild(newDivOptions);
 
   // Clone and append the last four option buttons, disable them, and add a "disabled" class
-  var lastFourButtons = Array.from(allButtons).slice(-4);
+  const lastFourButtons = Array.from(allButtons).slice(-4);
   lastFourButtons.forEach(function (button) {
-    var clonedButton = button.cloneNode(true);
+    const clonedButton = button.cloneNode(true);
+    clonedButton.onclick = button.onclick; // Reattach event listener
     newDivOptions.appendChild(clonedButton);
     button.disabled = true;
     button.classList.add("disabled");

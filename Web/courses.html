@@ -28,18 +28,22 @@
     <!-- Start header -->
     <div class="header">
       <div class="container">
-        <a href="index.html" class="logo">
+        <a href="#" class="logo">
           <i class="fa-solid fa-hands-asl-interpreting"></i>
           <h3>Sign Language</h3>
         </a>
         <ul class="main-nav">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="translate.html">Translate</a></li>
-          <li id="education" class="active">
-            <a href="#" class="active">Education</a>
+          <li class="header-pages">
+            <a href="index.html" id="head_home">Home</a>
+          </li>
+          <li class="header-pages">
+            <a href="translate.html" id="head_tran">Translate</a>
+          </li>
+          <li class="header-pages" id="education">
+            <a href="signUp.html" class="active" id="head_edu">Education</a>
           </li>
           <li>
-            <a href="/greet?lang=ar" id="ar" class="btn-lang">
+            <a href="#" id="btn-ar" class="btn-lang">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -58,12 +62,7 @@
                 />
               </svg>
             </a>
-            <a
-              href="/greet?lang=en"
-              id="eng"
-              style="display: none"
-              class="btn-lang"
-            >
+            <a href="#" id="btn-en" class="btn-lang" style="display: none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -75,17 +74,17 @@
                 version="1.0"
               >
                 <defs>
-                  <clipPath id="ed6f5418bb">
+                  <clipPath id="b9ab7f41a3">
                     <path
-                      d="M 284.308594 209.363281 L 525.808594 209.363281 L 525.808594 533.363281 L 284.308594 533.363281 Z M 284.308594 209.363281 "
+                      d="M 56 179.597656 L 754 179.597656 L 754 630.347656 L 56 630.347656 Z M 56 179.597656 "
                       clip-rule="nonzero"
                     />
                   </clipPath>
                 </defs>
-                <g clip-path="url(#ed6f5418bb)">
+                <g clip-path="url(#b9ab7f41a3)">
                   <path
                     fill="#000000"
-                    d="M 525.808594 268.675781 L 525.808594 209.402344 L 284.308594 209.402344 L 284.308594 533.339844 L 525.808594 533.339844 L 525.808594 474.050781 L 343.628906 474.050781 L 343.628906 401.003906 L 525.808594 401.003906 L 525.808594 341.726562 L 343.628906 341.726562 L 343.628906 268.675781 Z M 525.808594 268.675781 "
+                    d="M 688.6875 243.441406 L 688.6875 473.480469 L 458.449219 243.441406 L 458.449219 501.476562 L 121.386719 501.476562 L 121.386719 439.410156 L 316.214844 439.410156 L 316.214844 374.234375 L 121.386719 374.234375 L 121.386719 312.171875 L 381.257812 312.171875 L 381.257812 179.597656 L 339.179688 247.585938 L 56.34375 247.585938 L 56.34375 566.652344 L 523.195312 566.652344 L 523.195312 562.503906 L 523.492188 562.503906 L 523.492188 400.304688 L 753.730469 630.347656 L 753.730469 243.441406 Z M 688.6875 243.441406 "
                     fill-opacity="1"
                     fill-rule="nonzero"
                   />
@@ -93,38 +92,46 @@
               </svg>
             </a>
           </li>
-          <li>
-            <a href="#">Other Links</a>
+          <li id="signInLink">
+            <a href="signIn.html"
+              ><i class="fa-solid fa-user-plus fs-16 mr-5"></i
+            ></a>
+          </li>
+          <li id="logoutLink" style="display: none" class="logout">
+            <a href="index.html" onclick="logout()"
+              ><i class="fa-solid fa-sign-out fs-16 mr-5"></i>
+              <span id="head_logout">Logout</span></a
+            >
+          </li>
+          <li class="menu_index">
+            <a id="menu-icon" href="#"><i class="fa-solid fa-bars"></i></a>
             <!-- Start Megamenu -->
-            <div class="mega-menu">
+            <div id="menu" class="mega-menu">
               <ul class="links">
                 <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-house"></i> Home</a
+                  >
+                </li>
+                <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-hands"></i> Translate</a
+                  >
+                </li>
+                <li>
+                  <a class="menu-home-icon" href="#"
+                    ><i class="fa-solid fa-user-graduate"></i> Education</a
+                  >
+                </li>
+                <li>
                   <a href="#"
-                    ><i class="fa-solid fa-graduation-cap"></i> Courses</a
+                    ><i class="fa-solid fa-book-open-reader"></i> Courses</a
                   >
                 </li>
                 <li>
                   <a href="#"><i class="fa-solid fa-headset"></i> Support</a>
                 </li>
-                <li>
-                  <a href="#"><i class="fa-solid fa-users"></i> Chat</a>
-                </li>
-                <li>
-                  <a href="#"
-                    ><i class="far fa-clipboard fa-fw"></i> How It Works</a
-                  >
-                </li>
               </ul>
-              <li id="signInLink">
-                <a href="signIn.html"
-                  ><i class="fa-solid fa-user-plus fs-16 mr-5"></i> Sign in</a
-                >
-              </li>
-              <li id="logoutLink" class="logout">
-                <a href="index.html" onclick="logout()"
-                  ><i class="fa-solid fa-sign-out fs-16 mr-5"></i> Logout</a
-                >
-              </li>
             </div>
             <!-- End Megamenu -->
           </li>
@@ -179,7 +186,7 @@
       </div>
       <div class="courses">
         <div class="head-courses">
-          <h3 class="rectangular-animation2">ArSL Courses</h3>
+          <h3 class="rectangular-animation2" id="arsl-head">ArSL Courses</h3>
         </div>
         <input
           type="text"
@@ -189,7 +196,7 @@
         />
         <div class="div-courses line" id="adultCourses">
           <div class="adult-info-content">
-            <h4>Adult ArSL Courses</h4>
+            <h4 id="">Adult ArSL Courses</h4>
             <p>
               Embrace the beauty of Arabic Sign Language (ArSL) with our
               individual Online Arabic Sign Language Courses. Whether you're a
@@ -247,10 +254,9 @@
         <div class="two">
           <ul class="links">
             <li><a class="one" href="#">Menu</a></li>
-            <li><a href="#">Home Page</a></li>
-            <li><a href="#">Translate page</a></li>
-            <li><a href="courses.html">Education Page</a></li>
-            <li><a href="course-info.html">Courses</a></li>
+            <li><a href="index.html" id="home">Home Page</a></li>
+            <li><a href="translate.html" id="translate">Translate page</a></li>
+            <li><a href="#" id="course">Education Page</a></li>
           </ul>
         </div>
         <div class="three">
@@ -258,7 +264,9 @@
             <i class="fa-solid fa-envelope fa-fw"></i>
             <h3>Contact Us</h3>
           </div>
-          <a href="#">hello@signlanguage.com</a>
+          <a href="mailto:signlanguage568@gmail.com"
+            >signlanguage568@gmail.com</a
+          >
         </div>
       </div>
       <div class="copy-right">
@@ -273,5 +281,7 @@
     <script src="js/courses.js"></script>
     <script src="js/logout.js"></script>
     <script src="js/search.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/lang.js"></script>
   </body>
 </html>

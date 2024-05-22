@@ -1,4 +1,76 @@
 {
-    "Hello": "Hello"
-  }
+  "Head_Education": "Education",
+  "Head_Translate": "Translate",
+  "Head_Home": "Home",
+  "Head_Logout": "Logout",
+  "ARABIC_SIGN_LANGUAGE_COURSES": "ARABIC SIGN LANGUAGE COURSES",
+  "LEARN_TO_SIGN_TODAY": "Learn to sign today with our online sign language courses",
+  "EACH_COURSE_DESCRIPTION": "Each course is packed with vocabulary, numbers, tips about learning Arabic Sign Language (ArSL), and special knowledge of Deaf culture.",
+  "COURSE_CATEGORIES": "Course Categories",
+  "WE_VE_GOT_COURSES_FOR_EVERYONE": "We've got courses for everyone!",
+  "AGES_15": "Ages 15+",
+  "KIDS": "Kids",
+  "arsl_head":"ArSL Courses",
+  "ADULT_ARSL_COURSES": "Adult ArSL Courses",
+  "ADULT_COURSES_DESCRIPTION": "Embrace the beauty of Arabic Sign Language (ArSL) with our individual Online Arabic Sign Language Courses. Whether you're a beginner or looking to enhance your skills, each course offers a comprehensive and interactive journey led by experienced Arabic Sign Language instructors. Dive into a world of expressive gestures, vibrant culture, and meaningful communication, as you learn to converse fluently in Arabic Sign Language (ArSL), one course at a time. Start your signing adventure today!",
+  "ARSL_COURSES_FOR_KIDS": "ArSL Courses for Kids",
+  "KIDS_COURSES_DESCRIPTION": "Learn Arabic Sign Language (ArSL) in a fun and interactive way with Sign Language 101 for Kids! Our online courses, designed by Deaf curriculum specialists, will engage kids ages 8-15 in an immersive learning experience. Unlock the power of communication and bring clarity to conversations with this hands-on opportunity.",
+  "SEARCH_FOR_COURSES": "Search for Courses..",
+  "MENU": "Menu",
+  "HOME_PAGE": "Home Page",
+  "TRANSLATE_PAGE": "Translate page",
+  "EDUCATION_PAGE": "Education Page",
+  "CONTACT_US": "Contact Us",
+  "COPYRIGHT": "Copyright © 2024 Sign Language",
+  "MADE_BY": "Made by SignCraft Innovators",
+  "Close": "Close",
+  "HELP_SUPPORT": "Help & Support",
+  "HELLO_MESSAGE_1": "Hello",
+  "HELLO_MESSAGE_2": "We're at your service, click here to start the conversation now!",
+  "CHAT_WITH_ROBO": "Chat With Robo",
+  "NEW_MESSAGE": "New Message",
+  "ROBO_GREETINGS": "Greetings. I am Robo, your dedicated personal assistant, ready and at your service to provide insightful answers to any inquiries you may have.",
+  "HOW_CAN_I_ASSIST": "How may I assist you today? Kindly choose from the following options to guide me in providing the support you require:",
+  "CHOOSE_BUTTON_ERROR": "Error in sign language App",
+  "CHOOSE_BUTTON_ERROR_p1": "Please take a screenshot of the error you encountered, whether it's related to avatar movement or written text (when using sign language), and send it to our",
+  "CHOOSE_BUTTON_ERROR_p2": "Email",
+  "CHOOSE_BUTTON_ERROR_p3": "along with details of the error. The error will be fixed as soon as possible.",
+  "CHOOSE_BUTTON_ACCOUNT": "Account-related Inquiries",
+  "CHOOSE_BUTTON_ACCOUNT_p1": "If you have forgotten your account password, please go to the",
+  "CHOOSE_BUTTON_ACCOUNT_p2": "Password Reset page",
+  "CHOOSE_BUTTON_ACCOUNT_p3": "enter your email, and a message with a link will be sent to your email. Click on the link to be able to set a new password.",
+  "CHOOSE_BUTTON_ACCOUNT_p4": "If you are experiencing issues updating your personal information, please make sure to use a name that does not contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (<,>), or more than one period (.).",
+  "CHOOSE_BUTTON_EDUCATION": "Education and Courses",
+  "CHOOSE_BUTTON_EDUCATION_p1": "If you are facing issues accessing the learning platform or if the course videos are unavailable, please send us the details via",
+  "CHOOSE_BUTTON_EDUCATION_p2": "along with some screenshots illustrating the problem.",
+  "CHOOSE_BUTTON_EDUCATION_p3": "If you would like us to provide another course for you, please provide us with the course details through our",
+  "CHOOSE_BUTTON_OTHER": "Other",
+  "CHOOSE_BUTTON_OTHER_p1": "Please contact us via",
+  "CHOOSE_BUTTON_OTHER_p2": "if you are experiencing any unmentioned issues.",
   
+  "HOME": {
+    "TITLE": "Artificial Intelligence Supported Sign Language Translator",
+    "DESCRIPTION": "We enable hearing impaired and deaf individuals who have difficulty in understanding what they read or are illiterate to access information, services, and video content with the AI-powered sign language, which is their mother tongue."
+  },
+  "ABOUT": {
+    "TITLE": "About",
+    "sign_intro": "Sign Language Translator",
+    "INTRO": "Welcome to our Sign Language Translator Project! We aim to bridge the communication gap between individuals using sign language and those who use written text.",
+    "WEB": {
+      "TITLE": "Web Sign Language Translator",
+      "DESCRIPTION": "Our website aims to offer courses focusing on sign language education for schools and colleges, providing a comprehensive resource for learning and understanding sign language."
+    },
+    "APP": {
+      "TITLE": "App Sign Language Translator",
+      "DESCRIPTION": "Welcome to our Sign Language Translator application! Our goal is to introduce a sign language translation feature facilitating communication between users. Additionally, we aim to provide courses within the app to enhance sign language skills for a better interactive experience."
+    },
+    "EDUCATION": {
+      "TITLE": "Education Sign Language Translator",
+      "DESCRIPTION": "We provide educational content for children and adults through a group of video lessons. Stay tuned for many updates."
+    },
+    "SUPPORT": {
+      "TITLE": "Support Sign Language Translator",
+      "DESCRIPTION": "We designed chatbot support. It is a collection of questions and their answers, and you can write to the admin. Let's try it."
+    }
+  }
+}
