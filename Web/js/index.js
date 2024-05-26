@@ -3,6 +3,7 @@ const nodemailer = require("nodemailer");
 const express = require("express");
 const cors = require("cors");
 const admin = require("firebase-admin");
+const axios = require('axios');
 const bodyParser1 = require("body-parser");
 const serviceAccount = require("../signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
 const livereload = require("livereload");
@@ -428,6 +429,15 @@ app.post("/search", async (req, res) => {
   const correctedText = correctedWords.join(" ");
 
   res.json({ correctedText });
+});
+
+app.post('/proxy-correct', async (req, res) => {
+  try {
+    const response = await axios.post('http://shifo2001.pythonanywhere.com/correct', req.body);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).send('Error correcting spelling');
+  }
 });
 
 app.post("/correct", async (req, res) => {

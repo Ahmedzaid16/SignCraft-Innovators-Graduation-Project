@@ -3,7 +3,6 @@
   "description": "Before you begin, ensure you have the following installed:",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "author": "",
   "license": "ISC",
   "scripts": {
@@ -11,7 +10,7 @@
     "watch": "nodemon --ext *"
   },
   "dependencies": {
-    "axios": "^1.7.1",
+    "axios": "^1.7.2",
     "connect-livereload": "^0.6.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
