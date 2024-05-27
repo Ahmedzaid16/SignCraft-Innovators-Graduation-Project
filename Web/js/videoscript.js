@@ -64,15 +64,18 @@ const get_start = async () => {
     console.log(videoDataForm);
 
     try {
-      const uploadResponse = await axios.post(
-        `/api/video/upload`,
-        videoDataForm
-      );
+      const uploadResponse = await axios.post(`https://cda6-154-134-63-11.ngrok-free.app/upload`, videoDataForm, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       console.log(uploadResponse.data);
 
-      const translateResponse = await axios.get(`/api/video/gettranslate`);
-      console.log(translateResponse.data.translate);
-      const translation = translateResponse.data.translate;
+
+      // const translateResponse = await axios.get(`/api/video/gettranslate`);
+      // console.log(translateResponse.data.translate);
+      // const translation = translateResponse.data.translate;
+      const translation = uploadResponse.data.prediction;
       translationLabel = document.createElement("div");
       translationLabel.setAttribute("id", "translationLabel");
       translationLabel.innerHTML = `<div><label> the translation </label></div> <br> <div>

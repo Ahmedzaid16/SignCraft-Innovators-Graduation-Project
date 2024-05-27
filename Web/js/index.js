@@ -883,58 +883,65 @@ app.post("/getProgress", async (req, res) => {
 });
 
 // translate Page
+// const uploadd = multer({ storage: multer.memoryStorage() });
+// app.post("/api/video/upload" ,uploadd.single('video') , async (req, res) => {
+//   console.log(req.body);
+//   try {
+//     const response = await axios.post('https://30c7-154-132-64-35.ngrok-free.app/upload', req.body);
+//     console.log(response);
+//     res.json(response.data);
+//   } catch (error) {
+//     res.status(500).send('Error upload');
+//   }
+//   // res.json({ videoUrl: "/api/video/download/" + vFileName });
+// });
 
-app.post("/api/video/upload", uploadPy.single("video"), (req, res) => {
-  const vFileName = req.file.filename;
-  res.json({ videoUrl: "/api/video/download/" + vFileName });
-});
+// app.get("/api/video/download/:fname", (req, res) => {
+//   const filename = req.params.fname;
+//   const filepath = path.resolve(__dirname, "..", "py", filename);
+//   const newfilepath = path.resolve(__dirname, "..", "py", "v.mp4");
 
-app.get("/api/video/download/:fname", (req, res) => {
-  const filename = req.params.fname;
-  const filepath = path.resolve(__dirname, "..", "py", filename);
-  const newfilepath = path.resolve(__dirname, "..", "py", "v.mp4");
+//   fs.rename(filepath, newfilepath, (err) => {
+//     if (err) {
+//       console.log("Error:", err);
+//       res.status(500).send("Error renaming file");
+//     } else {
+//       console.log("File renamed successfully");
+//       res.download(newfilepath);
+//     }
+//   });
+// });
 
-  fs.rename(filepath, newfilepath, (err) => {
-    if (err) {
-      console.log("Error:", err);
-      res.status(500).send("Error renaming file");
-    } else {
-      console.log("File renamed successfully");
-      res.download(newfilepath);
-    }
-  });
-});
+// const scriptPath = path.resolve(__dirname, "..", "py", "script.py");
 
-const scriptPath = path.resolve(__dirname, "..", "py", "script.py");
+// app.get("/api/video/gettranslate/", (req, res) => {
+//   const vPath = path.resolve(__dirname, "..", "py", "v.mp4");
+//   console.log(vPath);
 
-app.get("/api/video/gettranslate/", (req, res) => {
-  const vPath = path.resolve(__dirname, "..", "py", "v.mp4");
-  console.log(vPath);
+//   const pythonExecutable = "python"; // Adjust this if Python executable is named differently
 
-  const pythonExecutable = "python"; // Adjust this if Python executable is named differently
+//   execFile(pythonExecutable, [scriptPath, vPath], (error, stdout, stderr) => {
+//     if (error) {
+//       console.error("Error:", error);
+//       res.status(500).json({ error: "Failed to run script" });
+//       return;
+//     }
+//     if (stderr) {
+//       console.error("Stderr:", stderr);
+//     }
 
-  execFile(pythonExecutable, [scriptPath, vPath], (error, stdout, stderr) => {
-    if (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "Failed to run script" });
-      return;
-    }
-    if (stderr) {
-      console.error("Stderr:", stderr);
-    }
+//     console.log("Results:", stdout);
+//     res.status(200).json({ translate: stdout });
+//   });
+// });
 
-    console.log("Results:", stdout);
-    res.status(200).json({ translate: stdout });
-  });
-});
-
-app.get("/translate", (req, res) => {
-  res.writeHead("200", "ok", { "content-type": "text/html;charset=utf-8" });
-  const translate = fs.readFileSync(
-    path.resolve(__dirname, "..", "translate.html")
-  );
-  res.write(translate);
-  res.end();
-});
+// app.get("/translate", (req, res) => {
+//   res.writeHead("200", "ok", { "content-type": "text/html;charset=utf-8" });
+//   const translate = fs.readFileSync(
+//     path.resolve(__dirname, "..", "translate.html")
+//   );
+//   res.write(translate);
+//   res.end();
+// });
 
 app.listen(4000, () => console.log("Up & Running *4000"));
