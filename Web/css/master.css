@@ -192,12 +192,6 @@ ul {
   display: flex;
 }
 
-/* @media (max-width: 767px) {
-  .header .main-nav {
-    margin: auto;
-  }
-} */
-
 .header .main-nav > li > a {
   display: flex;
   justify-content: center;
@@ -216,9 +210,6 @@ ul {
   color: var(--main-color);
 }
 
-/*  I added this because when I was reduce the page, 
-    only the links that had been activated were showing, 
-    But the rest does not.  */
 .header .main-nav li {
   background-color: #fafafa;
 }
@@ -248,14 +239,6 @@ ul {
   left: 0;
 }
 
-/* @media (max-width: 767px) {
-  .header .main-nav > li > a {
-    padding: 10px;
-    font-size: 14px;
-    height: 40px;
-  }
-} */
-
 .header .mega-menu {
   position: absolute;
   width: 250px;
@@ -269,11 +252,11 @@ ul {
   right: 10px;
   transition: top var(--main-transition), opacity var(--main-transition);
   z-index: 100;
-  opacity: 0;
+  display: none;
 }
 
 .header .main-nav > li .show-menu {
-  opacity: 1;
+  display: block;
 }
 
 @media (max-width: 991px) {
@@ -301,12 +284,6 @@ ul {
 .header .mega-menu .links li:not(:last-child) {
   border-bottom: 1px solid #e9e6e6;
 }
-
-/* @media (max-width: 767px) {
-  .header .mega-menu .links:first-of-type li:last-child {
-    border-bottom: 1px solid #e9e6e6;
-  }
-} */
 
 .header .mega-menu .links li::before {
   content: "";
@@ -354,7 +331,7 @@ ul {
   padding: 20px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1024px) {
   .home {
     flex-direction: column;
     padding: 5px;
@@ -364,15 +341,13 @@ ul {
 .home .content {
   align-items: center;
   text-align: center;
-  /* background-color: var(--main-color-alt); */
   margin-right: 20px;
   border-radius: 10px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1024px) {
   .home .content {
-    margin-right: 0;
-    margin-top: 20px;
+    max-width: 800px;
   }
 }
 
@@ -384,33 +359,22 @@ ul {
 .home .content p {
   color: var(--white-color);
   padding: 0 20px;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 /* Start Intro */
 .sign_video {
   position: relative;
-  margin-top: 0;
   display: flex;
   justify-content: flex-end;
+  max-width: 100%;
+  margin: 0 10px;
 }
 
 .sign_video video {
-  max-width: 800px;
+  max-width: 100%;
+  height: auto;
   border-radius: 10px;
-}
-
-@media (max-width: 767px) {
-  .sign_video video {
-    max-width: 500px;
-    margin-top: 20px;
-  }
-}
-
-@media (max-width: 991px) {
-  .sign_video video {
-    margin-top: 20px;
-  }
 }
 
 /* End Intro */
@@ -640,6 +604,17 @@ ul {
   display: block;
   border-radius: 5px;
   font-size: 14px;
+}
+
+@media (max-width: 500px) {
+  .signIn {
+    margin-top: 41px;
+    min-height: 60vh;
+    width: 300px;
+  }
+  .form-control input {
+    width: 260px;
+  }
 }
 
 .form-control input:focus {
@@ -872,47 +847,56 @@ ul {
 /* Start Footer */
 .footer {
   background-color: var(--main-color);
-  padding: 50px 0 0;
-}
-
-@media (max-width: 767px) {
-  .footer {
-    text-align: center;
-  }
+  padding: 50px 30px 0 30px;
 }
 
 .footer .content {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 100px;
+  gap: 40px;
 }
-.footer .logo {
+
+@media (max-width: 400px) {
+  .footer .content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+  }
+}
+
+.footer .content .one {
   color: var(--white-color);
-  font-size: 20px;
-  font-weight: bold;
-  height: 72px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
 }
 
+.footer .logo {
+  display: flex;
+  font-size: 20px;
+  font-weight: bold;
+  height: 72px;
+  align-items: center;
+  color: var(--white-color);
+}
+
 .footer .logo i {
-  color: var(--main-color);
+  display: flex;
   background-color: var(--white-color);
+  color: var(--main-color);
   font-size: 20px;
   font-weight: bold;
   width: 40px;
   height: 36px;
   padding-right: 0px;
   border-radius: 50%;
-  display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 10px;
 }
+
 .footer .content .social {
   display: flex;
-  margin-left: 110px;
 }
 
 @media (max-width: 767px) {
@@ -948,11 +932,20 @@ ul {
 .footer .content .social .github:hover {
   background-color: #333;
 }
+
 .footer .two .links li {
   padding: 15px 0;
   transition: var(--main-transition);
 }
-.footer .two .links li a.one {
+
+@media (max-width: 768px) {
+  .footer .two {
+    width: 250px;
+    margin: auto;
+  }
+}
+
+.footer .two .links li a.onee {
   color: var(--white-color);
   font-weight: bold;
   font-size: 20px;
@@ -983,9 +976,18 @@ ul {
   margin-right: 10px;
   color: var(--white-color);
 }
-.footer .two .links li a.one::before {
+
+.footer .two .links li a.onee::before {
   display: none;
 }
+
+.footer .three {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+
 .footer .three .email {
   display: flex;
   align-items: center;
@@ -1006,6 +1008,7 @@ ul {
   font-size: 19px;
   color: var(--black-color);
 }
+
 .footer .copy-right {
   display: flex;
   justify-content: center;
