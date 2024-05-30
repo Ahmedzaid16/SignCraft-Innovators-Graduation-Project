@@ -10,7 +10,7 @@ Before you begin, ensure you have the following installed:
 
 - Install [Node.js](https://nodejs.org/) which includes [Node Package Manager](https://docs.npmjs.com/getting-started/)
 
-### Setting Up the Project
+### Setting Up the Web Project
 
 1-Install project dependencies locally:
 
@@ -18,8 +18,8 @@ Before you begin, ensure you have the following installed:
  npm install
 ```
 
-2-To start the application, run:
+2-To start the application, run from Web Folder Path:
 
 ```bash
- npx nodemon js/index.js
+ npm run watch 
 ```
