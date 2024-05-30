@@ -1,0 +1,4 @@
+conda activate GP
+E:
+cd web\py\first_flask
+python app.py

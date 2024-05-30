@@ -95,12 +95,14 @@ section {
   font-weight: bold;
 }
 
-.courses .div-courses .adult-info-content h4 {
+.courses .div-courses .adult-info-content h4,
+.courses .div-courses .kids-info-content h4 {
   font-size: 25px;
   font-weight: 700;
 }
 
-.courses .div-courses .adult-info-content p {
+.courses .div-courses .adult-info-content p,
+.courses .div-courses .kids-info-content p {
   font-size: 15px;
   font-weight: 400;
   line-height: 25px;
@@ -138,7 +140,7 @@ section {
   background-color: #2ec3b6;
   border-radius: 15px;
   padding: 5px 10px;
-  transform: translate(10px, -10px);
+  margin: 0px 10px 10px;
 }
 .courses .div-courses .div-courses-videos .course-content .course-info p {
   line-height: 20px;
@@ -161,7 +163,7 @@ section {
   position: absolute;
   height: 35px;
   width: 240px;
-  transform: translate(-8px, -10px);
+  margin: -12px -10px 0px;
   animation: spin 0.7s linear infinite;
 }
 
@@ -171,7 +173,7 @@ section {
   position: absolute;
   height: 70px;
   width: 270px;
-  transform: translate(-8px, -10px);
+  margin: -10px -8px 0px;
   animation: spin 0.7s linear infinite;
 }
 
@@ -233,6 +235,11 @@ section {
     grid-template-columns: auto;
   }
 }
+@media (max-width: 767px) {
+  .courses .div-courses .div-courses-videos {
+    grid-template-columns: auto;
+  }
+}
 #myInput {
   color: #011627;
   margin: 10px 10% -40px;
@@ -245,4 +252,9 @@ section {
 #myInput:hover,
 #myInput:focus {
   border: 1px solid #e71d36; /* Change border color on hover and focus */
+}
+
+.header .main-nav > li > .btn-lang {
+  padding: 0;
+  cursor: pointer;
 }

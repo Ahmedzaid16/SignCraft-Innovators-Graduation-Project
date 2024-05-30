@@ -41,13 +41,13 @@ function updateSignInLink() {
     signInLink.innerHTML = `
       <a href="profile.html">
         <div class="circle-avatar">
-          <img style="width: 45px;height: 45px;border-radius: 50%;" src="images/dark-avatar.jpg" alt="avatar"
+          <img style="width: 45px;height: 45px;border-radius: 50%;object-fit: cover;" src="images/dark-avatar.jpg" alt="avatar"
           id="avatar-img"
         />
         </div>
       </a>
     `;
-    education.innerHTML = `<a href="courses.html" class="edu">Education</a>`;
+    education.innerHTML = `<a href="courses.html" class="edu" id="head_edu">Education</a>`;
     // Call the function to update the avatar image when the page loads
     updateAvatarImage();
   }

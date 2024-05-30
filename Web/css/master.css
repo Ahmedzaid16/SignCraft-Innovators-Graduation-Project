@@ -190,6 +190,7 @@ ul {
 
 .header .main-nav {
   display: flex;
+  align-items: center;
 }
 
 .header .main-nav > li > a {
@@ -212,6 +213,10 @@ ul {
 
 .header .main-nav li {
   background-color: #fafafa;
+}
+
+.menu_index {
+  position: relative;
 }
 
 .header .main-nav > li > a::before {
@@ -1113,6 +1118,7 @@ ul {
 .translate form div {
   display: flex;
   align-items: center;
+  gap: 5px;
 }
 .translate form div i {
   margin-bottom: 20px;
@@ -1392,3 +1398,8 @@ ul {
   }
 }
 /* End animation */
+
+/* .header .main-nav > li > .btn-lang {
+  padding: 0;
+  cursor: pointer;
+} */

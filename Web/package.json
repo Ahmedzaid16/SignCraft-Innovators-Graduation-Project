@@ -1,11 +1,29 @@
 {
+  "name": "web",
+  "description": "Before you begin, ensure you have the following installed:",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "node ./bin/www",
+    "watch": "nodemon --ext *"
+  },
   "dependencies": {
+    "axios": "^1.7.2",
+    "buffer": "^6.0.3",
+    "connect-livereload": "^0.6.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "ffmpeg": "^0.0.4",
     "firebase": "^8.10.0",
     "firebase-admin": "^12.0.0",
+    "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
+    "i18n": "^0.15.1",
+    "livereload": "^0.9.3",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.9",
     "typo-js": "^1.2.4"
