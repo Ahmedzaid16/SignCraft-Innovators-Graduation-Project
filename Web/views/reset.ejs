@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/framework.css" />
+    <link rel="stylesheet" href="./css/master.css" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Forgot Password</title>
+  </head>
+
+  <body>
+    <!-- Start Header -->
+    <%- include('./components/header.ejs' , {currentPage:null}) %>
+    <!-- End Header -->
+    <!-- start Reset Password -->
+    <canvas id="canvas"></canvas>
+    <div class="main">
+      <div class="card">
+        <p class="lock-icon"><i class="fa-solid fa-lock"></i></p>
+        <h2 class="hfor">Forgot Password?</h2>
+        <p class="prest">You can reset your Password here</p>
+        <input
+          type="email"
+          id="email"
+          class="passInput"
+          placeholder="Email address"
+        />
+        <button id="send" class="send-email">Send Email</button>
+      </div>
+    </div>
+    <!-- End Reset Password -->
+    <!-- Start Footer -->
+    <%- include('./components/footer.ejs') %>
+    <!-- End Footer -->
+    <script src="./js/reset.js"></script>
+    <script src="./js/sendEmail.js"></script>
+    <script src="./js/lang.js"></script>
+  </body>
+</html>

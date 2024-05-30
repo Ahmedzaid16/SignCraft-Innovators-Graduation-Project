@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/framework.css" />
+    <link rel="stylesheet" href="./css/master.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sign Language</title>
+    <style>
+      body {
+        height: 90vh;
+      }
+      #divvideo {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Start Header -->
+    <%- include('./components/header.ejs' , {currentPage:"translate"}) %>
+    <!-- End Header -->
+    <!-- Start translate page -->
+    <div class="translate">
+      <div class="T1">
+        <div id="content" class="content">
+          <h1>Translate</h1>
+          <p>
+            You can translate from text to sign language and vice versa.
+            <br />
+            You can use convert audio and video to sign language.
+          </p>
+          <img src="images/chatbot.png" alt="" />
+        </div>
+        <div id="divvideo">
+          <h2>recording video</h2>
+          <video
+            id="video"
+            autoplay
+            playsinline
+            style="
+              width: 100%;
+              height: 50vh;
+              background-color: #333;
+              padding: 10px;
+              border-radius: 10px;
+              color: #fff;
+            "
+          ></video>
+          <video
+            controls
+            id="display_video"
+            autoplay
+            playsinline
+            style="
+              display: none;
+              width: 100%;
+              height: 50vh;
+              background-color: #333;
+              padding: 10px;
+              border-radius: 10px;
+              color: #fff;
+            "
+          ></video>
+        </div>
+      </div>
+      <div class="T2">
+        <div class="content">
+          <h2>Do the translate</h2>
+          <form action="">
+            <div>
+              <input
+                class="input voice"
+                type="text"
+                placeholder="Enter your text"
+              />
+              <i class="fa-solid fa-microphone"></i>
+              <svg
+                id="startRecordingSvg"
+                style="margin-bottom: 14px"
+                cursor="pointer"
+                fill="#000000"
+                height="40px"
+                width="40px"
+                version="1.1"
+                id="Capa_1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 0 372.844 372.844"
+                xml:space="preserve"
+              >
+                <g>
+                  <path
+                    d="M113.094,94.363c-0.212,5.459-8.47,9.848-18.646,9.848c-10.175,0-18.435-4.389-18.647-9.848
+               c-9.823,6.2-16.353,17.141-16.353,29.615c0,19.331,15.668,35.001,35,35.001c19.332,0,35-15.67,35-35.001
+               C129.447,111.504,122.917,100.563,113.094,94.363z"
+                  />
+                  <path
+                    d="M326.447,168.28h-99.516c-25.623,0-46.396,20.772-46.396,46.397v1.044h-11.088v-31.718
+               c12.19-15.909,19.447-35.788,19.447-57.332c0-33.729-17.775-63.379-44.447-80.09v-4.958c0-9.07-7.351-16.421-16.421-16.421H60.868
+               c-9.07,0-16.421,7.351-16.421,16.421v4.958C17.775,63.292,0,92.942,0,126.671c0,21.545,7.257,41.423,19.447,57.332v120.005
+               c0,24.099,19.535,43.634,43.634,43.634h62.732c24.099,0,43.634-19.536,43.634-43.634v-28.886h11.088v1.043
+               c0,25.625,20.773,46.398,46.396,46.398h99.516c25.625,0,46.397-20.773,46.397-46.398v-61.487
+               C372.844,189.053,352.072,168.28,326.447,168.28z M73.088,305.199H57.756c-7.548,0-13.667-6.119-13.667-13.667
+               c0-7.548,6.119-13.666,13.667-13.666h15.332c7.548,0,13.667,6.119,13.667,13.666C86.755,299.081,80.636,305.199,73.088,305.199z
+                M94.447,181.117C64.425,181.117,40,156.693,40,126.671c0-30.022,24.425-54.447,54.447-54.447
+               c30.022,0,54.447,24.425,54.447,54.447C148.895,156.693,124.47,181.117,94.447,181.117z M340.063,272.532
+               c0,11.046-8.954,20.001-20,20.001s-20-8.955-20-20.001v-54.589c0-11.046,8.954-20.001,20-20.001s20,8.955,20,20.001V272.532z"
+                  />
+                </g>
+              </svg>
+            </div>
+            <input type="submit" value="Translate" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End translate page -->
+    <script src="node_modules/axios/dist/axios.min.js"></script>
+    <script src="./js/videoscript.js"></script>
+    <script src="./js/logout.js"></script>
+    <script src="./js/check.js"></script>
+    <script src="./js/lang.js"></script>
+  </body>
+</html>

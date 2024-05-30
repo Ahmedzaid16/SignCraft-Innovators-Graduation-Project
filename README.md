@@ -18,8 +18,8 @@ Before you begin, ensure you have the following installed:
  npm install
 ```
 
-2-To start the application, run:
+2-To start the application, run from Web Folder Path:
 
 ```bash
- npx nodemon js/index.js
+ npx npm run watch 
 ```

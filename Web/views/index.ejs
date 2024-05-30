@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="website icon" type="png" href="" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/framework.css" />
+    <link rel="stylesheet" href="./css/master.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sign Language</title>
+  </head>
+
+  <body>
+    <!-- Start header -->
+    <%- include('./components/header.ejs' , {currentPage:"index"}) %>
+    <!-- End Header -->
+    <!-- Start Home -->
+    <!-- Start intro -->
+    <div class="home">
+      <div class="content">
+        <h2 class="home-title">
+          Artificial Itelligence Supported Sign Language Translator
+        </h2>
+        <p class="home-description">
+          We enable hearing impaired and deaf individuals who have difficulty in
+          understanding what they read or are illiterate to access information,
+          services and video content with the ai powered sign language , which
+          is their mother tongue
+        </p>
+      </div>
+      <div class="sign_video">
+        <video autoplay muted loop>
+          <source src="images/sign_animation.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+    <!-- Start About Section -->
+    <div class="about">
+      <h2 class="main-title about-title">About</h2>
+      <div class="container one">
+        <div class="text text_left">
+          <h1 class="sign-intro">Sign Language Translator</h1>
+          <p class="about-intro">
+            Welcome to our Sign Language Translator Project! We aim to bridge
+            the communication gap between individuals using sign language and
+            those who use written text.
+          </p>
+        </div>
+        <div class="image_right">
+          <img src="images/Women_hand.jpg" alt="" />
+        </div>
+        <a class="left" href="#"><i class="fa-regular fa-circle-left"></i></a>
+      </div>
+      <div class="container reverse two">
+        <div class="image_left">
+          <img src="images/sign-language-interpreter.jpg" alt="" />
+        </div>
+        <div class="text text_right">
+          <h1>
+            <span class="web-page">Web</span>
+            <span class="sign-intro">Sign Language Translator</span>
+          </h1>
+          <p class="about-web-description">
+            Our website aims to offer courses focusing on sign language
+            education for schools and colleges, providing a comprehensive
+            resource for learning and understanding sign language.
+          </p>
+        </div>
+        <a class="right" href="#"><i class="fa-regular fa-circle-right"></i></a>
+      </div>
+      <div class="container one">
+        <div class="text text_left">
+          <h1>
+            <span class="app-page">App</span>
+            <span class="sign-intro">Sign Language Translator</span>
+          </h1>
+          <p class="about-app-description">
+            Welcome to our Sign Language Translator application! Our goal is to
+            introduce a sign language translation feature facilitating
+            communication between users. Additionally, we aim to provide courses
+            within the app to enhance sign language skills for a better
+            interactive experience.
+          </p>
+        </div>
+        <div class="image_right">
+          <img src="images/sign-lauguage-app.avif" alt="" />
+        </div>
+        <a class="left" href="#"><i class="fa-regular fa-circle-left"></i></a>
+      </div>
+      <div class="container reverse two">
+        <div class="image_left">
+          <img src="images/persons.jpg" alt="" />
+        </div>
+        <div class="text text_right">
+          <h1>
+            <span class="edu-page">Education</span>
+            <span class="sign-intro">Sign Language Translator</span>
+          </h1>
+          <p class="about-education-description">
+            We provide rducational content for children and adults through a
+            group of video lessons. Stay tuned for many updates.
+          </p>
+        </div>
+        <a class="right" href="courses.html"
+          ><i class="fa-regular fa-circle-right"></i
+        ></a>
+      </div>
+      <div class="container one">
+        <div class="text text_left">
+          <h1>
+            <span class="edu-page">Education</span>
+            <span class="sign-intro">Sign Language Translator</span>
+          </h1>
+          <p class="about-education-description">
+            We provide rducational content for children and adults through a
+            group of video lessons. Stay tuned for many updates.
+          </p>
+        </div>
+        <div class="image_right">
+          <img src="images/persons.jpg" alt="" />
+        </div>
+        <a class="left" href="courses.html"
+          ><i class="fa-regular fa-circle-left"></i
+        ></a>
+      </div>
+      <div class="container reverse two">
+        <div class="image_left">
+          <img
+            style="background-color: #f3f3f3; width: 500px"
+            src="images/chatbot.png"
+            alt=""
+          />
+        </div>
+        <div class="text text_right">
+          <h1>
+            <span class="sup-page">Support</span>
+            <span class="sign-intro">Sign Language Translator</span>
+          </h1>
+          <p class="about-support-description">
+            We designed chatbot support. It is a collection of questions and
+            their answers, and you can write to the admin.<br />
+            lets try it.
+          </p>
+        </div>
+        <a class="right" href="courses.html"
+          ><i class="fa-regular fa-circle-right"></i
+        ></a>
+      </div>
+    </div>
+    <!-- End About Section -->
+    <!-- Start Footer -->
+    <%- include('./components/footer.ejs') %>
+    <!-- End Footer -->
+    <script src="./js/logout.js"></script>
+    <script src="./js/check.js"></script>
+    <script src="./js/lang.js"></script>
+    <!-- <script src="js/footer.js"></script> -->
+  </body>
+</html>
