@@ -150,11 +150,12 @@ ul {
 .scroller {
   background-color: var(--main-color-alt);
   position: fixed;
-  left: 0;
   top: 0;
+  left: 0;
   z-index: 100;
-  width: 0;
   height: 5px;
+  width: 0%;
+  transition: width 0.1s ease-out;
 }
 /* End Scroller */
 
