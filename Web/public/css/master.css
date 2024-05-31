@@ -102,6 +102,11 @@ ul {
   z-index: 1;
   transition: var(--main-transition);
 }
+@media (max-width: 425px) {
+  .main-title {
+    font-size: 20px;
+  }
+}
 
 .main-title::before,
 .main-title::after {
@@ -368,6 +373,26 @@ ul {
   font-size: 24px;
 }
 
+@media (max-width: 768px) {
+  .home .content h2 {
+    font-size: 26px;
+  }
+  .home .content p {
+    color: var(--white-color);
+    padding: 0 10px;
+    font-size: 20px;
+  }
+}
+@media (max-width: 425px) {
+  .home .content h2 {
+    font-size: 20px;
+  }
+  .home .content p {
+    color: var(--white-color);
+    padding: 0 10px;
+    font-size: 16px;
+  }
+}
 /* Start Intro */
 .sign_video {
   position: relative;
@@ -420,6 +445,11 @@ ul {
 
 @media (max-width: 991px) {
   .about .container {
+    margin: 0 auto;
+  }
+}
+@media (max-width: 768px) {
+  .about .container {
     margin: 0 20px;
   }
 }
@@ -444,6 +474,14 @@ ul {
   transition: var(--main-transition);
 }
 
+@media (max-width: 450px) {
+  .about .container .text_left {
+    margin-right: -50px;
+  }
+  .about .container .text_right {
+    margin-left: -50px;
+  }
+}
 .about .container:hover .text {
   color: var(--white-color);
 }
@@ -458,6 +496,15 @@ ul {
 
 .about .container .text p {
   font-size: 25px;
+}
+
+@media (max-width: 768px) {
+  .about .container .text h1 {
+    font-size: 26px;
+  }
+  .about .container .text p {
+    font-size: 20px;
+  }
 }
 
 .about .container img {
@@ -967,7 +1014,6 @@ ul {
 
 .footer .two .links li:hover:not(:first-child) a {
   color: var(--black-color);
-  font-size: 17px;
 }
 
 .footer .two .links li a {
