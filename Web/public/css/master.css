@@ -145,6 +145,19 @@ ul {
 }
 
 /* End Global Rules */
+
+/* Start Scroller */
+.scroller {
+  background-color: var(--main-color-alt);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  width: 0;
+  height: 5px;
+}
+/* End Scroller */
+
 /* Start header */
 .header {
   background-color: var(--white-color);

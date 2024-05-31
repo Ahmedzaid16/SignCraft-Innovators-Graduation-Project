@@ -24,6 +24,7 @@
   </head>
 
   <body>
+    <div class="scroller"></div>
     <!-- Start header -->
     <%- include('./components/header.ejs' , {currentPage:"index"}) %>
     <!-- End Header -->
@@ -164,6 +165,16 @@
     <!-- Start Footer -->
     <%- include('./components/footer.ejs') %>
     <!-- End Footer -->
+    <script>
+      let scroller = document.querySelector(".scroller");
+      let scrollerHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+      window.addEventListener("scroll", () => {
+        let scrollTop = document.documentElement.scrollTop;
+        scroller.style.width = `${(scrollTop / scrollerHeight) * 100}%`;
+      });
+    </script>
     <script src="./js/logout.js"></script>
     <script src="./js/check.js"></script>
     <script src="./js/lang.js"></script>
