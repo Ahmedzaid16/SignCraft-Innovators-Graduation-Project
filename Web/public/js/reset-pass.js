@@ -1,58 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Fetch the Save button element
-  const saveNewPasswordButton = document.getElementById("save");
-
-  // Add a click event listener to the Save button
-  saveNewPasswordButton.addEventListener("click", async function (event) {
-    // Prevent the default form submission behavior
-    event.preventDefault();
-
-    // Fetch the input values
-    // Call the function to get the email from the URL
-    const extractedEmail = getEmailFromURL();
-    const newPassword = document.getElementById("new-password").value;
-    const configPassword = document.getElementById("confirm-password").value;
-    if (newPassword.trim() === "") {
-      alert("new Password is empty");
-      return;
-    } else if (configPassword.trim() === "") {
-      alert("confirm password is empty");
-      return;
-    } else if (newPassword !== configPassword) {
-      alert("new Password not equal confirm password");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:4000/resetPass", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newPassword: newPassword,
-          email: extractedEmail,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Data successfully updated
-        alert("Password updated successfully!");
-        // Perform logout after password update
-        window.location.href = "signIn.html";
-      } else {
-        // Error updating data
-        alert("Error updating password");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred while updating password");
-    }
-  });
-});
-
 // Function to toggle the visibility of a password input field be click on lock icon.
 function togglePasswordVisibility(inputId) {
   var icon = "";
@@ -78,24 +23,87 @@ function togglePasswordVisibility(inputId) {
   }
 }
 
-function getEmailFromURL() {
-  // Get the current URL
-  var currentURL = window.location.href;
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("resetForm");
+  const password = document.getElementById("new-password");
+  const password2 = document.getElementById("confirm-password");
 
-  // Find the position of "email="
-  var emailIndex = currentURL.indexOf("email=");
-
-  // Check if "email=" is found in the URL
-  if (emailIndex !== -1) {
-    // Extract the email value from the URL
-    var email = currentURL.substring(emailIndex + 6);
-
-    // Output the email address
-    console.log(email);
-
-    return email;
-  } else {
-    console.log("Email parameter not found in the URL");
-    return null;
+  function showError(input, message) {
+    const formControl = input.parentElement;
+    formControl.className = "form-control error";
+    let small = formControl.querySelector("small");
+    if (!small) {
+      small = document.createElement("small");
+      formControl.appendChild(small);
+    }
+    small.innerText = message;
   }
-}
+
+  function showSuccess(input) {
+    const formControl = input.parentElement;
+    formControl.className = "form-control success";
+    const small = formControl.querySelector("small");
+    if (small) {
+      formControl.removeChild(small);
+    }
+  }
+
+  function checkRequired(inputArr) {
+    let valid = true;
+    inputArr.forEach(function (input) {
+      if (input.value.trim() === "") {
+        showError(input, `${getFieldName(input)} is required`);
+        valid = false;
+      } else {
+        showSuccess(input);
+      }
+    });
+    return valid;
+  }
+
+  function checkLength(input, min, max) {
+    if (input.value.length < min) {
+      showError(
+        input,
+        `${getFieldName(input)} must be at least ${min} characters`
+      );
+      return false;
+    } else if (input.value.length > max) {
+      showError(
+        input,
+        `${getFieldName(input)} must be less than ${max} characters`
+      );
+      return false;
+    } else {
+      showSuccess(input);
+      return true;
+    }
+  }
+
+  function checkPasswordMatch(input1, input2) {
+    if (input1.value !== input2.value) {
+      showError(input2, "Passwords do not match");
+      return false;
+    }
+    return true;
+  }
+
+  function getFieldName(input) {
+    return (
+      input.placeholder.replace(" ", "").charAt(0).toUpperCase() +
+      input.placeholder.slice(1)
+    );
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const isRequiredValid = checkRequired([password, password2]);
+    const isPasswordValid = checkLength(password, 6, 25);
+    const isPasswordMatchValid = checkPasswordMatch(password, password2);
+
+    if (isRequiredValid && isPasswordValid && isPasswordMatchValid) {
+      form.submit();
+    }
+  });
+});

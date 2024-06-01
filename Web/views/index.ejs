@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/framework.css" />
-    <link rel="stylesheet" href="./css/master.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/framework.css" />
+    <link rel="stylesheet" href="/css/master.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,9 +24,21 @@
   </head>
 
   <body>
+    <!-- if User reset Email -->
+    <% if (typeof message !== 'undefined') { %>
+    <div class="alert-bar"><%= message %></div>
+    <% } %>
+    <!-- if User Enter Coueses Without Email Verify -->
+    <% if (typeof alertMessage !== 'undefined') { %>
+    <div class="alert-bar"><%= alertMessage %></div>
+    <% } %>
     <!-- Start header -->
-    <%- include('./components/header.ejs' , {currentPage:"index"}) %>
+    <% if (typeof user !== 'undefined') { %> <%-
+    include('./components/header.ejs', { avatarUrl: user.avatarUrl, currentPage:
+    "index" }) %> <% } else { %> <%- include('./components/header.ejs', {
+    avatarUrl: null, currentPage: "index" }) %> <% } %>
     <!-- End Header -->
+
     <!-- Start Home -->
     <!-- Start intro -->
     <div class="home">
@@ -43,7 +55,7 @@
       </div>
       <div class="sign_video">
         <video autoplay muted loop>
-          <source src="images/sign_animation.mp4" type="video/mp4" />
+          <source src="/images/sign_animation.mp4" type="video/mp4" />
         </video>
       </div>
     </div>
@@ -60,13 +72,13 @@
           </p>
         </div>
         <div class="image_right">
-          <img src="images/Women_hand.jpg" alt="" />
+          <img src="/images/Women_hand.jpg" alt="" />
         </div>
         <a class="left" href="#"><i class="fa-regular fa-circle-left"></i></a>
       </div>
       <div class="container reverse two">
         <div class="image_left">
-          <img src="images/sign-language-interpreter.jpg" alt="" />
+          <img src="/images/sign-language-interpreter.jpg" alt="" />
         </div>
         <div class="text text_right">
           <h1>
@@ -96,13 +108,13 @@
           </p>
         </div>
         <div class="image_right">
-          <img src="images/sign-lauguage-app.avif" alt="" />
+          <img src="/images/sign-lauguage-app.avif" alt="" />
         </div>
         <a class="left" href="#"><i class="fa-regular fa-circle-left"></i></a>
       </div>
       <div class="container reverse two">
         <div class="image_left">
-          <img src="images/persons.jpg" alt="" />
+          <img src="/images/persons.jpg" alt="" />
         </div>
         <div class="text text_right">
           <h1>
@@ -114,7 +126,7 @@
             group of video lessons. Stay tuned for many updates.
           </p>
         </div>
-        <a class="right" href="courses.html"
+        <a class="right" href="/courses"
           ><i class="fa-regular fa-circle-right"></i
         ></a>
       </div>
@@ -130,9 +142,9 @@
           </p>
         </div>
         <div class="image_right">
-          <img src="images/persons.jpg" alt="" />
+          <img src="/images/persons.jpg" alt="" />
         </div>
-        <a class="left" href="courses.html"
+        <a class="left" href="/courses"
           ><i class="fa-regular fa-circle-left"></i
         ></a>
       </div>
@@ -140,7 +152,7 @@
         <div class="image_left">
           <img
             style="background-color: #f3f3f3; width: 500px"
-            src="images/chatbot.png"
+            src="/images/chatbot.png"
             alt=""
           />
         </div>
@@ -155,7 +167,7 @@
             lets try it.
           </p>
         </div>
-        <a class="right" href="courses.html"
+        <a class="right" href="/courses"
           ><i class="fa-regular fa-circle-right"></i
         ></a>
       </div>
@@ -164,9 +176,6 @@
     <!-- Start Footer -->
     <%- include('./components/footer.ejs') %>
     <!-- End Footer -->
-    <script src="./js/logout.js"></script>
-    <script src="./js/check.js"></script>
-    <script src="./js/lang.js"></script>
-    <!-- <script src="js/footer.js"></script> -->
+    <script src="/js/lang.js"></script>
   </body>
 </html>

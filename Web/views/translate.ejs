@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/framework.css" />
-    <link rel="stylesheet" href="./css/master.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/framework.css" />
+    <link rel="stylesheet" href="/css/master.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,8 +32,11 @@
   </head>
 
   <body>
-    <!-- Start Header -->
-    <%- include('./components/header.ejs' , {currentPage:"translate"}) %>
+    <!-- Start header -->
+    <% if (typeof user !== 'undefined') { %> <%-
+      include('./components/header.ejs', { avatarUrl: user.avatarUrl, currentPage:
+      "translate" }) %> <% } else { %> <%- include('./components/header.ejs', {
+      avatarUrl: null, currentPage: "translate" }) %> <% } %>
     <!-- End Header -->
     <!-- Start translate page -->
     <div class="translate">
@@ -45,7 +48,7 @@
             <br />
             You can use convert audio and video to sign language.
           </p>
-          <img src="images/chatbot.png" alt="" />
+          <img src="/images/chatbot.png" alt="" />
         </div>
         <div id="divvideo">
           <h2>recording video</h2>
@@ -86,6 +89,8 @@
             <div>
               <input
                 class="input voice"
+                name="text"
+                id="text"
                 type="text"
                 placeholder="Enter your text"
               />
@@ -131,10 +136,9 @@
       </div>
     </div>
     <!-- End translate page -->
-    <script src="node_modules/axios/dist/axios.min.js"></script>
-    <script src="./js/videoscript.js"></script>
-    <script src="./js/logout.js"></script>
-    <script src="./js/check.js"></script>
-    <script src="./js/lang.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script src="node_modules/axios/dist/axios.min.js"></script> -->
+    <script src="/js/videoscript.js"></script>
+    <script src="/js/lang.js"></script>
   </body>
 </html>

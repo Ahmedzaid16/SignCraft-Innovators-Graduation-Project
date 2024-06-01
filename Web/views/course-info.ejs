@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/framework.css" />
-    <link rel="stylesheet" href="./css/master.css" />
-    <link rel="stylesheet" href="./css/course.info.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/framework.css" />
+    <link rel="stylesheet" href="/css/master.css" />
+    <link rel="stylesheet" href="/css/course.info.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,7 +25,8 @@
   </head>
   <body>
     <!-- Start header -->
-    <%- include('./components/header.ejs' , {currentPage:"courses"}) %>
+    <%- include('./components/header.ejs', { avatarUrl: user.avatarUrl,
+    currentPage: "courses" }) %>
     <!-- End Header -->
     <!-- Start course information -->
     <section>
@@ -75,7 +76,7 @@
             </p>
           </div>
           <div class="right" id="about-img">
-            <img src="images/adult-about.png" alt="man img" />
+            <img src="/images/adult-about.png" alt="man img" />
           </div>
         </div>
       </div>
@@ -91,7 +92,7 @@
             </p>
           </div>
           <div class="two" id="benfit-img">
-            <img src="images/benfit-head.png" alt="girl" />
+            <img src="/images/benfit-head.png" alt="girl" />
           </div>
           <div class="three">
             <p>
@@ -103,7 +104,7 @@
         <div class="bottom">
           <div class="four"><p>The benefits of learning sign language.</p></div>
           <div class="five">
-            <img src="images/benfit-bottom.png" alt="sign" />
+            <img src="/images/benfit-bottom.png" alt="sign" />
           </div>
         </div>
       </div>
@@ -128,8 +129,8 @@
     </section>
     <%- include('./components/footer.ejs') %>
     <!-- End course information -->
-    <script src="./js/course-info.js"></script>
-    <script src="./js/logout.js"></script>
-    <script src="./js/lang.js"></script>
+    <script src="/js/course-info.js"></script>
+    <script src="/js/logout.js"></script>
+    <script src="/js/lang.js"></script>
   </body>
 </html>

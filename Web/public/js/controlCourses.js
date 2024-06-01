@@ -217,7 +217,7 @@ formAdd.addEventListener("submit", async (e) => {
     };
 
     try {
-      const response = await fetch("http://localhost:4000/create-course", {
+      const response = await fetch("/create-course", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -267,7 +267,7 @@ formMod.addEventListener("submit", async (e) => {
 
     try {
       // Send a request to update the course data
-      const response = await fetch("http://localhost:4000/updateCourse", {
+      const response = await fetch("/updateCourse", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -293,7 +293,7 @@ formRem.addEventListener("submit", async (e) => {
   e.preventDefault();
   const code = document.getElementById("code-rem").value;
   try {
-    const response = await fetch("http://localhost:4000/deleteCourse", {
+    const response = await fetch("/deleteCourse", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -331,7 +331,7 @@ forminfo.addEventListener("submit", async (e) => {
 
   try {
     // Send a request to update the course data
-    const response = await fetch("http://localhost:4000/updateCourseinfo", {
+    const response = await fetch("/updateCourseinfo", {
       method: "POST",
       body: formData, // Use FormData as body
     });
@@ -365,7 +365,7 @@ formvideos.addEventListener("submit", async (e) => {
 
   try {
     // Send a request to update the course data
-    const response = await fetch("http://localhost:4000/updateCourseVideos", {
+    const response = await fetch("/updateCourseVideos", {
       method: "POST",
       body: formData, // Use FormData as body
     });
@@ -385,13 +385,13 @@ formvideos.addEventListener("submit", async (e) => {
 // Update the getCourses function to navigate to a new page with course info
 const getCourses = async () => {
   try {
-    const response = await fetch("http://localhost:4000/courses");
+    const response = await fetch("/courses");
     if (response.ok) {
       const courses = await response.json();
       // Store courses data in local storage
       localStorage.setItem("courses", JSON.stringify(courses));
       // Redirect to the new page
-      window.location.href = "controlCoursesView.html"; // Replace with the actual URL of your new page
+      window.location.href = "/controlCoursesView"; // Replace with the actual URL of your new page
     } else {
       console.error("Failed to fetch courses");
     }
@@ -402,13 +402,13 @@ const getCourses = async () => {
 
 const getUsers = async () => {
   try {
-    const response = await fetch("http://localhost:4000/Users");
+    const response = await fetch("/Users");
     if (response.ok) {
       const Users = await response.json();
       // Store courses data in local storage
       localStorage.setItem("Users", JSON.stringify(Users));
       // Redirect to the new page
-      window.location.href = "controlCoursesAccount.html";
+      window.location.href = "/controlCoursesAccount";
     } else {
       console.error("Failed to fetch Users");
     }

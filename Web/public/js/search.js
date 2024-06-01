@@ -9,7 +9,7 @@ async function search() {
   aKids = ulKids.getElementsByTagName("a");
 
   try {
-    const response = await axios.post('http://localhost:4000/proxy-correct', {
+    const response = await axios.post('/proxy-correct', {
       text: filter
     });
     correctedText = response.data.corrected_text.trim().toUpperCase();

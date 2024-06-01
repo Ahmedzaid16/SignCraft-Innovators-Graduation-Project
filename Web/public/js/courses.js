@@ -10,7 +10,7 @@ function scrollToElement(elementId) {
 // Modify fetchCourses function to fetch course data from the new endpoint
 async function fetchCourses() {
   try {
-    const response = await fetch("http://localhost:4000/courses");
+    const response = await fetch("/courses");
     const courses = await response.json();
     return courses;
   } catch (error) {

@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/framework.css" />
-    <link rel="stylesheet" href="./css/master.css" />
-    <link rel="stylesheet" href="./css/profile.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/framework.css" />
+    <link rel="stylesheet" href="/css/master.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,13 +21,54 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <style>
+      .form-control {
+        padding: 0px;
+        margin: 0;
+        grid-template-columns: 38% auto 15%;
+        grid-template-rows: 1fr auto;
+        width: 90%;
+        height: 100%;
+        justify-items: center;
+        align-items: baseline;
+      }
+      .form-control2 {
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+      }
+      .form-control input {
+        padding: 5px 0px;
+        margin: 0;
+        width: 100%;
+        height: 40%;
+        color: #e71d36;
+        border-radius: 5px;
+      }
+      .form-control small {
+        font-size: 12px;
+        position: relative;
+        grid-column: 2;
+      }
+      .form-control2 small {
+        position: relative;
+      }
+    </style>
     <title>Profile</title>
   </head>
 
   <body>
+    <!-- if User Enter Wrong Password -->
+    <% if (typeof PassMsg !== 'undefined') { %>
+    <div class="alert-bar"><%= PassMsg %></div>
+    <% } %>
     <!-- Start header -->
-    <%- include('./components/header.ejs' , {currentPage:null}) %>
+    <%- include('./components/header.ejs', { avatarUrl: user.avatarUrl,
+    currentPage: null }) %>
     <!-- End Header -->
+
     <!-- Start profile -->
     <section>
       <div class="profile-section">
@@ -36,32 +77,52 @@
             <i class="fa-sharp fa-solid fa-chevron-left fa-beat fa-lg"></i>
             <h2>Change Your Password</h2>
           </div>
-          <div action="#" class="change-form">
-            <form class="change-password">
-              <div class="current-password-section">
+          <div class="change-form">
+            <form
+              action="/Update_Password"
+              method="post"
+              enctype="multipart/form-data"
+              id="change-form"
+              class="change-password"
+            >
+              <input
+                type="hidden"
+                name="email"
+                id="emailHide"
+                value="<%= user.email %>"
+              />
+              <div class="current-password-section form-control2">
                 <label for="current-password"
                   >Enter your current password</label
                 >
                 <input
                   type="password"
+                  name="CurrentPassword"
                   id="current-password"
                   autocomplete="off"
                 />
+                <small>Error message</small>
               </div>
               <div class="new-password-section">
                 <label for="new-password">New Password</label>
-                <div class="new-password-input">
-                  <input type="password" id="new-password" autocomplete="off" />
+                <div class="new-password-input form-control2">
+                  <input
+                    type="password"
+                    id="new-password"
+                    name="NewPassword"
+                    autocomplete="off"
+                  />
                   <i
                     class="fa-solid fa-lock"
                     id="show-password"
                     onclick="togglePasswordVisibility('new-password')"
                   ></i>
+                  <small>Error message</small>
                 </div>
               </div>
               <div class="confirm-password-section">
                 <label for="confirm-password">Confirm New Password</label>
-                <div class="confirm-password-input">
+                <div class="confirm-password-input form-control2">
                   <input
                     type="password"
                     id="confirm-password"
@@ -72,30 +133,32 @@
                     id="show-confirm-password"
                     onclick="togglePasswordVisibility('confirm-password')"
                   ></i>
+                  <small>Error message</small>
                 </div>
               </div>
               <p>*You will be signed out when you save.</p>
-              <button id="saveNewPassword">Save</button>
+              <button type="submit" id="saveNewPassword">Save</button>
             </form>
           </div>
         </div>
         <div class="profile-container">
-          <form>
+          <form
+            action="/Upload_Avatar"
+            method="post"
+            enctype="multipart/form-data"
+            id="avatar-form"
+          >
             <div class="avatar">
-              <input type="file" id="avatar" accept="image/*" />
+              <input type="file" id="avatar" name="avatar" accept="image/*" />
               <div class="avatar-img">
-                <img
-                  src="images/dark-avatar.jpg"
-                  alt="avatar"
-                  id="avatar-img"
-                />
+                <img src="<%= user.avatarUrl %>" alt="avatar" id="avatar-img" />
                 <div class="circle-animation"></div>
               </div>
               <div
                 class="camera"
-                onclick="document.getElementById('avatar').click();"
+                onclick="document.getElementById('avatar').click()"
               >
-                <img src="images/camera-icon.png" alt="camera" />
+                <img src="/images/camera-icon.png" alt="camera" />
               </div>
             </div>
           </form>
@@ -106,14 +169,22 @@
             </ul>
           </div>
           <div class="information">
-            <form class="profile-form">
+            <form
+              class="profile-form"
+              action="/Update_User"
+              method="post"
+              enctype="multipart/form-data"
+              id="profile-form"
+            >
               <div class="email-section">
                 <label for="email">Email</label>
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   class="email-input"
                   autocomplete="off"
+                  value="<%= user.email %>"
                   readonly
                 />
               </div>
@@ -132,14 +203,17 @@
                   title="Change Password"
                 ></i>
               </div>
-              <div class="name-section">
+              <div class="name-section form-control">
                 <label for="name">Name</label>
                 <input
                   type="text"
                   id="name"
+                  name="username"
+                  value="<%= user.username %>"
                   class="name-input"
                   autocomplete="on"
                 />
+                <small>Error message</small>
               </div>
               <div class="gender-section">
                 <label for="gender">Gender</label>
@@ -149,12 +223,17 @@
                   class="gender-input"
                   autocomplete="off"
                 >
-                  <option value="male">Male</option>
+                  <% if (user.gender==='male') { %>
+                  <option selected value="male">Male</option>
                   <option value="female">Female</option>
+                  <% } else { %>
+                  <option value="male">Male</option>
+                  <option selected value="female">Female</option>
+                  <% } %>
                 </select>
               </div>
               <div class="save-section">
-                <button id="saveButton">Save</button>
+                <button type="submit" id="saveButton">Save</button>
               </div>
             </form>
           </div>
@@ -162,14 +241,7 @@
       </div>
     </section>
     <!-- End profile -->
-    <script src="./js/profile.js"></script>
-    <script src="./js/lang.js"></script>
-    <script>
-      function logout() {
-        localStorage.removeItem("userId");
-        // Hide the Logout link
-        document.getElementById("logoutLink").style.display = "none";
-      }
-    </script>
+    <script src="/js/profile.js"></script>
+    <script src="/js/lang.js"></script>
   </body>
 </html>

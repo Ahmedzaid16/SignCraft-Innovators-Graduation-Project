@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/framework.css" />
-    <link rel="stylesheet" href="./css/master.css" />
-    <link rel="stylesheet" href="./css/courses.css" />
-    <link rel="stylesheet" href="./css/chatbot.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/framework.css" />
+    <link rel="stylesheet" href="/css/master.css" />
+    <link rel="stylesheet" href="/css/courses.css" />
+    <link rel="stylesheet" href="/css/chatbot.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -26,7 +26,8 @@
   </head>
   <body>
     <!-- Start header -->
-    <%- include('./components/header.ejs' , {currentPage:"courses"}) %>
+    <%- include('./components/header.ejs', {avatarUrl:
+    user.avatarUrl,currentPage: "courses"}) %>
     <!-- End Header -->
     <!-- Start COURSES -->
     <section>
@@ -42,7 +43,7 @@
           </p>
         </div>
         <div class="right-arsls">
-          <img src="images/kids-head.png" alt="kids-img" />
+          <img src="/images/kids-head.png" alt="kids-img" />
         </div>
       </div>
       <!-- <div class="bottom-left-image">
@@ -59,14 +60,14 @@
             onclick="scrollToElement('adultCourses')"
           >
             <img
-              src="images/adult-categories.png"
+              src="/images/adult-categories.png"
               alt="Adult Arabic Sign Language (ArSL) Courses"
             />
             <p>Ages 15+</p>
           </div>
           <div class="kids-categories" onclick="scrollToElement('kidsCourses')">
             <img
-              src="images/kids-categories.png"
+              src="/images/kids-categories.png"
               alt="Kids Arabic Sign Language (ArSL) Courses"
             />
             <p>Kids</p>
@@ -118,10 +119,9 @@
     <%- include('./components/footer.ejs') %>
     <!-- End COURSES -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./js/chatbot.js"></script>
-    <script src="./js/courses.js"></script>
-    <script src="./js/logout.js"></script>
-    <script src="./js/search.js"></script>
-    <script src="./js/lang.js"></script>
+    <script src="/js/chatbot.js"></script>
+    <script src="/js/courses.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/lang.js"></script>
   </body>
 </html>

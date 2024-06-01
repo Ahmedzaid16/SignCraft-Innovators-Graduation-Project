@@ -56,7 +56,7 @@ async function updateProgress() {
   const videoId = video.src; // Use video URL as identifier
   // Example assuming you have userId, videoUrl, currentTime, duration, and progress values
   if (first) {
-    fetch("http://localhost:4000/updateProgress", {
+    fetch("/updateProgress", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +154,7 @@ var code = urlParams.get("course");
 
 async function fetchCourses() {
   try {
-    const response = await fetch("http://localhost:4000/findcourse", {
+    const response = await fetch("/findcourse", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -173,7 +173,7 @@ async function fetchCourses() {
 async function fetchProgressData(videoUrl) {
   try {
     const userId = localStorage.getItem("userId");
-    const response = await fetch("http://localhost:4000/getProgress", {
+    const response = await fetch("/getProgress", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

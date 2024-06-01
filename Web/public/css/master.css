@@ -607,7 +607,7 @@ ul {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 80vh;
+  height: 100vh;
   flex: 1;
 }
 .signIn .containerS .content .social {
@@ -628,13 +628,15 @@ ul {
   height: 30px;
 }
 
-.form-control {
+.form-control,
+.form-control2 {
   margin-bottom: 10px;
   padding-bottom: 10px;
   position: relative;
 }
 
-.form-control input {
+.form-control input,
+.form-control2 input {
   background-color: #eee;
   border: 2px solid #fff;
   padding: 12px 15px;
@@ -645,25 +647,30 @@ ul {
   font-size: 14px;
 }
 
-.form-control input:focus {
+.form-control input:focus,
+.form-control2 input:focus {
   outline: none;
   border-color: var(--main-color);
   transition: 0.4s;
 }
 
-.form-control.success input {
+.form-control.success input,
+.form-control2.success input {
   border-color: var(--success-massage);
 }
 
-.form-control.error input {
+.form-control.error input,
+.form-control2.error input {
   border-color: var(--error-massage);
 }
 
-.form-control.error small {
+.form-control.error small,
+.form-control2.error small {
   visibility: visible;
 }
 
-.form-control small {
+.form-control small,
+.form-control2 small {
   color: var(--error-massage);
   position: absolute;
   bottom: -10;
@@ -707,7 +714,7 @@ ul {
   text-align: center;
   flex-direction: column;
   flex: 1;
-  height: 80vh;
+  height: 100vh;
   background-color: var(--main-color);
 }
 
@@ -770,7 +777,7 @@ ul {
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   flex: 1;
 }
 
@@ -849,7 +856,7 @@ ul {
   flex-direction: column;
   flex: 1;
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   background-color: var(--main-color);
 }
 
@@ -1397,4 +1404,31 @@ ul {
 .header .main-nav > li > .btn-lang {
   padding: 0;
   cursor: pointer;
+}
+
+.alert-bar {
+  position: fixed;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  background-color: #2ec4b6;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  animation: moveAlertBar linear 5s 1 forwards;
+  z-index: 1000;
+}
+
+@keyframes moveAlertBar {
+  0% {
+    left: 100%;
+  }
+  50% {
+    left: 0%;
+  }
+  100% {
+    left: 0%;
+    display: none;
+  }
 }

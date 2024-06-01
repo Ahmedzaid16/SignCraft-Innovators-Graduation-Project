@@ -32,7 +32,8 @@
 .card div {
   width: 80%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .passInput {
   margin-top: 60px;
@@ -51,12 +52,12 @@
   color: #e71d36;
   cursor: pointer;
   width: 0%;
-  translate: -15px;
+  translate: -25px;
 }
 
 .save-pass {
   border: none;
-  margin-top: 50px;
+  margin-top: 30px;
   width: 80%;
   background-color: #2ec3b6;
   padding: 10px;
