@@ -54,7 +54,7 @@ async function populateCourses() {
 
       const courseInfo = document.createElement("div");
       courseInfo.classList.add("course-info");
-      
+
       const h4 = document.createElement("h4");
       const p = document.createElement("p");
       if (localStorage.getItem("lang") == "en") {
@@ -90,3 +90,45 @@ async function populateCourses() {
 
 // Call the populateCourses function when the DOM is loaded
 document.addEventListener("DOMContentLoaded", populateCourses);
+
+const sliderContainer = document.querySelector(".slider-container");
+const slideRight = document.querySelector(".right-slide");
+const slideLeft = document.querySelector(".left-slide");
+const downButton = document.querySelector(".down-button");
+const upButton = document.querySelector(".up-button");
+const slidesLength = slideRight.querySelectorAll("div").length;
+
+activeSlideIndex = 0;
+
+slideLeft.style.top = `-${(slidesLength - 1) * 70}vh`;
+
+upButton.addEventListener("click", () => changeSlide("up"));
+downButton.addEventListener("click", () => changeSlide("down"));
+
+const changeSlide = (direction) => {
+  const sliderHeight = sliderContainer.clientHeight;
+  if (direction === "up") {
+    activeSlideIndex++;
+    if (activeSlideIndex > slidesLength - 1) {
+      activeSlideIndex = 0;
+    }
+  } else if (direction === "down") {
+    activeSlideIndex--;
+    if (activeSlideIndex < 0) {
+      activeSlideIndex = slidesLength - 1;
+    }
+  }
+
+  slideRight.style.transform = `translateY(-${
+    activeSlideIndex * sliderHeight
+  }px)`;
+  slideLeft.style.transform = `translateY(${
+    activeSlideIndex * sliderHeight
+  }px)`;
+};
+
+const autoChangeSlide = () => {
+  changeSlide("up");
+};
+
+setInterval(autoChangeSlide, 5000);
