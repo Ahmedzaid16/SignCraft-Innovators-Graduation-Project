@@ -1,23 +1,28 @@
+const port = 4000;
 const firebase = require("firebase");
 const nodemailer = require("nodemailer");
 const express = require("express");
-const port = 4000;
 const cors = require("cors");
 const admin = require("firebase-admin");
 const axios = require("axios");
-const bodyParser1 = require("body-parser");
+const Typo = require("typo-js");
+// const bodyParser1 = require("body-parser");
 const serviceAccount = require("./signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
 const livereload = require("livereload");
 const multer = require("multer");
-const upload = multer(); // You can pass options to configure multer if needed
+const Storage = multer.memoryStorage();
+const upload = multer({
+  storage: Storage,
+});
 const User = require("./public/js/config");
+const session = require("express-session");
 const ffmpeg = require("ffmpeg");
 const path = require("path");
 const fs = require("fs");
 const http = require("http");
 const cookieParser = require("cookie-parser");
 const i18n = require("./models/i18n");
-const { spawn, execFile } = require("child_process");
+const secretKey = require("./models/secretKey");
 const { v4: uuidv4 } = require("uuid");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -32,17 +37,15 @@ const { auth } = require("firebase");
 const storage = admin.storage();
 const bucket = storage.bucket();
 const db = admin.firestore();
+const dictionary = new Typo("en_US");
 const app = express();
-app.use(bodyParser1.json({ limit: "50mb" }));
-app.use(bodyParser1.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 app.use(i18n.init);
-app.use(express.static(path.resolve(__dirname, "..")));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Auto refresh livereload for All Files ===> there is script in package.json
 const liveReloadServer = livereload.createServer();
@@ -58,35 +61,377 @@ liveReloadServer.server.once("connection", () => {
 });
 //////////////////////////////////////////////////////////////////////////////
 
-app.get("/", async (req, res) => {
-  res.render("index");
+// fection to send Email
+async function sendEmail(userEmail) {
+  // Step 3: Generate the email verification link
+  const verificationLink = await admin
+    .auth()
+    .generateEmailVerificationLink(userEmail);
+
+  // Step 4: Send the email verification link using Nodemailer
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "signlanguage568@gmail.com",
+      pass: "revg gkmi visi kdet",
+    },
+  });
+
+  const mailOptions = {
+    from: "signlanguage568@gmail.com",
+    to: userEmail,
+    subject: "Email Verification",
+    html: `<p>Please click on the following link to verify your email address:</p>
+     <a href="${verificationLink}">Email Verification</a>`,
+  };
+  await transporter.sendMail(mailOptions);
+}
+
+app.use(
+  session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // Set to true if in production
+      httpOnly: true, // Helps prevent cross-site scripting (XSS) attacks
+      sameSite: "strict", // Helps prevent CSRF attacks
+    },
+  })
+);
+////////////////////////////////////////////////////////////////////////////
+// Render home page and handle the token and avatarUrl if available
+app.get("/", (req, res) => {
+  const user = req.session.userData;
+  const alertMessage = req.session.alertMessage;
+  const Message = req.session.message;
+  if (alertMessage) {
+    delete req.session.alertMessage;
+    res.render("index", { user: user, alertMessage: alertMessage });
+  } else if (Message) {
+    delete req.session.message;
+    res.render("index", { user: user, message: Message });
+  } else {
+    res.render("index", { user: user });
+  }
 });
 
 app.get("/translate", async (req, res) => {
-  res.render("translate");
+  const user = req.session.userData;
+  res.render("translate", { user: user });
 });
 
 app.get("/courses", async (req, res) => {
-  res.render("courses");
+  const user = req.session.userData;
+
+  if (user) {
+    try {
+      // Get the user record from Firebase Auth
+      const userRecord = await admin.auth().getUser(user.userId);
+
+      if (userRecord.emailVerified) {
+        res.render("courses", { user: user });
+      } else {
+        // Send email verification
+        await sendEmail(userRecord.email);
+
+        req.session.alertMessage =
+          "Please Verify your Email to Access the Courses.";
+        res.redirect("/");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      res.status(400).send({ msg: "Error fetching user data" });
+    }
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.get("/courses/course_info", async (req, res) => {
+  res.render("course-info");
+});
+
+app.get("/courses/course_info/course_lessons", async (req, res) => {
+  res.render("course-lessons");
 });
 
 app.get("/signIn", async (req, res) => {
-  res.render("signIn");
+  const msg = req.session.msg;
+  delete req.session.msg;
+  res.render("signIn", { msg: msg });
+});
+
+app.get("/signUp", async (req, res) => {
+  res.render("signUp");
 });
 
 app.get("/profile", async (req, res) => {
-  res.render("profile");
+  const user = req.session.userData;
+  const PassMsg = req.session.PassMsg;
+  if (PassMsg) {
+    delete req.session.PassMsg;
+    res.render("profile", { user: user, PassMsg: PassMsg });
+  } else if (user) {
+    res.render("profile", { user: user });
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.get("/reset", async (req, res) => {
+  res.render("reset");
+});
+
+// GET /reset/reset_password endpoint
+app.get("/reset/reset_password", async (req, res) => {
+  const userId = req.query.userId;
+  res.render("reset-password", { userId: userId });
 });
 
 app.get("/support", async (req, res) => {
   res.render("courses");
 });
 
-// app.get("/", async (req, res) => {
-//   const snapshot = await db.collection("Users").get();
-//   const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-//   res.send(list);
-// });
+app.get("/logout", (req, res) => {
+  // Destroy the session
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      res.status(500).send("Error logging out");
+    } else {
+      res.redirect("/");
+    }
+  });
+});
+
+app.get("/control", async (req, res) => {
+  res.render("controlCourses");
+});
+
+app.get("/control/controlCoursesView", async (req, res) => {
+  res.render("controlCoursesView");
+});
+
+app.get("/control/controlCoursesAccount", async (req, res) => {
+  res.render("controlCoursesAccount");
+});
+
+app.post("/signIn", upload.none(), async (req, res) => {
+  const user = req.body;
+  try {
+    // Step 1: Authenticate the user
+    const userCredential = await firebase
+      .auth()
+      .signInWithEmailAndPassword(user.email, user.password);
+    const userId = userCredential.user.uid;
+
+    // Step 2: Retrieve additional user data from Firestore
+    const userDoc = await db.collection("Users").doc(userId).get();
+    if (!userDoc.exists) {
+      throw new Error("User data not found");
+    }
+    const userData = userDoc.data();
+
+    // Store user data in session
+    req.session.userData = {
+      userId: userId,
+      username: userData.username,
+      gender: userData.gender,
+      avatarUrl: userData.avatarUrl,
+      isSignLanguageSpeaker: userData.isSignLanguageSpeaker,
+      email: user.email,
+      emailVerified: userCredential.user.emailVerified,
+    };
+
+    // Step 3: Redirect to the home page
+    res.redirect("/");
+  } catch (error) {
+    req.session.msg = "Wrong Email or password";
+    res.redirect("/signIn");
+  }
+});
+
+app.post("/signUp", upload.none(), async (req, res) => {
+  try {
+    const user = req.body;
+    console.log("Received user data:", user);
+
+    // Step 1: Create the user in Firebase Authentication
+    const userCredential = await admin.auth().createUser({
+      email: user.email,
+      password: user.password,
+    });
+
+    const userId = userCredential.uid;
+
+    // Step 2: Create user document in Firestore
+    const avatarUrl = "./images/dark-avatar.jpg"; // Use the provided avatar URL
+    await db.collection("Users").doc(userId).set({
+      username: user.username,
+      gender: user.gender,
+      avatarUrl: avatarUrl,
+      isSignLanguageSpeaker: user.isSignLanguageSpeaker,
+    });
+
+    //step 3: Send Email
+    sendEmail(user.email);
+
+    // Step 4: Redirect to the signIn page
+    res.redirect("/signIn");
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send({ msg: "Error adding user" });
+  }
+});
+
+app.post("/reset", upload.none(), async (req, res) => {
+  const userEmail = req.body.email;
+  // Construct the base URL from the request object
+  const baseUrl = `${req.protocol}://${req.get("host")}`;
+
+  try {
+    const user = await admin.auth().getUserByEmail(userEmail);
+    const userId = user.uid;
+    if (user) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 465,
+        secure: true,
+        auth: {
+          user: "signlanguage568@gmail.com",
+          pass: "revg gkmi visi kdet",
+        },
+      });
+
+      const mailOptions = {
+        from: "signlanguage568@gmail.com",
+        to: userEmail,
+        subject: "ResetPassword",
+        html: `<p>Please click on the following link to reset your password:</p>
+          <a href="${baseUrl}/reset/reset_password?userId=${userId}">ResetPassword</a>`,
+      };
+      await transporter.sendMail(mailOptions);
+      req.session.message = "We Will Send you an Email if your Account Exist";
+      res.redirect("/");
+    } else {
+      res.redirect("/");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+});
+
+app.post("/reset/reset_password", upload.none(), async (req, res) => {
+  const userId = req.body.userId;
+  const newPassword = req.body.password;
+
+  try {
+    // Update user properties, including password
+    await admin.auth().updateUser(userId, {
+      password: newPassword,
+    });
+
+    res.redirect("/signIn");
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).send("An error occurred while updating password");
+  }
+});
+
+app.post("/Upload_Avatar", upload.single("avatar"), async (req, res) => {
+  console.log(req.file);
+  const file = req.file;
+
+  if (!file) {
+    return res.status(400).send({ msg: "No file uploaded." });
+  }
+
+  try {
+    // Upload the image to Firebase Storage
+    const fileName = `avatars/${Date.now()}_${file.originalname}`;
+    const fileUpload = bucket.file(fileName);
+    const stream = fileUpload.createWriteStream();
+
+    stream.on("error", (error) => {
+      console.error("Error uploading image to Firebase Storage:", error);
+      res.status(500).send({ msg: "Error uploading image" });
+    });
+
+    stream.on("finish", async () => {
+      try {
+        // Set the image URL in the user data
+        const userId = req.session.userData.userId;
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
+          bucket.name
+        }/o/${encodeURIComponent(fileName)}?alt=media`;
+
+        // Update the user's data in the Firestore database with the new avatar URL
+        await db
+          .collection("Users")
+          .doc(userId)
+          .update({ avatarUrl: imageUrl });
+        req.session.userData.avatarUrl = imageUrl;
+        res.redirect("/profile");
+      } catch (updateError) {
+        console.error("Error updating user data:", updateError);
+        res.status(500).json({ msg: "Error updating user data" });
+      }
+    });
+
+    // Pipe the file stream to Firebase Storage
+    stream.end(file.buffer);
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    res.status(500).json({ msg: "Error uploading image" });
+  }
+});
+
+app.post("/Update_User", upload.none(), async (req, res) => {
+  try {
+    const { username, gender } = req.body;
+    const userId = req.session.userData.userId;
+
+    // Update the user data in the database
+    await db.collection("Users").doc(userId).update({ username, gender });
+    req.session.userData.username = username;
+    req.session.userData.gender = gender;
+    // Redirect back to the profile page
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/Update_Password", upload.none(), async (req, res) => {
+  const email = req.body.email;
+  const newPassword = req.body.NewPassword;
+  const currentPassword = req.body.CurrentPassword;
+
+  try {
+    const credentials = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, currentPassword);
+    // If authentication is successful, update the password
+    await credentials.user.updatePassword(newPassword);
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+        res.status(500).send("Error logging out");
+      } else {
+        res.redirect("/signIn");
+      }
+    });
+  } catch (error) {
+    req.session.PassMsg = "Wrong Password Try Again";
+    res.redirect("/profile");
+  }
+});
 
 //***********************************Change Language***************************************** //
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,328 +453,13 @@ app.get("/translations", (req, res) => {
   res.json(translations);
 });
 
-app.post("/create", async (req, res) => {
-  const data = req.body;
-  try {
-    // Step 1: Authenticate the user
-    const userCredential = await admin.auth().createUser({
-      email: data.email,
-      password: data.password,
-    });
-
-    const userId = userCredential.uid;
-
-    // Step 2: Create user document in Firestore
-    const result = await db.collection("Users").doc(userId).set({
-      username: data.username,
-      gender: data.gender,
-      isSignLanguageSpeaker: data.isSignLanguageSpeaker,
-      emailVerified: false,
-    });
-
-    // Step 3: Send email verification
-    // Send the link using nodemailer
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      port: 465,
-      secure: true,
-      auth: {
-        user: "signlanguage568@gmail.com",
-        pass: "revg gkmi visi kdet",
-      },
-    });
-
-    const mailOptions = {
-      from: "signlanguage568@gmail.com",
-      to: data.email,
-      subject: "Email Verification",
-      html:
-        "<p>Please click on the following link to verify your email address:</p>" +
-        '<a href="http://127.0.0.1:5500/Web/verify.html' +
-        '">Email Verification' +
-        "</a>",
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    res.send({ userId: userId });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send({ msg: "Error adding user" });
-  }
-});
-
-app.post("/sendemail", async (req, res) => {
-  const userEmail = req.body.email; // Change variable name here
-
-  try {
-    const user = await admin.auth().getUserByEmail(userEmail); // Change variable name here
-    if (user) {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        port: 465,
-        secure: true,
-        auth: {
-          user: "signlanguage568@gmail.com",
-          pass: "revg gkmi visi kdet",
-        },
-      });
-
-      const mailOptions = {
-        from: "signlanguage568@gmail.com",
-        to: userEmail, // Use the correct variable name here
-        subject: "ResetPassword",
-        html: `<p>Please click on the following link to reset your password:</p>
-          <a href="http://127.0.0.1:5500/Web/reset-password.html?email=${userEmail}">ResetPassword</a>`,
-      };
-      await transporter.sendMail(mailOptions);
-      res.send({ userEmail: userEmail });
-      // Rest of your code for sending the email
-    } else {
-      res.status(404).json({ msg: "User email not found" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ msg: "Internal server error" });
-  }
-});
-
-app.post("/upload", upload.single("avatar"), async (req, res) => {
-  const file = req.file;
-
-  try {
-    // Upload the image to Firebase Storage
-    const fileName = `avatars/${Date.now()}_${file.originalname}`;
-    const fileUpload = bucket.file(fileName);
-    const stream = fileUpload.createWriteStream();
-
-    stream.on("error", (error) => {
-      console.error("Error uploading image to Firebase Storage:", error);
-      res.status(500).send({ msg: "Error uploading image" });
-    });
-
-    stream.on("finish", async () => {
-      try {
-        // Set the image URL in the user data
-        const userId = req.body.userId; // Assuming you include the user ID in the request body
-        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
-          bucket.name
-        }/o/${encodeURIComponent(fileName)}?alt=media`;
-
-        // Update the user's data in the Firestore database with the new avatar URL
-        await db
-          .collection("Users")
-          .doc(userId)
-          .update({ avatarUrl: imageUrl });
-
-        res.status(200).json({ msg: "Image uploaded successfully", imageUrl });
-      } catch (updateError) {
-        console.error("Error updating user data:", updateError);
-        res.status(500).json({ msg: "Error updating user data" });
-      }
-    });
-
-    // Pipe the file stream to Firebase Storage
-    stream.end(file.buffer);
-  } catch (error) {
-    console.error("Error uploading image:", error);
-    res.status(500).json({ msg: "Error uploading image" });
-  }
-});
-
-app.post("/signin", async (req, res) => {
-  // Extract email and password from the request body
-  const email = req.body.email;
-  const password = req.body.password;
-
-  try {
-    // Step 1: Authenticate the user
-    const userCredential = await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password);
-
-    const userId = userCredential.user.uid;
-
-    // Step 2: Retrieve additional user data from Firestore
-    const userDoc = await db.collection("Users").doc(userId).get();
-
-    if (userDoc.exists) {
-      // User found, respond with user data
-      const userData = userDoc.data();
-      res.send({ userId: userId });
-    } else {
-      res.status(404).send({ msg: "User not found" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(401).send({ msg: "Invalid email or password" });
-  }
-});
-
-app.post("/getemail", async (req, res) => {
-  const userId = req.body.userId;
-
-  try {
-    const userRecord = await admin.auth().getUser(userId);
-
-    // If the user email is found, send it in the response
-    if (userRecord.email) {
-      const email = userRecord.email;
-      res.json({ email });
-    } else {
-      // If the user email is not found, send a 404 status
-      res.status(404).json({ msg: "User email not found" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ msg: "Internal server error" });
-  }
-});
-
-// Add a new endpoint to get user data by ID
-app.post("/getUserData", async (req, res) => {
-  const userId = req.body.userId; // Extract user ID from request body
-
-  try {
-    // Retrieve user data from Firebase Authentication
-    const userRecord = await admin.auth().getUser(userId);
-
-    // Extract email from the user record
-    const email = userRecord.email;
-    // Query Firestore to get the user document
-    const userDoc = await db.collection("Users").doc(userId).get();
-
-    if (userDoc.exists) {
-      // If user document exists, extract required fields
-      const userData = {
-        avatarUrl: userDoc.data().avatarUrl || "images/dark-avatar.jpg",
-        email: email,
-        name: userDoc.data().username,
-        gender: userDoc.data().gender,
-      };
-
-      // Send user data back as response
-      res.json(userData);
-    } else {
-      // If user document does not exist, return an error
-      res.status(404).json({ msg: "User not found" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ msg: "Internal server error" });
-  }
-});
-
-app.post("/uploadAvatar", async (req, res) => {
-  // Change to POST
-  try {
-    const userId = req.body.id;
-
-    const userDoc = await admin
-      .firestore()
-      .collection("Users")
-      .doc(userId)
-      .get();
-
-    if (userDoc.exists) {
-      // Check if document exists
-      const avatarUrl = userDoc.data().avatarUrl; // Access data property
-
-      if (avatarUrl) {
-        res.json({ avatarUrl: avatarUrl });
-      } else {
-        res.json({ avatarUrl: "images/dark-avatar.jpg" });
-      }
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-app.post("/update", async (req, res) => {
-  const id = req.body.id;
-  const updatedData = req.body.data; // Access the updated data property
-  await db.collection("Users").doc(id).update(updatedData);
-  res.send({ msg: "Updated" });
-});
-
-app.post("/verifyEmail", async (req, res) => {
-  try {
-    const userId = req.body.userId;
-    await db.collection("Users").doc(userId).update({ emailVerified: true });
-    res.send({ msg: "Email Varified" });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Can not Verify your Email" });
-  }
-});
-
-app.post("/check", async (req, res) => {
-  try {
-    const userId = req.body.userId;
-    const userDoc = await db.collection("Users").doc(userId).get();
-    if (userDoc.exists) {
-      // Check if document exists
-      const check = userDoc.data().emailVerified;
-      res.send({ check });
-    } else {
-      res.send({ msg: userId });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "while check" });
-  }
-});
-
-app.post("/updatePass", async (req, res) => {
-  const id = req.body.id;
-  const email = req.body.email;
-  const newPassword = req.body.newPassword;
-  const currentPassword = req.body.currentPassword;
-
-  try {
-    const credentials = await firebase
-      .auth()
-      .signInWithEmailAndPassword(email, currentPassword);
-    // If authentication is successful, update the password
-    await credentials.user.updatePassword(newPassword);
-
-    res.send({ msg: "Password updated successfully!" });
-  } catch (error) {
-    console.error("Error updating password:", error);
-    res.status(500).send({ msg: "An error occurred while updating password" });
-  }
-});
-
-app.post("/resetPass", async (req, res) => {
-  const userEmail = req.body.email;
-  const newPassword = req.body.newPassword;
-
-  try {
-    const user = await admin.auth().getUserByEmail(userEmail);
-
-    // Update user properties, including password
-    await admin.auth().updateUser(user.uid, {
-      password: newPassword,
-    });
-
-    res.send({ msg: "Password updated successfully!" });
-  } catch (error) {
-    console.error("Error updating password:", error);
-    res.status(500).send({ msg: "An error occurred while updating password" });
-  }
-});
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.post("/delete", async (req, res) => {
   const id = req.body.id;
   await db.collection("Users").doc(id).delete();
   res.send({ msg: "Deleted" });
 });
-
-const Typo = require("typo-js");
-// Create a dictionary for the English language
-const dictionary = new Typo("en_US");
 
 app.post("/search", async (req, res) => {
   const inputText = req.body.text;
@@ -512,7 +542,7 @@ app.post("/create-course", async (req, res) => {
 });
 
 // Endpoint to fetch course data from Firebase Firestore
-app.get("/courses", async (req, res) => {
+app.get("/course", async (req, res) => {
   try {
     const coursesSnapshot = await db.collection("courses").get();
     const courses = [];
@@ -630,8 +660,6 @@ app.post("/updateCourse", async (req, res) => {
   }
 });
 
-app.use(express.urlencoded({ extended: true }));
-// Update course info endpoint
 // Update course info endpoint
 app.post("/updateCourseinfo", upload.single("video"), async (req, res) => {
   // Extract course data from the request body

@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/framework.css" />
-    <link rel="stylesheet" href="./css/course-lessons.css" />
-    <link rel="stylesheet" href="./css/progress.css" />
-    <link rel="stylesheet" href="./css/master.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/framework.css" />
+    <link rel="stylesheet" href="/css/course-lessons.css" />
+    <link rel="stylesheet" href="/css/progress.css" />
+    <link rel="stylesheet" href="/css/master.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,8 @@
   </head>
   <body>
     <!-- Start header -->
-    <%- include('./components/header.ejs' , {currentPage:"courses"}) %>
+    <%- include('./components/header.ejs', { avatarUrl: user.avatarUrl,
+    currentPage: "courses" }) %>
     <!-- End Header -->
     <!-- Start courses -->
     <div class="container-course">
@@ -75,10 +76,10 @@
     <div class="video-display" id="video-display">
       <div class="content">
         <video
-          src="videos/kids-courses/Primary School ArSL/kids_arsl(1).mp4"
+          src="/videos/kids-courses/Primary School ArSL/kids_arsl(1).mp4"
           id="video"
           class="screen"
-          poster="images/poster.png"
+          poster="/images/poster.png"
         ></video>
         <div class="controls">
           <button class="btn" id="play">
@@ -115,8 +116,8 @@
     <%- include('./components/footer.ejs') %>
     <!-- End Footer -->
 
-    <script src="./js/courses-lessons.js"></script>
-    <script src="./js/logout.js"></script>
-    <script src="./js/lang.js"></script>
+    <script src="/js/courses-lessons.js"></script>
+    <script src="/js/logout.js"></script>
+    <script src="/js/lang.js"></script>
   </body>
 </html>

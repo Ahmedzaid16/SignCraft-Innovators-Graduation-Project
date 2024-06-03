@@ -8,7 +8,7 @@
       <li class="header-pages">
         <a
           href="/"
-          class="<%= currentPage==='index' ? 'active' : null %>"
+          class="<%= currentPage === 'index' ? 'active' : null %>"
           data-i18n="Head_Home"
           >Home</a
         >
@@ -16,15 +16,20 @@
       <li class="header-pages">
         <a
           href="/translate"
-          class="<%= currentPage==='translate' ? 'active' : null %>"
+          class="<%= currentPage === 'translate' ? 'active' : null %>"
           data-i18n="Head_Translate"
           >Translate</a
         >
       </li>
       <li class="header-pages" id="education">
         <a
+<<<<<<< HEAD
           href="/courses"
           class="<%= currentPage==='course' ? 'active' : null %>"
+=======
+          href="<%= avatarUrl ? '/courses' : '/signIn' %>"
+          class="<%= avatarUrl ? '' : 'edu' %><%= currentPage === 'courses' ? 'active' : null %>"
+>>>>>>> 14e5c667a9e1b2f3c4800a3855fec52e379be20d
           data-i18n="Head_Education"
           >Education</a
         >
@@ -80,42 +85,69 @@
         </a>
       </li>
       <li id="signInLink">
+        <% if (avatarUrl) { %>
+        <a href="/profile">
+          <div class="circle-avatar">
+            <img
+              style="
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                object-fit: cover;
+              "
+              src="<%= avatarUrl %>"
+              alt="User Avatar"
+              id="avatar-img"
+            />
+          </div>
+        </a>
+        <% } else { %>
         <a href="/signIn"><i class="fa-solid fa-user-plus fs-16 mr-5"></i></a>
+        <% } %>
       </li>
-      <li id="logoutLink" style="display: none" class="logout">
-        <a href="/" onclick="logout()"
-          ><i class="fa-solid fa-sign-out fs-16 mr-5"></i>
-          <span data-i18n="Head_Logout">Logout</span></a
-        >
+      <!-- ////////////////////////////// -->
+      <% if (avatarUrl) { %>
+      <li id="logoutLink" style="display: block" class="logout">
+        <a href="/logout">
+          <i class="fa-solid fa-sign-out fs-16 mr-5"></i>
+          <span data-i18n="Head_Logout">Logout</span>
+        </a>
       </li>
+      <% } else { %>
+      <li id="logoutLink" style="display: none" class="logout"></li>
+      <% } %>
+      <!-- ////////////////////////////// -->
       <li>
         <a id="menu-icon"><i class="fa-solid fa-bars"></i></a>
         <!-- Start Megamenu -->
         <div id="menu" class="mega-menu">
           <ul class="links">
             <li>
-              <a class="menu-home-icon" href="/"
-                ><i class="fa-solid fa-house"></i>
-                <span data-i18n="Head_Home">Home</span></a
-              >
+              <a class="menu-home-icon" href="/">
+                <i class="fa-solid fa-house"></i>
+                <span data-i18n="Head_Home">Home</span>
+              </a>
             </li>
             <li>
-              <a class="menu-home-icon" href="/translate"
-                ><i class="fa-solid fa-hands"></i>
-                <span data-i18n="Head_Translate">Translate</span></a
-              >
+              <a class="menu-home-icon" href="/translate">
+                <i class="fa-solid fa-hands"></i>
+                <span data-i18n="Head_Translate">Translate</span>
+              </a>
             </li>
             <li>
-              <a class="menu-home-icon" href="/courses"
-                ><i class="fa-solid fa-user-graduate"></i
-                ><span data-i18n="Head_Education">Education</span></a
+              <a
+                class="menu-home-icon"
+                href="<%= avatarUrl ? '/courses' : '/signIn' %>"
               >
+                <i class="fa-solid fa-user-graduate"></i>
+                <span data-i18n="Head_Education">Education</span>
+              </a>
             </li>
             <li>
-              <a href="/support"
-                ><i class="fa-solid fa-headset"></i>
-                <span data-i18n="Head_Support">Support</span></a
-              >
+              <a href="/support">
+                <i class="fa-solid fa-headset"></i>
+                <span data-i18n="Head_Support">Support</span>
+              </a>
             </li>
           </ul>
         </div>
@@ -127,7 +159,6 @@
 <script>
   const menuIcon = document.getElementById("menu-icon");
   const menu = document.getElementById("menu");
-
   // Event listener
   menuIcon.addEventListener("click", () => menu.classList.toggle("show-menu"));
 </script>

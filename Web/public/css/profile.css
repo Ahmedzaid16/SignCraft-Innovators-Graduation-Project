@@ -69,6 +69,7 @@ section {
   height: 60%;
   align-items: center;
   align-content: space-between;
+  margin-bottom: 5px;
 }
 
 .profile-section
@@ -83,6 +84,7 @@ section {
   .confirm-password-input {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 .profile-section .password-change-section .change-form .change-password label {
   font-weight: bold;
@@ -92,6 +94,7 @@ section {
   width: 100%;
   border-radius: 5px;
   color: #e71d36;
+  margin-bottom: 1px;
 }
 .fa-lock,
 .fa-unlock {
@@ -140,7 +143,6 @@ section {
   width: 120px;
   height: 120px;
   border-radius: 100%;
-  filter: brightness(1) invert(1);
   object-fit: cover;
 }
 
@@ -229,7 +231,7 @@ section {
   .password-section
   .password-input {
   width: 100%;
-  height: 18%;
+  height: 25%;
   color: #e71d36;
   border-radius: 5px;
 }
@@ -246,7 +248,7 @@ section {
   .gender-section
   .gender-input {
   width: 100%;
-  height: 30%;
+  height: 40%;
   color: #e71d36;
   border-radius: 5px;
 }

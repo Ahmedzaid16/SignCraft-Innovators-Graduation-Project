@@ -56,7 +56,7 @@ var code = urlParams.get("course");
 
 async function fetchCourses() {
   try {
-    const response = await fetch("http://localhost:4000/findcourse", {
+    const response = await fetch("/findcourse", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
