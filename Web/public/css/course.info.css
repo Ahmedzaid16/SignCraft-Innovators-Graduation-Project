@@ -1,9 +1,6 @@
 .edu {
   color: #2ec4b6 !important;
 }
-.content {
-  background-color: #2ec4b6 !important;
-}
 .course-head {
   position: relative;
   display: grid;
@@ -236,7 +233,7 @@
   justify-content: space-between;
   border-radius: 15px;
 }
-.content {
+.contents {
   margin-top: 3px;
   display: flex;
   flex-direction: column;
@@ -245,16 +242,16 @@
   padding: 2rem;
   border-radius: 15px;
 }
-.content p {
+.contents p {
   border-bottom: 1px solid #2ec3b6;
   padding: 1rem;
   color: #fdfffc;
 }
 
-.content .last {
+.contents .last {
   border-bottom: none;
 }
-.content.show {
+.contents.show {
   display: block;
 }
 

@@ -31,7 +31,6 @@
     <!-- End Header -->
     <!-- Start COURSES -->
     <section>
-<<<<<<< HEAD
       <div class="slider-body">
         <div class="slider-container">
           <div class="left-slide">
@@ -79,21 +78,6 @@
               <i class="fas fa-arrow-up"></i>
             </button>
           </div>
-=======
-      <div class="arsls">
-        <div class="left-arsls">
-          <p class="one">ARABIC SIGN LANGUAGE COURSES</p>
-          <p class="two">
-            Learn to sign today with our online sign language courses
-          </p>
-          <p class="three">
-            Each course is packed with vocabulary, numbers, tips about learning
-            Arabic Sign Language (ArSL), and special knowledge of Deaf culture.
-          </p>
-        </div>
-        <div class="right-arsls">
-          <img src="/images/kids-head.png" alt="kids-img" />
->>>>>>> 14e5c667a9e1b2f3c4800a3855fec52e379be20d
         </div>
       </div>
       <!-- <div class="bottom-left-image">
@@ -136,7 +120,7 @@
         />
         <div class="div-courses line" id="adultCourses">
           <div class="adult-info-content">
-            <h4 id="">Adult ArSL Courses</h4>
+            <h4>Adult ArSL Courses</h4>
             <p>
               Embrace the beauty of Arabic Sign Language (ArSL) with our
               individual Online Arabic Sign Language Courses. Whether you're a
@@ -147,7 +131,26 @@
               learn to converse fluently in Arabic Sign Language (ArSL), one
               course at a time. Start your signing adventure today!
             </p>
-            <div id="adult-courses-videos" class="div-courses-videos"></div>
+            <div id="adult-courses-videos" class="div-courses-videos">
+              <% courses.forEach(course => { %> <% if (course.categories ===
+              'adult') { %>
+              <a
+                href="/courses/course_info?course=<%= course.id %>"
+                class="course"
+              >
+                <div class="course-content">
+                  <div class="course-img">
+                    <img src="<%= course.imageUrl %>" alt="course img" />
+                    <span><%= course.lesson %> Lessons</span>
+                  </div>
+                  <div class="course-info">
+                    <h4><%= course.name %></h4>
+                    <p><%= course.description %></p>
+                  </div>
+                </div>
+              </a>
+              <% } %> <% }); %>
+            </div>
           </div>
         </div>
 
@@ -161,7 +164,26 @@
               immersive learning experience. Unlock the power of communication
               and bring clarity to conversations with this hands-on opportunity.
             </p>
-            <div id="kids-courses-videos" class="div-courses-videos"></div>
+            <div id="kids-courses-videos" class="div-courses-videos">
+              <% courses.forEach(course => { %> <% if (course.categories ===
+              'kids') { %>
+              <a
+                href="/courses/course_info?course=<%= course.id %>"
+                class="course"
+              >
+                <div class="course-content">
+                  <div class="course-img">
+                    <img src="<%= course.imageUrl %>" alt="course img" />
+                    <span><%= course.lesson %> Lessons</span>
+                  </div>
+                  <div class="course-info">
+                    <h4><%= course.name %></h4>
+                    <p><%= course.description %></p>
+                  </div>
+                </div>
+              </a>
+              <% } %> <% }); %>
+            </div>
           </div>
         </div>
       </div>
@@ -171,7 +193,6 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/chatbot.js"></script>
     <script src="/js/courses.js"></script>
-    <script src="/js/search.js"></script>
     <script src="/js/lang.js"></script>
   </body>
 </html>

@@ -1244,7 +1244,8 @@ ul {
   text-align: center;
 }
 
-.controlCourses .content button {
+.controlCourses .content button,
+.controlCourses .content a {
   padding: 10px 15px;
   margin-right: 10px;
   color: var(--white-color);
@@ -1256,14 +1257,16 @@ ul {
   cursor: pointer;
 }
 
-.controlCourses .content button:hover {
+.controlCourses .content button:hover,
+.controlCourses .content a:hover {
   background-color: var(--white-color);
   color: var(--main-color);
   outline: 2px solid var(--main-color);
   transition: 0.2s ease;
 }
 
-.controlCourses .content button:active {
+.controlCourses .content button:active,
+.controlCourses .content a:active {
   transform: scale(0.98);
   transition: 0.3s ease;
 }

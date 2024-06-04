@@ -3,18 +3,16 @@ const firebase = require("firebase");
 const nodemailer = require("nodemailer");
 const express = require("express");
 const cors = require("cors");
-const admin = require("firebase-admin");
+const admin = require("./models/admin");
 const axios = require("axios");
 const Typo = require("typo-js");
-// const bodyParser1 = require("body-parser");
-const serviceAccount = require("./signlanguage-users-firebase-adminsdk-dr983-e842fc39df.json");
 const livereload = require("livereload");
 const multer = require("multer");
 const Storage = multer.memoryStorage();
 const upload = multer({
   storage: Storage,
 });
-const User = require("./public/js/config");
+const User = require("./config");
 const session = require("express-session");
 const ffmpeg = require("ffmpeg");
 const path = require("path");
@@ -24,10 +22,6 @@ const cookieParser = require("cookie-parser");
 const i18n = require("./models/i18n");
 const secretKey = require("./models/secretKey");
 const { v4: uuidv4 } = require("uuid");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "gs://signlanguage-users.appspot.com",
-});
 const {
   getUserByEmail,
   updatePassword,
@@ -89,6 +83,19 @@ async function sendEmail(userEmail) {
   await transporter.sendMail(mailOptions);
 }
 
+const setAdmin = async (email) => {
+  try {
+    const user = await admin.auth().getUserByEmail(email);
+    await admin.auth().setCustomUserClaims(user.uid, { admin: true });
+    console.log(`Successfully set ${email} as an admin.`);
+  } catch (error) {
+    console.error("Error setting custom claims:", error);
+  }
+};
+
+setAdmin("sherefalex34@gmail.com");
+//////////////////////////////////////////////////////////////////////////////
+
 app.use(
   session({
     secret: secretKey,
@@ -132,7 +139,12 @@ app.get("/courses", async (req, res) => {
       const userRecord = await admin.auth().getUser(user.userId);
 
       if (userRecord.emailVerified) {
-        res.render("courses", { user: user });
+        const coursesSnapshot = await db.collection("courses").get();
+        const courses = [];
+        coursesSnapshot.forEach((doc) => {
+          courses.push({ id: doc.id, ...doc.data() });
+        });
+        res.render("courses", { user: user, courses: courses });
       } else {
         // Send email verification
         await sendEmail(userRecord.email);
@@ -146,16 +158,123 @@ app.get("/courses", async (req, res) => {
       res.status(400).send({ msg: "Error fetching user data" });
     }
   } else {
-    res.redirect("/");
+    req.session.msg = "Please Sign In To Enter The Courses Page.";
+    res.redirect("/signIn");
   }
 });
 
 app.get("/courses/course_info", async (req, res) => {
-  res.render("course-info");
+  const user = req.session.userData;
+  if (user) {
+    const courseId = req.query.course;
+
+    try {
+      // Get the user record from Firebase Auth
+      const userRecord = await admin.auth().getUser(user.userId);
+
+      if (userRecord.emailVerified) {
+        // Query the database to find the course with the provided courseId
+        const courseDoc = await db.collection("courses").doc(courseId).get();
+
+        if (!courseDoc.exists) {
+          // If no course found with the provided courseId, return an error
+          req.session.message = "Course not found with the provided course ID.";
+          return res.redirect("/");
+        }
+
+        // Extract the course data
+        const courseData = courseDoc.data();
+
+        req.session.course = {
+          Lessondescription: courseData.Lessondescription,
+          listvideoUrl: courseData.listvideoUrl,
+          name: courseData.name,
+          duration: courseData.duration,
+        };
+
+        // Return the course data in the response
+        return res.render("course-info", {
+          user: user,
+          courseData: courseData,
+          courseId: courseId,
+        });
+      } else {
+        // Send email verification
+        await sendEmail(userRecord.email);
+
+        req.session.alertMessage =
+          "Please Verify your Email to Access the Courses.";
+        return res.redirect("/");
+      }
+    } catch (error) {
+      console.error("Error finding course:", error);
+      req.session.message = "An error occurred while finding the course.";
+      return res.redirect("/");
+    }
+  } else {
+    req.session.msg = "Please Sign In To Enter The Courses Page.";
+    return res.redirect("/signIn");
+  }
 });
 
 app.get("/courses/course_info/course_lessons", async (req, res) => {
-  res.render("course-lessons");
+  const user = req.session.userData;
+  if (user) {
+    // Get the user record from Firebase Auth
+    const userRecord = await admin.auth().getUser(user.userId);
+
+    if (userRecord.emailVerified) {
+      const course = req.session.course;
+
+      // Check if user exists, if not, create user document
+      const userRef = admin.firestore().collection("Users").doc(user.userId);
+
+      // Check if progress data exists
+      const progressRef = userRef.collection("progress");
+      const progressSnapshot = await progressRef.get();
+      let progressData = progressSnapshot.docs.map((doc) => doc.data());
+
+      if (progressData.length === 0) {
+        // If progress data doesn't exist, create it for each video with initial values
+        const initialProgressData = course.listvideoUrl.map((videoUrl) => ({
+          videoUrl: videoUrl,
+          currentTime: 0, // Initial current time
+          duration: 0, // Initial duration
+          progress: 0, // Initial progress
+        }));
+
+        // Save each video's progress data in Firestore
+        const batch = admin.firestore().batch();
+        initialProgressData.forEach((data) => {
+          const progressDocRef = progressRef.doc(
+            encodeURIComponent(data.videoUrl)
+          );
+          batch.set(progressDocRef, data);
+        });
+        await batch.commit();
+
+        // Use the newly created progress data
+        progressData = initialProgressData;
+        console.log(progressData);
+      }
+
+      res.render("course-lessons", {
+        course: course,
+        user: user,
+        progress: progressData,
+      });
+    } else {
+      // Send email verification if progress data exists
+      await sendEmail(userRecord.email);
+
+      req.session.alertMessage =
+        "Please Verify your Email to Access the Courses.";
+      res.redirect("/");
+    }
+  } else {
+    req.session.msg = "Please Sign In To Enter The Courses Page.";
+    res.redirect("/signIn");
+  }
 });
 
 app.get("/signIn", async (req, res) => {
@@ -208,7 +327,20 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/control", async (req, res) => {
-  res.render("controlCourses");
+  const user = req.session.userData;
+  try {
+    const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
+
+    if (idTokenResult.admin) {
+      res.render("controlCourses");
+    } else {
+      req.session.message = "Access denied. Admins only.";
+      res.redirect("/");
+    }
+  } catch (error) {
+    req.session.msg = "Access denied. Admins only.";
+    res.redirect("/signIn");
+  }
 });
 
 app.get("/control/controlCoursesView", async (req, res) => {
@@ -226,28 +358,40 @@ app.post("/signIn", upload.none(), async (req, res) => {
     const userCredential = await firebase
       .auth()
       .signInWithEmailAndPassword(user.email, user.password);
-    const userId = userCredential.user.uid;
+    const idToken = await userCredential.user.getIdToken();
+    const idTokenResult = await userCredential.user.getIdTokenResult();
 
-    // Step 2: Retrieve additional user data from Firestore
-    const userDoc = await db.collection("Users").doc(userId).get();
-    if (!userDoc.exists) {
-      throw new Error("User data not found");
+    if (idTokenResult.claims.admin) {
+      // User is an admin
+      req.session.userData = {
+        idToken: idToken,
+      };
+      res.redirect("/control");
+    } else {
+      const userId = userCredential.user.uid;
+
+      // Step 2: Retrieve additional user data from Firestore
+      const userDoc = await db.collection("Users").doc(userId).get();
+      if (!userDoc.exists) {
+        throw new Error("User data not found");
+      }
+      const userData = userDoc.data();
+
+      // Store user data in session
+      req.session.userData = {
+        idToken: idToken,
+        userId: userId,
+        username: userData.username,
+        gender: userData.gender,
+        avatarUrl: userData.avatarUrl,
+        isSignLanguageSpeaker: userData.isSignLanguageSpeaker,
+        email: user.email,
+        emailVerified: userCredential.user.emailVerified,
+      };
+
+      // Step 3: Redirect to the home page
+      res.redirect("/");
     }
-    const userData = userDoc.data();
-
-    // Store user data in session
-    req.session.userData = {
-      userId: userId,
-      username: userData.username,
-      gender: userData.gender,
-      avatarUrl: userData.avatarUrl,
-      isSignLanguageSpeaker: userData.isSignLanguageSpeaker,
-      email: user.email,
-      emailVerified: userCredential.user.emailVerified,
-    };
-
-    // Step 3: Redirect to the home page
-    res.redirect("/");
   } catch (error) {
     req.session.msg = "Wrong Email or password";
     res.redirect("/signIn");
@@ -461,22 +605,6 @@ app.post("/delete", async (req, res) => {
   res.send({ msg: "Deleted" });
 });
 
-app.post("/search", async (req, res) => {
-  const inputText = req.body.text;
-  // Split the input text into words
-  const words = inputText.split(/\s+/);
-
-  // Correct each word using the dictionary
-  const correctedWords = words.map(
-    (word) => dictionary.suggest(word)[0] || word
-  );
-
-  // Join the corrected words back into a string
-  const correctedText = correctedWords.join(" ");
-
-  res.json({ correctedText });
-});
-
 app.post("/proxy-correct", async (req, res) => {
   try {
     const response = await axios.post(
@@ -541,21 +669,6 @@ app.post("/create-course", async (req, res) => {
   }
 });
 
-// Endpoint to fetch course data from Firebase Firestore
-app.get("/course", async (req, res) => {
-  try {
-    const coursesSnapshot = await db.collection("courses").get();
-    const courses = [];
-    coursesSnapshot.forEach((doc) => {
-      courses.push({ ...doc.data() });
-    });
-    res.json(courses);
-  } catch (error) {
-    console.error("Error fetching courses:", error);
-    res.status(500).json({ error: "Error fetching courses" });
-  }
-});
-
 app.get("/Users", async (req, res) => {
   try {
     const snapshot = await db.collection("Users").get();
@@ -567,36 +680,6 @@ app.get("/Users", async (req, res) => {
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ msg: "Internal server error" });
-  }
-});
-
-// Define the findcourse endpoint
-app.post("/findcourse", async (req, res) => {
-  const coursecode = req.body.code;
-
-  try {
-    // Query the database to find the course with the provided courseLink
-    const courseSnapshot = await db
-      .collection("courses")
-      .where("code", "==", coursecode)
-      .get();
-
-    if (courseSnapshot.empty) {
-      // If no course found with the provided courseLink, return an error
-      res
-        .status(404)
-        .json({ msg: "Course not found with the provided coursecode." });
-      return;
-    }
-
-    // Extract the course data
-    const courseData = courseSnapshot.docs[0].data();
-
-    // Return the course data in the response
-    res.json(courseData);
-  } catch (error) {
-    console.error("Error finding course:", error);
-    res.status(500).json({ msg: "An error occurred while finding course." });
   }
 });
 
@@ -822,81 +905,90 @@ app.post("/deleteCourse", async (req, res) => {
 });
 
 app.post("/updateProgress", async (req, res) => {
-  const { userId, videoUrl, currentTime, duration, progress } = req.body;
+  const userId = req.session.userData.userId;
+  const { videoUrl, currentTime, duration, progress } = req.body;
   try {
-    // Encode the video URL to create a valid document ID
     const encodedVideoUrl = encodeURIComponent(videoUrl);
-    // Check if user exists, if not, create user document
     const userRef = admin.firestore().collection("Users").doc(userId);
-    // Check if progress data exists
-    const progressSnapshot = await userRef
-      .collection("progress")
-      .doc(encodedVideoUrl)
-      .get();
+    const progressRef = userRef.collection("progress").doc(encodedVideoUrl);
 
-    let progressData = progressSnapshot.data();
-    if (progressData.progress < progress) {
-      // Store progress data in Firebase Firestore
-      await db
-        .collection("Users")
-        .doc(userId)
-        .collection("progress")
-        .doc(encodedVideoUrl) // Use encoded URL
-        .set({
-          currentTime: currentTime,
-          duration: duration,
-          progress: progress,
-        });
+    const progressSnapshot = await progressRef.get();
+    const progressData = progressSnapshot.data();
+
+    if (!progressData || progressData.progress < progress) {
+      await progressRef.set({
+        videoUrl: videoUrl,
+        currentTime: currentTime,
+        duration: duration,
+        progress: progress,
+      });
 
       res.status(200).json({ message: "Progress updated successfully" });
+    } else {
+      res.status(200).json({
+        message: "Progress not updated as it's less than existing progress",
+      });
     }
   } catch (error) {
     console.error("Error updating progress:", error);
-    res.status(500).json({ error: error.message }); // Specific error message
+    res.status(500).json({ error: error.message });
   }
 });
 
-app.post("/getProgress", async (req, res) => {
-  const { userId, videoUrl } = req.body;
+// app.post("/updateProgress", async (req, res) => {
+//   const { userId, videoUrl, currentTime, duration, progress } = req.body;
+//   try {
+//     // Encode the video URL to create a valid document ID
+//     const encodedVideoUrl = encodeURIComponent(videoUrl);
+//     // Check if user exists, if not, create user document
+//     const userRef = admin.firestore().collection("Users").doc(userId);
+//     // Check if progress data exists
+//     const progressSnapshot = await userRef
+//       .collection("progress")
+//       .doc(encodedVideoUrl)
+//       .get();
 
+//     let progressData = progressSnapshot.data();
+//     if (progressData.progress < progress) {
+//       // Store progress data in Firebase Firestore
+//       await db
+//         .collection("Users")
+//         .doc(userId)
+//         .collection("progress")
+//         .doc(encodedVideoUrl) // Use encoded URL
+//         .set({
+//           currentTime: currentTime,
+//           duration: duration,
+//           progress: progress,
+//         });
+
+//       res.status(200).json({ message: "Progress updated successfully" });
+//     }
+//   } catch (error) {
+//     console.error("Error updating progress:", error);
+//     res.status(500).json({ error: error.message }); // Specific error message
+//   }
+// });
+
+app.get("/getProgress", async (req, res) => {
+  const userId = req.session.userData.userId;
+  const videoUrl = req.query.videoUrl;
   try {
     const encodedVideoUrl = encodeURIComponent(videoUrl);
-    // Check if user exists, if not, create user document
     const userRef = admin.firestore().collection("Users").doc(userId);
-    const userDoc = await userRef.get();
-    if (!userDoc.exists) {
-      await userRef.set({});
+    const progressRef = userRef.collection("progress").doc(encodedVideoUrl);
+
+    const progressSnapshot = await progressRef.get();
+    const progressData = progressSnapshot.data();
+
+    if (progressData) {
+      res.status(200).json(progressData);
+    } else {
+      res.status(200).json({ currentTime: 0, progress: 0 });
     }
-
-    // Check if progress data exists
-    const progressSnapshot = await userRef
-      .collection("progress")
-      .doc(encodedVideoUrl)
-      .get();
-    let progressData = progressSnapshot.data();
-
-    if (!progressData) {
-      // If progress data doesn't exist, create it with initial values
-      const initialProgressData = {
-        currentTime: 0, // Initial current time
-        duration: 0, // Initial duration
-        progress: 0, // Initial progress
-      };
-
-      await userRef
-        .collection("progress")
-        .doc(encodedVideoUrl)
-        .set(initialProgressData);
-
-      // Retrieve the newly created progress data
-      progressData = initialProgressData;
-    }
-
-    // Send progress data to the client
-    res.status(200).json(progressData);
   } catch (error) {
-    console.error("Error retrieving or creating progress data:", error);
-    res.status(500).json({ error: "An error occurred" }); // Sending generic error message to client
+    console.error("Error fetching progress:", error);
+    res.status(500).json({ error: error.message });
   }
 });
 
