@@ -25,6 +25,8 @@
     <% if (typeof msgAdmin !== 'undefined') { %>
     <div class="alert-bar"><%= msgAdmin %></div>
     <% } %>
+    <a style="top: 40px; left: 40px; position: relative" href="/control"
+      ><i class="fa-solid fa-arrow-left-long fa-lg"></i></a>
     <input
       type="text"
       id="searchInput"
@@ -34,7 +36,9 @@
     <div id="allCourses">
       <% if (courses.length > 0) { %> <% courses.forEach((course, index) => { %>
       <div class="course-0">
-        <div class="course-property-code">Code: <span class="searchCode"><%= course.code %></span></div>
+        <div class="course-property-code">
+          Code: <span class="searchCode"><%= course.code %></span>
+        </div>
         <div class="course-property-name">Name: <%= course.name %></div>
         <div class="course-property-imageurl">
           Image URL: <a target="_blank" href="<%= course.imageUrl %>">Image</a>
@@ -569,6 +573,23 @@
           }
         });
       }
+
+      document
+        .getElementById("form-mod")
+        .addEventListener("submit", (event) => {
+          const numberOfLessons = courseLessonInput.value;
+          const lessonDescriptionsArray = courseLessonDescriptionInput.value
+            .split(/\r?\n/)
+            .map((desc) => desc.trim())
+            .filter((desc) => desc !== "");
+
+          if (numberOfLessons != lessonDescriptionsArray.length) {
+            event.preventDefault();
+            alert(
+              `The number of lessons (${numberOfLessons}) must match the number of lesson descriptions (${lessonDescriptionsArray.length}).`
+            );
+          }
+        });
     </script>
     <script src="/js/controlCourses.js"></script>
   </body>

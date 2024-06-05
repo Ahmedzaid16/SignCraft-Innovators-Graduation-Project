@@ -819,6 +819,7 @@ app.post(
       req.session.msgAdmin = "Course Create Successfully";
       res.redirect("/control");
     } catch (error) {
+      console.log(error);
       req.session.msgAdmin = "Error creating course";
       res.redirect("/control");
     }
