@@ -93,6 +93,39 @@ const setAdmin = async (email) => {
   }
 };
 
+async function getCourses() {
+  const coursesSnapshot = await db.collection("courses").get();
+  const courses = [];
+  coursesSnapshot.forEach((doc) => {
+    courses.push({ id: doc.id, ...doc.data() });
+  });
+  return courses;
+}
+
+async function getUsers() {
+  const snapshot = await db.collection("Users").get();
+  const Users = [];
+
+  // Use Promise.all to ensure all promises resolve before returning Users
+  await Promise.all(
+    snapshot.docs.map(async (doc) => {
+      const userData = doc.data();
+
+      try {
+        const userRecord = await admin.auth().getUser(doc.id);
+        userData.email = userRecord.email;
+        userData.emailVerified = userRecord.emailVerified;
+      } catch (error) {
+        console.error("Error fetching user authentication details:", error);
+      }
+
+      Users.push({ id: doc.id, ...userData });
+    })
+  );
+
+  return Users;
+}
+
 setAdmin("sherefalex34@gmail.com");
 //////////////////////////////////////////////////////////////////////////////
 
@@ -112,6 +145,7 @@ app.use(
 // Render home page and handle the token and avatarUrl if available
 app.get("/", (req, res) => {
   const user = req.session.userData;
+  const admin = req.session.adminData;
   const alertMessage = req.session.alertMessage;
   const Message = req.session.message;
   if (alertMessage) {
@@ -120,8 +154,12 @@ app.get("/", (req, res) => {
   } else if (Message) {
     delete req.session.message;
     res.render("index", { user: user, message: Message });
-  } else {
+  } else if (admin) {
+    res.redirect("/control");
+  } else if (user) {
     res.render("index", { user: user });
+  } else {
+    res.render("index");
   }
 });
 
@@ -139,23 +177,20 @@ app.get("/courses", async (req, res) => {
       const userRecord = await admin.auth().getUser(user.userId);
 
       if (userRecord.emailVerified) {
-        const coursesSnapshot = await db.collection("courses").get();
-        const courses = [];
-        coursesSnapshot.forEach((doc) => {
-          courses.push({ id: doc.id, ...doc.data() });
-        });
+        const courses = await getCourses();
         res.render("courses", { user: user, courses: courses });
       } else {
         // Send email verification
         await sendEmail(userRecord.email);
 
         req.session.alertMessage =
-          "Please Verify your Email to Access the Courses.";
+          "Please Verify your Email to Access the Courses Page.";
         res.redirect("/");
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
-      res.status(400).send({ msg: "Error fetching user data" });
+      req.session.alertMessage =
+        "Please Verify your Email to Access the Courses Page.";
+      res.redirect("/");
     }
   } else {
     req.session.msg = "Please Sign In To Enter The Courses Page.";
@@ -278,9 +313,19 @@ app.get("/courses/course_info/course_lessons", async (req, res) => {
 });
 
 app.get("/signIn", async (req, res) => {
+  const user = req.session.userData;
+  const admin = req.session.adminData;
   const msg = req.session.msg;
-  delete req.session.msg;
-  res.render("signIn", { msg: msg });
+  if (msg) {
+    delete req.session.msg;
+    res.render("signIn", { msg: msg });
+  } else if (user) {
+    res.redirect("/");
+  } else if (admin) {
+    res.redirect("/control");
+  } else {
+    res.render("signIn");
+  }
 });
 
 app.get("/signUp", async (req, res) => {
@@ -304,7 +349,6 @@ app.get("/reset", async (req, res) => {
   res.render("reset");
 });
 
-// GET /reset/reset_password endpoint
 app.get("/reset/reset_password", async (req, res) => {
   const userId = req.query.userId;
   res.render("reset-password", { userId: userId });
@@ -327,12 +371,18 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/control", async (req, res) => {
-  const user = req.session.userData;
+  const user = req.session.adminData;
+  const msgAdmin = req.session.msgAdmin;
   try {
     const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
 
     if (idTokenResult.admin) {
-      res.render("controlCourses");
+      if (msgAdmin) {
+        delete req.session.msgAdmin;
+        res.render("controlCourses", { msgAdmin: msgAdmin });
+      } else {
+        res.render("controlCourses");
+      }
     } else {
       req.session.message = "Access denied. Admins only.";
       res.redirect("/");
@@ -344,11 +394,84 @@ app.get("/control", async (req, res) => {
 });
 
 app.get("/control/controlCoursesView", async (req, res) => {
-  res.render("controlCoursesView");
+  const user = req.session.adminData;
+  const msgAdmin = req.session.msgAdmin;
+  try {
+    const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
+
+    if (idTokenResult.admin) {
+      const courses = await getCourses();
+      if (msgAdmin) {
+        delete req.session.msgAdmin;
+        res.render("controlCoursesView", {
+          courses: courses,
+          msgAdmin: msgAdmin,
+        });
+      } else {
+        res.render("controlCoursesView", { courses: courses });
+      }
+    } else {
+      req.session.message = "Access denied. Admins only.";
+      res.redirect("/");
+    }
+  } catch (error) {
+    req.session.msg = "Access denied. Admins only.";
+    res.redirect("/signIn");
+  }
 });
 
 app.get("/control/controlCoursesAccount", async (req, res) => {
-  res.render("controlCoursesAccount");
+  const user = req.session.adminData;
+  const msgAdmin = req.session.msgAdmin;
+  try {
+    const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
+
+    if (idTokenResult.admin) {
+      const users = await getUsers();
+      if (msgAdmin) {
+        delete req.session.msgAdmin;
+        res.render("controlCoursesAccount", {
+          users: users,
+          msgAdmin: msgAdmin,
+        });
+      } else {
+        res.render("controlCoursesAccount", { users: users });
+      }
+    } else {
+      req.session.message = "Access denied. Admins only.";
+      res.redirect("/");
+    }
+  } catch (error) {
+    req.session.msg = "Access denied. Admins only.";
+    res.redirect("/signIn");
+  }
+});
+
+app.get("/getProgress", async (req, res) => {
+  const userId = req.session.userData.userId;
+  const videoUrl = req.query.videoUrl;
+  try {
+    const encodedVideoUrl = encodeURIComponent(videoUrl);
+    const userRef = admin.firestore().collection("Users").doc(userId);
+    const progressRef = userRef.collection("progress").doc(encodedVideoUrl);
+
+    const progressSnapshot = await progressRef.get();
+    const progressData = progressSnapshot.data();
+
+    if (progressData) {
+      res.status(200).json(progressData);
+    } else {
+      res.status(200).json({ currentTime: 0, progress: 0 });
+    }
+  } catch (error) {
+    console.error("Error fetching progress:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/play", (req, res) => {
+  const video = req.query.video;
+  res.render("play", { video: video });
 });
 
 app.post("/signIn", upload.none(), async (req, res) => {
@@ -363,7 +486,7 @@ app.post("/signIn", upload.none(), async (req, res) => {
 
     if (idTokenResult.claims.admin) {
       // User is an admin
-      req.session.userData = {
+      req.session.adminData = {
         idToken: idToken,
       };
       res.redirect("/control");
@@ -401,7 +524,6 @@ app.post("/signIn", upload.none(), async (req, res) => {
 app.post("/signUp", upload.none(), async (req, res) => {
   try {
     const user = req.body;
-    console.log("Received user data:", user);
 
     // Step 1: Create the user in Firebase Authentication
     const userCredential = await admin.auth().createUser({
@@ -412,7 +534,7 @@ app.post("/signUp", upload.none(), async (req, res) => {
     const userId = userCredential.uid;
 
     // Step 2: Create user document in Firestore
-    const avatarUrl = "./images/dark-avatar.jpg"; // Use the provided avatar URL
+    const avatarUrl = "/images/dark-avatar.jpg"; // Use the provided avatar URL
     await db.collection("Users").doc(userId).set({
       username: user.username,
       gender: user.gender,
@@ -426,8 +548,8 @@ app.post("/signUp", upload.none(), async (req, res) => {
     // Step 4: Redirect to the signIn page
     res.redirect("/signIn");
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send({ msg: "Error adding user" });
+    req.session.msg = "The Email Address is Already in Use by Another Account";
+    res.redirect("/signIn");
   }
 });
 
@@ -577,333 +699,6 @@ app.post("/Update_Password", upload.none(), async (req, res) => {
   }
 });
 
-//***********************************Change Language***************************************** //
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// Middleware to set language based on user preference
-app.use((req, res, next) => {
-  const lang = req.query.lang || req.cookies.lang || "en";
-  i18n.setLocale(req, lang);
-  res.cookie("lang", lang, { maxAge: 900000, httpOnly: true });
-  console.log(`Locale set to: ${lang}`);
-  next();
-});
-
-app.get("/translations", (req, res) => {
-  // Get the language from the query parameter or default to "en"
-  const lang = req.query.lang || "en";
-  // Get all keys and values for the specified language
-  const translations = i18n.getCatalog(lang);
-  // Send the translations as JSON response
-  res.json(translations);
-});
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-app.post("/delete", async (req, res) => {
-  const id = req.body.id;
-  await db.collection("Users").doc(id).delete();
-  res.send({ msg: "Deleted" });
-});
-
-app.post("/proxy-correct", async (req, res) => {
-  try {
-    const response = await axios.post(
-      "http://shifo2001.pythonanywhere.com/correct",
-      req.body
-    );
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).send("Error correcting spelling");
-  }
-});
-
-// ----------------------- admin section -------------------------------
-
-app.post("/create-course", async (req, res) => {
-  const data = req.body;
-  const imageBase64 = data.image;
-
-  try {
-    // Generate a unique filename for the image
-    const imageName = uuidv4() + ".jpg";
-
-    // Upload image to Firebase Storage
-    const storageRef = admin
-      .storage()
-      .bucket()
-      .file("images/" + imageName);
-    const base64EncodedImage = imageBase64.replace(
-      /^data:image\/\w+;base64,/,
-      ""
-    );
-    const imageBuffer = Buffer.from(base64EncodedImage, "base64");
-
-    await storageRef.save(imageBuffer, {
-      metadata: {
-        contentType: "image/jpeg",
-      },
-    });
-
-    // Get the URL of the uploaded image
-    const imageUrlArray = await storageRef.getSignedUrl({
-      action: "read",
-      expires: "03-09-2491", // Set an expiration date or duration
-    });
-
-    const imageUrl = imageUrlArray[0];
-
-    // Create a new document in the 'courses' collection
-    await admin.firestore().collection("courses").add({
-      code: data.code,
-      name: data.name,
-      lesson: data.lesson,
-      categories: data.categories,
-      description: data.description,
-      imageUrl: imageUrl,
-    });
-
-    res.status(200).json({ msg: "Course created successfully" });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ msg: "Error creating course" });
-  }
-});
-
-app.get("/Users", async (req, res) => {
-  try {
-    const snapshot = await db.collection("Users").get();
-    const Users = [];
-    snapshot.forEach((doc) => {
-      Users.push({ ...doc.data() });
-    });
-    res.json(Users);
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ msg: "Internal server error" });
-  }
-});
-
-app.post("/updateCourse", async (req, res) => {
-  const code = req.body.code; // Extract the course code from the request body
-  const updatedData = req.body.updatedData; // Extract the updated course data
-  const imageBase64 = req.body.imageBase64; // Extract the base64-encoded image data
-
-  try {
-    // Search for the course with the provided code
-    const courseSnapshot = await db
-      .collection("courses")
-      .where("code", "==", code)
-      .get();
-
-    if (courseSnapshot.empty) {
-      // If no course found with the provided code, return an error
-      res.status(404).json({ msg: "Course not found with the provided code." });
-      return;
-    }
-
-    // Generate a unique filename for the image
-    const imageName = uuidv4() + ".jpg";
-
-    // Upload image to Firebase Storage
-    const storageRef = admin
-      .storage()
-      .bucket()
-      .file("images/" + imageName);
-    const base64EncodedImage = imageBase64.replace(
-      /^data:image\/\w+;base64,/,
-      ""
-    );
-    const imageBuffer = Buffer.from(base64EncodedImage, "base64");
-
-    await storageRef.save(imageBuffer, {
-      metadata: {
-        contentType: "image/jpeg",
-      },
-    });
-
-    // Get the URL of the uploaded image
-    const imageUrlArray = await storageRef.getSignedUrl({
-      action: "read",
-      expires: "03-09-2491", // Set an expiration date or duration
-    });
-
-    const imageUrl = imageUrlArray[0];
-
-    // Add imageUrl to the updatedData
-    updatedData.imageUrl = imageUrl;
-
-    // Update the course information
-    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
-    await db.collection("courses").doc(courseId).update(updatedData);
-
-    res.status(200).json({ msg: "Course updated successfully." });
-  } catch (error) {
-    console.error("Error updating course:", error);
-    res.status(500).json({ msg: "An error occurred while updating course." });
-  }
-});
-
-// Update course info endpoint
-app.post("/updateCourseinfo", upload.single("video"), async (req, res) => {
-  // Extract course data from the request body
-  const { duration, Lessondescription, code } = req.body;
-  const video = req.file;
-
-  try {
-    // Search for the course with the provided code
-    const courseSnapshot = await db
-      .collection("courses")
-      .where("code", "==", code)
-      .get();
-
-    if (courseSnapshot.empty) {
-      // If no course found with the provided code, return an error
-      return res
-        .status(404)
-        .json({ msg: "Course not found with the provided code." });
-    }
-
-    // Convert the Lessondescription back to an array
-    const lessonDescriptionArray = JSON.parse(Lessondescription);
-    // Generate a unique filename for the video
-    const videoName = uuidv4() + ".mp4";
-
-    // Upload video to Firebase Storage
-    const storageRef = admin
-      .storage()
-      .bucket()
-      .file("courseVideos/" + videoName);
-    const videoBuffer = video.buffer;
-    await storageRef.save(videoBuffer, {
-      metadata: {
-        contentType: "video/mp4",
-      },
-    });
-
-    // Get the URL of the uploaded video
-    const videoUrlArray = await storageRef.getSignedUrl({
-      action: "read",
-      expires: "03-09-2491", // Set an expiration date or duration
-    });
-
-    const videoUrl = videoUrlArray[0];
-
-    // Update the course information
-    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
-    await db.collection("courses").doc(courseId).update({
-      duration,
-      Lessondescription: lessonDescriptionArray,
-      videoUrl,
-    });
-
-    return res.status(200).json({ msg: "Course updated successfully." });
-  } catch (error) {
-    console.error("Error updating course:", error);
-    return res
-      .status(500)
-      .json({ msg: "An error occurred while updating course." });
-  }
-});
-
-app.post("/updateCourseVideos", upload.array("videos"), async (req, res) => {
-  // Extract course code from the request body
-  const code = req.body.code;
-  // Extract course videos from the request
-  const videos = req.files;
-
-  try {
-    // Search for the course with the provided code
-    const courseSnapshot = await db
-      .collection("courses")
-      .where("code", "==", code)
-      .get();
-
-    if (courseSnapshot.empty) {
-      // If no course found with the provided code, return an error
-      return res
-        .status(404)
-        .json({ msg: "Course not found with the provided code." });
-    }
-
-    // Array to store video URLs
-    const videoUrls = [];
-
-    // Loop through each uploaded video
-    for (const video of videos) {
-      // Generate a unique filename for the video
-      const videoName = uuidv4() + ".mp4";
-
-      // Upload video to Firebase Storage
-      const storageRef = admin
-        .storage()
-        .bucket()
-        .file("courseVideos/" + videoName);
-      const videoBuffer = video.buffer;
-      await storageRef.save(videoBuffer, {
-        metadata: {
-          contentType: "video/mp4",
-        },
-      });
-
-      // Get the URL of the uploaded video
-      const videoUrl = await storageRef.getSignedUrl({
-        action: "read",
-        expires: "03-09-2491", // Set an expiration date or duration
-      });
-
-      // Push the video URL to the array
-      videoUrls.push(videoUrl[0]);
-    }
-
-    // Update the course information to add the new video URLs to the array
-    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
-    const courseData = courseSnapshot.docs[0].data();
-
-    // Check if the course already has a list of videos
-    const existingVideos = courseData.listvideoUrl || [];
-    // Concatenate the new video URLs with the existing array
-    const updatedVideos = existingVideos.concat(videoUrls);
-
-    await db.collection("courses").doc(courseId).update({
-      listvideoUrl: updatedVideos,
-    });
-
-    return res.status(200).json({ msg: "Course updated successfully." });
-  } catch (error) {
-    console.error("Error updating course:", error);
-    return res
-      .status(500)
-      .json({ msg: "An error occurred while updating course." });
-  }
-});
-
-app.post("/deleteCourse", async (req, res) => {
-  const code = req.body.code; // Extract the course code from the request body
-
-  try {
-    // Search for the course with the provided code
-    const courseSnapshot = await db
-      .collection("courses")
-      .where("code", "==", code)
-      .get();
-
-    if (courseSnapshot.empty) {
-      // If no course found with the provided code, return an error
-      res.status(404).json({ msg: "Course not found with the provided code." });
-      return;
-    }
-
-    // Delete the course
-    const courseId = courseSnapshot.docs[0].id; // Assuming only one course is found
-    await db.collection("courses").doc(courseId).delete();
-
-    res.status(200).json({ msg: "Course deleted successfully." });
-  } catch (error) {
-    console.error("Error deleting course:", error);
-    res.status(500).json({ msg: "An error occurred while deleting course." });
-  }
-});
-
 app.post("/updateProgress", async (req, res) => {
   const userId = req.session.userData.userId;
   const { videoUrl, currentTime, duration, progress } = req.body;
@@ -935,62 +730,467 @@ app.post("/updateProgress", async (req, res) => {
   }
 });
 
-// app.post("/updateProgress", async (req, res) => {
-//   const { userId, videoUrl, currentTime, duration, progress } = req.body;
-//   try {
-//     // Encode the video URL to create a valid document ID
-//     const encodedVideoUrl = encodeURIComponent(videoUrl);
-//     // Check if user exists, if not, create user document
-//     const userRef = admin.firestore().collection("Users").doc(userId);
-//     // Check if progress data exists
-//     const progressSnapshot = await userRef
-//       .collection("progress")
-//       .doc(encodedVideoUrl)
-//       .get();
+app.post(
+  "/create-course",
+  upload.fields([
+    { name: "imageUrl", maxCount: 1 },
+    { name: "videoUrl", maxCount: 1 },
+    { name: "listvideoUrl" },
+  ]),
+  async (req, res) => {
+    try {
+      const course = req.body;
+      const files = req.files;
+      const playlistName = course.name;
 
-//     let progressData = progressSnapshot.data();
-//     if (progressData.progress < progress) {
-//       // Store progress data in Firebase Firestore
-//       await db
-//         .collection("Users")
-//         .doc(userId)
-//         .collection("progress")
-//         .doc(encodedVideoUrl) // Use encoded URL
-//         .set({
-//           currentTime: currentTime,
-//           duration: duration,
-//           progress: progress,
-//         });
+      const imageUrlFile = files["imageUrl"][0];
+      const videoUrlFile = files["videoUrl"][0];
+      const listvideoUrlFiles = files["listvideoUrl"];
 
-//       res.status(200).json({ message: "Progress updated successfully" });
-//     }
-//   } catch (error) {
-//     console.error("Error updating progress:", error);
-//     res.status(500).json({ error: error.message }); // Specific error message
-//   }
-// });
+      if (!imageUrlFile || !videoUrlFile || !listvideoUrlFiles) {
+        return res
+          .status(400)
+          .send("Thumbnails, Course Intro video, or Playlist not uploaded.");
+      }
 
-app.get("/getProgress", async (req, res) => {
-  const userId = req.session.userData.userId;
-  const videoUrl = req.query.videoUrl;
-  try {
-    const encodedVideoUrl = encodeURIComponent(videoUrl);
-    const userRef = admin.firestore().collection("Users").doc(userId);
-    const progressRef = userRef.collection("progress").doc(encodedVideoUrl);
+      // Check if course with provided code already exists
+      const courseSnapshot = await admin
+        .firestore()
+        .collection("courses")
+        .where("code", "==", course.code)
+        .get();
 
-    const progressSnapshot = await progressRef.get();
-    const progressData = progressSnapshot.data();
+      if (!courseSnapshot.empty) {
+        req.session.msgAdmin = "Course with the provided code already exists";
+        return res.redirect("/control");
+      }
 
-    if (progressData) {
-      res.status(200).json(progressData);
-    } else {
-      res.status(200).json({ currentTime: 0, progress: 0 });
+      const uploadFile = async (file, fileNamePrefix, name) => {
+        const fileName = name
+          ? `${fileNamePrefix}/${name}/${Date.now()}-${file.originalname}`
+          : `${fileNamePrefix}/${Date.now()}-${file.originalname}`;
+        const fileUpload = bucket.file(fileName);
+        const stream = fileUpload.createWriteStream({
+          metadata: { contentType: file.mimetype },
+        });
+
+        return await new Promise((resolve, reject) => {
+          stream.on("error", reject);
+          stream.on("finish", async () => {
+            const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${
+              bucket.name
+            }/o/${encodeURIComponent(fileName)}?alt=media`;
+            resolve(fileUrl);
+          });
+          stream.end(file.buffer);
+        });
+      };
+
+      const [imageUrl, videoUrl, listvideoUrl] = await Promise.all([
+        uploadFile(imageUrlFile, "thumbnails"),
+        uploadFile(videoUrlFile, "intros"),
+        Promise.all(
+          listvideoUrlFiles.map((file) =>
+            uploadFile(file, "playlists", playlistName)
+          )
+        ),
+      ]);
+
+      course.imageUrl = imageUrl;
+      course.videoUrl = videoUrl;
+      course.listvideoUrl = listvideoUrl;
+
+      course.Lessondescription = course.Lessondescription.split(/\r?\n/);
+
+      // Create a new document in the 'courses' collection
+      await admin.firestore().collection("courses").add({
+        code: course.code,
+        name: course.name,
+        duration: course.duration,
+        lesson: course.lesson,
+        Lessondescription: course.Lessondescription,
+        categories: course.categories,
+        description: course.description,
+        imageUrl: course.imageUrl,
+        videoUrl: course.videoUrl,
+        listvideoUrl: course.listvideoUrl,
+      });
+      req.session.msgAdmin = "Course Create Successfully";
+      res.redirect("/control");
+    } catch (error) {
+      req.session.msgAdmin = "Error creating course";
+      res.redirect("/control");
     }
+  }
+);
+
+app.post("/deleteCourse", upload.none(), async (req, res) => {
+  const password = req.body.password;
+  const courseId = req.body.courseId;
+  const user = req.session.adminData;
+
+  try {
+    // Verify the ID token
+    const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
+
+    // Get the user's email from the token
+    const userEmail = idTokenResult.email;
+
+    // Sign in the user with email and password
+    await firebase.auth().signInWithEmailAndPassword(userEmail, password);
+
+    // Retrieve the course document to get the URLs
+    const courseDoc = await db.collection("courses").doc(courseId).get();
+    if (!courseDoc.exists) {
+      throw new Error("Course not found");
+    }
+    const courseData = courseDoc.data();
+
+    // Helper function to delete a file from Firebase Storage
+    const deleteFile = async (fileUrl) => {
+      if (fileUrl && fileUrl.startsWith("https://")) {
+        const fileName = decodeURIComponent(
+          fileUrl.split("/o/")[1].split("?alt=media")[0]
+        );
+        await bucket.file(fileName).delete();
+      }
+    };
+
+    // Delete associated files
+    await Promise.all([
+      deleteFile(courseData.imageUrl),
+      deleteFile(courseData.videoUrl),
+      ...(courseData.listvideoUrl || []).map(async (url) => {
+        if (url !== "Video Deleted") {
+          await deleteFile(url);
+        }
+      }),
+    ]);
+
+    // Delete the course document from Firestore
+    await db.collection("courses").doc(courseId).delete();
+
+    req.session.msgAdmin = "Course Deleted Successfully";
+    res.redirect("/control/controlCoursesView");
   } catch (error) {
-    console.error("Error fetching progress:", error);
-    res.status(500).json({ error: error.message });
+    console.error("Error deleting course:", error);
+    req.session.msgAdmin = "Wrong Password Or Error Deleting Course";
+    res.redirect("/control/controlCoursesView");
   }
 });
+
+app.post("/deleteUser", upload.none(), async (req, res) => {
+  const password = req.body.password;
+  const userId = req.body.userId;
+  const user = req.session.adminData;
+
+  try {
+    // Verify the ID token
+    const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
+
+    // Get the user's email from the token
+    const userEmail = idTokenResult.email;
+
+    // Sign in the user with email and password
+    await firebase.auth().signInWithEmailAndPassword(userEmail, password);
+
+    // Get the user's avatar URL from the database
+    const userDoc = await db.collection("Users").doc(userId).get();
+    const userData = userDoc.data();
+    const avatarUrl = userData.avatarUrl;
+
+    // Check if the avatar URL is not the default dark avatar
+    if (avatarUrl !== "/images/dark-avatar.jpg") {
+      // Decode the file name from the avatar URL
+      const fileName = decodeURIComponent(
+        avatarUrl.split("/o/")[1].split("?alt=media")[0]
+      );
+
+      // Delete the file from Firebase Storage
+      await bucket.file(fileName).delete();
+    }
+
+    // Delete user data from Firestore
+    await db.collection("Users").doc(userId).delete();
+
+    // Delete user authentication
+    await admin.auth().deleteUser(userId);
+
+    req.session.msgAdmin = "User Deleted Successfully";
+    res.redirect("/control/controlCoursesAccount");
+  } catch (error) {
+    req.session.msgAdmin = "Wrong Password Or Error Deleting User";
+    res.redirect("/control/controlCoursesAccount");
+  }
+});
+
+app.post(
+  "/updateCourse",
+  upload.fields([
+    { name: "imageUrl", maxCount: 1 },
+    { name: "videoUrl", maxCount: 1 },
+    { name: "listvideoUrl" },
+  ]),
+  async (req, res) => {
+    try {
+      const course = req.body;
+      const files = req.files;
+      const courseId = course.courseId;
+
+      const playlistName = course.name || "default_playlist_name";
+
+      const courseDoc = await db.collection("courses").doc(courseId).get();
+      const currentCourseData = courseDoc.data();
+
+      const deleteOldFile = async (fileUrl) => {
+        if (fileUrl) {
+          const fileName = decodeURIComponent(
+            fileUrl.split("/o/")[1].split("?alt=media")[0]
+          );
+          await bucket.file(fileName).delete();
+        }
+      };
+
+      // Check and delete the old image if a new one is uploaded
+      if (files["imageUrl"]?.[0]) {
+        await deleteOldFile(currentCourseData.imageUrl);
+      }
+
+      // Check and delete the old video if a new one is uploaded
+      if (files["videoUrl"]?.[0]) {
+        await deleteOldFile(currentCourseData.videoUrl);
+      }
+
+      const uploadFile = async (file, fileNamePrefix, name) => {
+        if (!file) return null; // Skip upload if file is not provided
+
+        const fileName = name
+          ? `${fileNamePrefix}/${name}/${Date.now()}-${file.originalname}`
+          : `${fileNamePrefix}/${Date.now()}-${file.originalname}`;
+        const fileUpload = bucket.file(fileName);
+        const stream = fileUpload.createWriteStream({
+          metadata: { contentType: file.mimetype },
+        });
+
+        return await new Promise((resolve, reject) => {
+          stream.on("error", reject);
+          stream.on("finish", async () => {
+            const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${
+              bucket.name
+            }/o/${encodeURIComponent(fileName)}?alt=media`;
+            resolve(fileUrl);
+          });
+          stream.end(file.buffer);
+        });
+      };
+
+      const [imageUrl, videoUrl, newListvideoUrls] = await Promise.all([
+        uploadFile(files["imageUrl"]?.[0], "thumbnails"),
+        uploadFile(files["videoUrl"]?.[0], "intros"),
+        files["listvideoUrl"]
+          ? Promise.all(
+              files["listvideoUrl"].map((file) =>
+                uploadFile(file, "playlists", playlistName)
+              )
+            )
+          : [],
+      ]);
+
+      if (imageUrl) course.imageUrl = imageUrl;
+      if (videoUrl) course.videoUrl = videoUrl;
+
+      // Append new video URLs to the existing list
+      const existingListvideoUrls = currentCourseData.listvideoUrl || [];
+      course.listvideoUrl = [...existingListvideoUrls, ...newListvideoUrls];
+
+      if (course.Lessondescription) {
+        course.Lessondescription = course.Lessondescription.split(/\r?\n/);
+      }
+
+      delete course.courseId; // Remove courseId from the course object
+      delete course.choose;
+
+      // Remove empty fields from the course object
+      Object.keys(course).forEach((key) => {
+        if (course[key] === "" || course[key] == null) {
+          delete course[key];
+        }
+      });
+
+      await db.collection("courses").doc(courseId).update(course);
+
+      req.session.msgAdmin = "Course Updated Successfully";
+      res.redirect("/control/controlCoursesView");
+    } catch (error) {
+      console.error("Error updating course:", error);
+      req.session.msgAdmin = "Error Updating Course";
+      res.redirect("/control/controlCoursesView");
+    }
+  }
+);
+
+app.post("/deleteVideo", upload.none(), async (req, res) => {
+  const password = req.body.password;
+  const courseId = req.body.courseId;
+  const videoUrl = req.body.videoUrl;
+  const user = req.session.adminData;
+
+  try {
+    // Verify the ID token
+    const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
+
+    // Get the user's email from the token
+    const userEmail = idTokenResult.email;
+
+    // Sign in the user with email and password
+    await firebase.auth().signInWithEmailAndPassword(userEmail, password);
+
+    // Extract the file name from the video URL
+    const fileName = decodeURIComponent(
+      videoUrl.split("/o/")[1].split("?alt=media")[0]
+    );
+
+    // Delete the file from Firebase Storage
+    await bucket.file(fileName).delete();
+
+    const courseDoc = await db.collection("courses").doc(courseId).get();
+
+    const courseData = courseDoc.data();
+    const updatedListvideoUrl = courseData.listvideoUrl.slice(); // create a copy of the array
+
+    // Find the index of the video URL and replace it with Video Deleted
+    const index = updatedListvideoUrl.indexOf(videoUrl);
+    if (index !== -1) {
+      updatedListvideoUrl[index] = "Video Deleted";
+    }
+
+    await db
+      .collection("courses")
+      .doc(courseId)
+      .update({ listvideoUrl: updatedListvideoUrl });
+
+    req.session.msgAdmin = "Video Deleted Successfully";
+    res.redirect("/control/controlCoursesView");
+  } catch (error) {
+    console.log(error);
+    req.session.msgAdmin = "Wrong Password Or Error Deleting Video";
+    res.redirect("/control/controlCoursesView");
+  }
+});
+
+app.post("/editVideo", upload.single("newVideo"), async (req, res) => {
+  const courseId = req.body.courseId;
+  const oldVideoUrl = req.body.videoUrl;
+  const playList = req.body.playList;
+
+  try {
+    const newVideo = req.file;
+    let newFileName;
+
+    if (oldVideoUrl !== "Video Deleted" && oldVideoUrl !== "") {
+      // Extract the file name from the old video URL
+      const oldFileName = decodeURIComponent(
+        oldVideoUrl.split("/o/")[1].split("?alt=media")[0]
+      );
+
+      // Extract the default playlist name
+      const playlistName = oldFileName.split("/")[1];
+
+      // Delete the old file from Firebase Storage
+      await bucket.file(oldFileName).delete();
+
+      // Construct the new file name using the extracted playlist name
+      newFileName = `playlists/${playlistName}/${Date.now()}-${
+        newVideo.originalname
+      }`;
+    } else {
+      newFileName = `playlists/${playList}/${Date.now()}-${
+        newVideo.originalname
+      }`;
+    }
+
+    const fileUpload = bucket.file(newFileName);
+    const stream = fileUpload.createWriteStream({
+      metadata: { contentType: newVideo.mimetype },
+    });
+
+    const newVideoUrl = await new Promise((resolve, reject) => {
+      stream.on("error", reject);
+      stream.on("finish", async () => {
+        const fileUrl = `https://firebasestorage.googleapis.com/v0/b/${
+          bucket.name
+        }/o/${encodeURIComponent(newFileName)}?alt=media`;
+        resolve(fileUrl);
+      });
+      stream.end(newVideo.buffer);
+    });
+
+    // Update the Firestore document to replace the old video URL with the new one
+    const courseDoc = await db.collection("courses").doc(courseId).get();
+
+    const courseData = courseDoc.data();
+    const updatedListvideoUrl = courseData.listvideoUrl.slice(); // create a copy of the array
+
+    // Find the index of the old video URL and replace it with the new one
+    const index = updatedListvideoUrl.indexOf(oldVideoUrl);
+    if (index !== -1) {
+      updatedListvideoUrl[index] = newVideoUrl;
+    } else {
+      // If the old video URL is not found, add the new video URL to the end of the list
+      updatedListvideoUrl.push(newVideoUrl);
+    }
+
+    await db
+      .collection("courses")
+      .doc(courseId)
+      .update({ listvideoUrl: updatedListvideoUrl });
+
+    req.session.msgAdmin = "Video Edit Successfully";
+    res.redirect("/control/controlCoursesView");
+  } catch (error) {
+    console.log(error);
+    req.session.msgAdmin = "Wrong Password Or Error Editing Video";
+    res.redirect("/control/controlCoursesView");
+  }
+});
+
+//***********************************Change Language***************************************** //
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Middleware to set language based on user preference
+app.use((req, res, next) => {
+  const lang = req.query.lang || req.cookies.lang || "en";
+  i18n.setLocale(req, lang);
+  res.cookie("lang", lang, { maxAge: 900000, httpOnly: true });
+  console.log(`Locale set to: ${lang}`);
+  next();
+});
+
+app.get("/translations", (req, res) => {
+  // Get the language from the query parameter or default to "en"
+  const lang = req.query.lang || "en";
+  // Get all keys and values for the specified language
+  const translations = i18n.getCatalog(lang);
+  // Send the translations as JSON response
+  res.json(translations);
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+//*********************************** Models ***************************************** //
+/////////////////////////////////////////////////////////////////////////////////////////////////
+app.post("/proxy-correct", async (req, res) => {
+  try {
+    const response = await axios.post(
+      "http://shifo2001.pythonanywhere.com/correct",
+      req.body
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).send("Error correcting spelling");
+  }
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`);

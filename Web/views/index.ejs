@@ -39,7 +39,9 @@
     <% if (typeof alertMessage !== 'undefined') { %>
     <div class="alert-bar"><%= alertMessage %></div>
     <% } %>
+    <!-- ///////////////////// Script in the Header Components ////////////////////////// -->
     <div class="scroller"></div>
+    <!-- /////////////////////////////////////////////// -->
     <!-- Start header -->
     <% if (typeof user !== 'undefined') { %> <%-
     include('./components/header.ejs', { avatarUrl: user.avatarUrl, currentPage:
@@ -184,17 +186,6 @@
     <!-- Start Footer -->
     <%- include('./components/footer.ejs') %>
     <!-- End Footer -->
-    <script>
-      let scroller = document.querySelector(".scroller");
-      let scrollerHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      window.addEventListener("scroll", () => {
-        let scrollTop = document.documentElement.scrollTop;
-        scroller.style.width = `${(scrollTop / scrollerHeight) * 100}%`;
-      });
-    </script>
     <script src="./js/lang.js"></script>
-    <!-- <script src="js/footer.js"></script> -->
   </body>
 </html>

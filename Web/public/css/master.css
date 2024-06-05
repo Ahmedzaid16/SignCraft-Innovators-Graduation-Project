@@ -1295,8 +1295,7 @@ ul {
   border-radius: 7px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: absolute;
-  overflow: hidden;
-  top: 55%;
+  top: 92%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 100%;
@@ -1501,4 +1500,18 @@ ul {
     left: 0%;
     display: none;
   }
+}
+
+#searchInput {
+  color: #011627;
+  margin: 10px 10% -40px;
+  width: 80%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #2ec3b6; /* Add a grey border */
+  border-radius: 10%;
+}
+#searchInput:hover,
+#searchInput:focus {
+  border: 1px solid #e71d36; /* Change border color on hover and focus */
 }

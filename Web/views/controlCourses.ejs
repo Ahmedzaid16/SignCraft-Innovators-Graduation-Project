@@ -10,10 +10,6 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -21,28 +17,23 @@
     <title>Control Courses</title>
   </head>
   <body>
+    <% if (typeof msgAdmin !== 'undefined') { %>
+    <div class="alert-bar"><%= msgAdmin %></div>
+    <% } %>
     <div class="controlCourses">
       <h1>Control any course as you need!</h1>
       <div class="content">
         <div class="add">
           <button class="add" id="openAdd">Add course</button>
         </div>
-        <div class="add-info">
-          <button class="add" id="openAddInfo">Add course info</button>
-        </div>
-        <div class="add-video">
-          <button class="addVideo" id="openAddVideo">Add course videos</button>
-        </div>
-        <div class="modify">
-          <button class="Modify" id="modify">Modify</button>
-        </div>
-        <div class="remove">
-          <button class="remove" id="remove">Remove</button>
-        </div>
         <div class="view-course">
-          <button class="view-course" id="view-course" onclick="getCourses()">
+          <a
+            href="/control/controlCoursesView"
+            class="view-course"
+            id="view-course"
+          >
             View Courses
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -51,10 +42,12 @@
       <h1>Manage User Account</h1>
       <div class="content">
         <div class="view-account">
-          <button class="view-account" id="view-account">View Accounts</button>
-        </div>
-        <div class="delete-account">
-          <button class="del" id="DelAccountBtn">Delete Account</button>
+          <a
+            href="/control/controlCoursesAccount"
+            class="view-account"
+            id="view-account"
+            >View Accounts</a
+          >
         </div>
       </div>
     </div>
@@ -78,19 +71,13 @@
         </div>
         <div class="modal-content">
           <p>Enter this required info to add any course:</p>
-          <form class="modal-form" id="addform">
-            <div style="display: flex">
-              <label for="custom-image-upload-add" class="choose"
-                >Choose an Image:</label
-              >
-              <input
-                type="file"
-                id="custom-image-upload-add"
-                accept="image/*"
-                class="choose-btn"
-                required
-              />
-            </div>
+          <form
+            action="/create-course"
+            method="post"
+            enctype="multipart/form-data"
+            class="modal-form"
+            id="addform"
+          >
             <div>
               <label for="codeAdd">Course code</label>
               <input
@@ -99,6 +86,8 @@
                 placeholder="Enter code"
                 class="form-input"
                 required
+                name="code"
+                min="0"
               />
             </div>
             <div>
@@ -108,6 +97,8 @@
                 id="nameAdd"
                 placeholder="Enter Name"
                 class="form-input"
+                name="name"
+                autocomplete="name"
                 required
               />
             </div>
@@ -118,6 +109,7 @@
                 id="CategoriesAdd"
                 placeholder="Enter Category"
                 class="form-input"
+                name="categories"
                 required
               />
             </div>
@@ -129,101 +121,65 @@
                 placeholder="Enter Number"
                 class="form-input"
                 required
+                name="lesson"
+                min="1"
+              />
+            </div>
+            <div>
+              <label for="lessonDescriptions">Lesson Descriptions</label>
+              <textarea
+                name="lessonDescriptions"
+                id="lessonDescriptions"
+                cols="35"
+                rows="10"
+                placeholder="Enter each lesson description on a new line"
+                required
+              ></textarea>
+            </div>
+            <div>
+              <label for="durationAddinfo">Course duration</label>
+              <input
+                type="text"
+                name="duration"
+                id="durationAddinfo"
+                placeholder="Enter course time (3h / 12m)"
+                class="form-input"
+                required
               />
             </div>
             <div>
               <label for="descriptionAdd">Course description</label>
               <textarea
-                name="textarea"
+                name="description"
                 id="descriptionAdd"
                 cols="35"
                 rows="5"
                 required
               ></textarea>
             </div>
-            <input onclick="ok" type="submit" value="Add" class="submit-btn" />
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-container" id="modal-add-info">
-      <div class="modal">
-        <button class="close-btn" id="close-info">
-          <i class="fa-regular fa-circle-xmark"></i>
-        </button>
-        <div class="modal-header">
-          <h3>Add course info</h3>
-        </div>
-        <div class="modal-content">
-          <p>Enter this required info to add course info:</p>
-          <form class="modal-form" id="addFormInfo">
-            <div>
-              <label for="codeAddinfo">Course code</label>
+            <div style="display: flex">
+              <label for="custom-image-upload-add" class="choose"
+                >Course Image:</label
+              >
               <input
-                type="number"
-                id="codeAddinfo"
-                placeholder="Enter code"
-                class="form-input"
+                name="imageUrl"
+                type="file"
+                id="custom-image-upload-add"
+                accept="image/*"
+                class="choose-btn"
                 required
               />
             </div>
             <div style="display: flex">
               <label for="custom-video-upload-add" class="choose"
-                >Choose an video:</label
+                >Intro video:</label
               >
               <input
+                name="videoUrl"
                 type="file"
                 id="custom-video-upload-add"
                 accept="video/*"
                 class="chooseVideo-btn"
-                required
-              />
-            </div>
-            <div>
-              <label for="durationAddinfo">Course duration</label>
-              <input
-                type="text"
-                id="durationAddinfo"
-                placeholder="Enter course time"
-                class="form-input"
-                required
-              />
-            </div>
-            <div>
-              <label for="descriptionAddinfo">Course lesson</label>
-              <textarea
-                name="textarea"
-                id="descriptionAddinfo"
-                cols="35"
-                rows="5"
-                required
-              ></textarea>
-            </div>
-            <input type="submit" value="Add" class="submit-btn" />
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-container" id="modal-add-video">
-      <div class="modal">
-        <button class="close-btn" id="close-video">
-          <i class="fa-regular fa-circle-xmark"></i>
-        </button>
-        <div class="modal-header">
-          <h3>Add course video</h3>
-        </div>
-        <div class="modal-content">
-          <p>Enter this required info to add course video:</p>
-          <form class="modal-form" id="addCourseVideos">
-            <div>
-              <label for="codeAddVideos">Course code</label>
-              <input
-                type="number"
-                id="codeAddVideos"
-                placeholder="Enter code"
-                class="form-input"
                 required
               />
             </div>
@@ -246,13 +202,14 @@
 
             <div class="device-video" id="device-video">
               <label for="custom-video-upload-course" class="choose"
-                >Choose an video:</label
+                >Choose video(s):</label
               >
               <input
                 type="file"
                 id="custom-video-upload-course"
                 accept="video/*"
                 class="chooseVideo-btn"
+                name="listvideoUrl"
                 multiple
               />
             </div>
@@ -271,136 +228,60 @@
       </div>
     </div>
 
-    <div class="modal-container-mod" id="modal-mod">
-      <div class="modal">
-        <button class="close-btn" id="close-mod">
-          <i class="fa-regular fa-circle-xmark"></i>
-        </button>
-        <div class="modal-header">
-          <h3>Modify course</h3>
-        </div>
-        <div class="modal-content">
-          <p>Enter this required info to modify any course:</p>
-          <form class="modal-form" id="form-mod">
-            <div style="display: flex">
-              <label for="custom-image-upload-mod" class="choose"
-                >Choose an Image:</label
-              >
-              <input
-                type="file"
-                id="custom-image-upload-mod"
-                accept="image/*"
-                class="choose-btn"
-                required
-              />
-            </div>
-            <div>
-              <label for="code-mod">Course Code</label>
-              <input
-                type="number"
-                id="code-mod"
-                placeholder="Enter course Code"
-                class="form-input"
-                required
-              />
-            </div>
-            <div>
-              <label for="name-mod">Course name</label>
-              <input
-                type="text"
-                id="name-mod"
-                placeholder="Enter course name"
-                class="form-input"
-                required
-              />
-            </div>
-            <div>
-              <label for="Categories-mod">Course Category</label>
-              <input
-                type="text"
-                id="Categories-mod"
-                placeholder="Enter Category"
-                class="form-input"
-                required
-              />
-            </div>
-            <div>
-              <label for="lesson-mod">Number of Lessons</label>
-              <input
-                type="number"
-                id="lesson-mod"
-                placeholder="Enter number of lesson"
-                class="form-input"
-                required
-              />
-            </div>
-            <div>
-              <label for="description-mod">Edit course description</label>
-              <textarea
-                name="textarea"
-                id="description-mod"
-                required
-              ></textarea>
-            </div>
-            <input type="submit" value="Modify" class="submit-btn" />
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-container-rem" id="modal-rem">
-      <div class="modal">
-        <button class="close-btn" id="close-rem">
-          <i class="fa-regular fa-circle-xmark"></i>
-        </button>
-        <div class="modal-header">
-          <h3>Remove course</h3>
-        </div>
-        <div class="modal-content">
-          <p>Enter course code to removed:</p>
-          <form class="modal-form" id="form-rem">
-            <div>
-              <label for="code-rem">Course code</label>
-              <input
-                type="number"
-                id="code-rem"
-                placeholder="Enter course code"
-                class="form-input"
-                required
-              />
-            </div>
-            <input type="submit" value="Remove" class="submit-btn" />
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-container" id="showDeleteAccount">
-      <div class="modal">
-        <button class="close-btn" id="close-acc">
-          <i class="fa-regular fa-circle-xmark"></i>
-        </button>
-        <div class="modal-header">
-          <h3>Delete account</h3>
-        </div>
-        <div class="modal-content">
-          <p>Enter email account to deleted:</p>
-          <form class="modal-form" id="form-rem">
-            <div>
-              <input
-                type="email"
-                id="acc-del"
-                placeholder="Enter user email"
-                class="form-input"
-                required
-              />
-            </div>
-            <input type="submit" value="Delete" class="submit-btn" />
-          </form>
-        </div>
-      </div>
-    </div>
-    <script src="/js/controlCourses.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/controlCourses.js"></script>
+    <script>
+      const openAdd = document.getElementById("openAdd");
+      const close = document.getElementById("close");
+      const modalAdd = document.getElementById("modal-add");
+      const lessonAdd = document.getElementById("lessonAdd");
+      const lessonDescriptions = document.getElementById("lessonDescriptions");
+      const customVideoUploadCourse = document.getElementById(
+        "custom-video-upload-course"
+      );
+
+      // Function to remove the "show-modal" class
+      const closeModal = () => {
+        modalAdd.classList.remove("show-modal");
+      };
+      // Attach the event listener to the "close" button for Add modal
+      close.addEventListener("click", closeModal);
+
+      // Function to  show modal
+      const addModal = () => {
+        modalAdd.classList.add("show-modal");
+      };
+
+      // Show Add modal
+      openAdd.addEventListener("click", addModal);
+
+      ////////////////////////////////
+      // Hide modal on outside click
+      window.addEventListener("click", (e) =>
+        e.target == modalAdd ? modalAdd.classList.remove("show-modal") : false
+      );
+
+      // Event listener for the form submission
+      document.getElementById("addform").addEventListener("submit", (event) => {
+        const numberOfLessons = lessonAdd.value;
+        const lessonDescriptionsArray = lessonDescriptions.value
+          .split(/\r?\n/)
+          .map((desc) => desc.trim())
+          .filter((desc) => desc !== "");
+        const uploadedVideos = customVideoUploadCourse.files.length;
+
+        if (numberOfLessons != lessonDescriptionsArray.length) {
+          event.preventDefault();
+          alert(
+            `The number of lessons (${numberOfLessons}) must match the number of lesson descriptions (${lessonDescriptionsArray.length}).`
+          );
+        } else if (numberOfLessons != uploadedVideos) {
+          event.preventDefault();
+          alert(
+            `The number of lessons (${numberOfLessons}) must match the number of uploaded videos (${uploadedVideos}).`
+          );
+        }
+      });
+    </script>
   </body>
 </html>

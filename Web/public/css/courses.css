@@ -118,6 +118,7 @@ section {
 
 .courses .div-courses .div-courses-videos a {
   color: #011627;
+  aspect-ratio: 1 / 1;
 }
 
 .courses .div-courses .div-courses-videos .course:hover {
@@ -133,6 +134,8 @@ section {
   width: 100%;
   height: 100%;
   border-radius: 20px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 .courses .div-courses .div-courses-videos .course-content .course-img span {
   position: absolute;
