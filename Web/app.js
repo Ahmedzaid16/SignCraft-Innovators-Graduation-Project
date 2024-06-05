@@ -127,6 +127,7 @@ async function getUsers() {
 }
 
 setAdmin("sherefalex34@gmail.com");
+setAdmin("omaradmin@gmail.com");
 //////////////////////////////////////////////////////////////////////////////
 
 app.use(
