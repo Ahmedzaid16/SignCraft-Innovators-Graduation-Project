@@ -64,13 +64,16 @@ const get_start = async () => {
     console.log(videoDataForm);
 
     try {
-      const uploadResponse = await axios.post(`https://cda6-154-134-63-11.ngrok-free.app/upload`, videoDataForm, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      const uploadResponse = await axios.post(
+        `https://cda6-154-134-63-11.ngrok-free.app/upload`,
+        videoDataForm,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
       console.log(uploadResponse.data);
-
 
       // const translateResponse = await axios.get(`/api/video/gettranslate`);
       // console.log(translateResponse.data.translate);
@@ -93,3 +96,44 @@ startRecordingSvg.addEventListener("click", () => {
   recorded_v_elem.style.display = "none";
   get_start();
 });
+
+let typingTimer;
+const doneTypingInterval = 5000; // 5 seconds
+
+async function correct() {
+  clearTimeout(typingTimer);
+
+  // Start a new timer
+  typingTimer = setTimeout(async () => {
+    // Declare variables
+    var input;
+    input = document.getElementById("text");
+    filter = input.value.trim();
+
+    try {
+      const response = await axios.post("/proxy-process", {
+        input_text: filter,
+      });
+
+      // Check if response data contains 'output' key
+      if ("output" in response.data) {
+        // Access the 'output' property
+        let output = response.data.output;
+
+        // If 'output' is an array, take the first element
+        if (Array.isArray(output)) {
+          output = output[0];
+        }
+
+        // Trim the output
+        output = output.trim();
+
+        console.log(output);
+      } else {
+        console.error("Error: Response does not contain 'output'");
+      }
+    } catch (error) {
+      console.error("Error correcting spelling:", error);
+    }
+  }, doneTypingInterval);
+}

@@ -142,10 +142,12 @@ volumeSlider.addEventListener("input", (e) => {
   volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
 });
 
-async function openLessonVideo(videoUrl) {
+async function openLessonVideo(videoUrl, courseId) {
   try {
     const response = await fetch(
-      `/getProgress?videoUrl=${encodeURIComponent(videoUrl)}`
+      `/getProgress?videoUrl=${encodeURIComponent(
+        videoUrl
+      )}&courseId=${courseId}`
     );
     if (response.ok) {
       const data = await response.json();

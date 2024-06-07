@@ -255,6 +255,8 @@ app.get("/courses/course_info", async (req, res) => {
 
 app.get("/courses/course_info/course_lessons", async (req, res) => {
   const user = req.session.userData;
+  const courseId = req.query.course;
+  req.session.courseId = courseId;
   if (user) {
     // Get the user record from Firebase Auth
     const userRecord = await admin.auth().getUser(user.userId);
@@ -265,13 +267,16 @@ app.get("/courses/course_info/course_lessons", async (req, res) => {
       // Check if user exists, if not, create user document
       const userRef = admin.firestore().collection("Users").doc(user.userId);
 
-      // Check if progress data exists
-      const progressRef = userRef.collection("progress");
-      const progressSnapshot = await progressRef.get();
-      let progressData = progressSnapshot.docs.map((doc) => doc.data());
+      // Check if progress data exists for this course
+      const courseProgressRef = userRef.collection("progress").doc(courseId);
+      const courseProgressSnapshot = await courseProgressRef.get();
+      let progressData;
 
-      if (progressData.length === 0) {
-        // If progress data doesn't exist, create it for each video with initial values
+      if (courseProgressSnapshot.exists) {
+        // If progress data exists for this course, retrieve it
+        progressData = courseProgressSnapshot.data().progress;
+      } else {
+        // If progress data doesn't exist for this course, create it for each video with initial values
         const initialProgressData = course.listvideoUrl.map((videoUrl) => ({
           videoUrl: videoUrl,
           currentTime: 0, // Initial current time
@@ -279,24 +284,17 @@ app.get("/courses/course_info/course_lessons", async (req, res) => {
           progress: 0, // Initial progress
         }));
 
-        // Save each video's progress data in Firestore
-        const batch = admin.firestore().batch();
-        initialProgressData.forEach((data) => {
-          const progressDocRef = progressRef.doc(
-            encodeURIComponent(data.videoUrl)
-          );
-          batch.set(progressDocRef, data);
-        });
-        await batch.commit();
+        // Save each video's progress data for this course in Firestore
+        await courseProgressRef.set({ progress: initialProgressData });
 
         // Use the newly created progress data
         progressData = initialProgressData;
-        console.log(progressData);
       }
 
       res.render("course-lessons", {
         course: course,
         user: user,
+        courseId: courseId,
         progress: progressData,
       });
     } else {
@@ -336,15 +334,85 @@ app.get("/signUp", async (req, res) => {
 app.get("/profile", async (req, res) => {
   const user = req.session.userData;
   const PassMsg = req.session.PassMsg;
-  if (PassMsg) {
-    delete req.session.PassMsg;
-    res.render("profile", { user: user, PassMsg: PassMsg });
-  } else if (user) {
-    res.render("profile", { user: user });
+
+  if (user) {
+    // Get user's progress data
+    const userRef = admin.firestore().collection("Users").doc(user.userId);
+    const progressSnapshot = await userRef.collection("progress").get();
+
+    let courses = [];
+    let courseProgressMap = new Map();
+
+    // Iterate over progress documents to get course IDs and progress data
+    const promises = progressSnapshot.docs.map(async (doc) => {
+      const courseId = doc.id; // Assuming document ID is the course ID
+      const progressArray = doc.data().progress;
+
+      // Initialize progress data for the course if not already initialized
+      if (!courseProgressMap.has(courseId)) {
+        courseProgressMap.set(courseId, {
+          totalProgress: 0,
+          numProgressItems: 0,
+        });
+      }
+
+      // Iterate over progress array to calculate total progress and count progress items
+      progressArray.forEach((progressItem) => {
+        let courseProgress = courseProgressMap.get(courseId);
+        courseProgress.totalProgress += progressItem.progress;
+        courseProgress.numProgressItems++;
+      });
+
+      // Fetch course details
+      const courseDoc = await admin
+        .firestore()
+        .collection("courses")
+        .doc(courseId)
+        .get();
+
+      if (courseDoc.exists) {
+        const { imageUrl, name } = courseDoc.data();
+        const course = {
+          id: courseId,
+          imageUrl,
+          name,
+        }; // Include progress data with course details
+        courses.push(course);
+      } else {
+        console.log(`Course with ID ${courseId} not found.`);
+      }
+    });
+
+    await Promise.all(promises);
+
+    // Calculate average progress for each course
+    courses = courses.map((course) => {
+      const progressData = courseProgressMap.get(course.id);
+      const averageProgress =
+        progressData.numProgressItems !== 0
+          ? progressData.totalProgress / progressData.numProgressItems
+          : 0;
+      return { ...course, averageProgress: averageProgress };
+    });
+
+    if (PassMsg) {
+      delete req.session.PassMsg;
+      res.render("profile", {
+        user: user,
+        courses: courses,
+        PassMsg: PassMsg,
+      });
+    } else {
+      res.render("profile", {
+        user: user,
+        courses: courses,
+      });
+    }
   } else {
     res.redirect("/");
   }
 });
+
 
 app.get("/reset", async (req, res) => {
   res.render("reset");
@@ -451,22 +519,31 @@ app.get("/control/controlCoursesAccount", async (req, res) => {
 app.get("/getProgress", async (req, res) => {
   const userId = req.session.userData.userId;
   const videoUrl = req.query.videoUrl;
+  const courseId = req.query.courseId;
+
   try {
-    const encodedVideoUrl = encodeURIComponent(videoUrl);
     const userRef = admin.firestore().collection("Users").doc(userId);
-    const progressRef = userRef.collection("progress").doc(encodedVideoUrl);
+    const progressRef = userRef.collection("progress").doc(courseId);
 
     const progressSnapshot = await progressRef.get();
-    const progressData = progressSnapshot.data();
+    const progressData = progressSnapshot.data()?.progress || [];
 
-    if (progressData) {
-      res.status(200).json(progressData);
+    // Find the index of the video in the progress array
+    const videoIndex = progressData.findIndex(
+      (item) => item.videoUrl === videoUrl
+    );
+
+    if (videoIndex !== -1) {
+      // Video found, return its progress data
+      const videoProgress = progressData[videoIndex];
+      return res.status(200).json(videoProgress);
     } else {
-      res.status(200).json({ currentTime: 0, progress: 0 });
+      // Video not found, return default values
+      return res.status(404).json({ currentTime: 0, progress: 0 });
     }
   } catch (error) {
     console.error("Error fetching progress:", error);
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -703,27 +780,44 @@ app.post("/Update_Password", upload.none(), async (req, res) => {
 app.post("/updateProgress", async (req, res) => {
   const userId = req.session.userData.userId;
   const { videoUrl, currentTime, duration, progress } = req.body;
+  const courseId = req.session.courseId;
+
   try {
-    const encodedVideoUrl = encodeURIComponent(videoUrl);
     const userRef = admin.firestore().collection("Users").doc(userId);
-    const progressRef = userRef.collection("progress").doc(encodedVideoUrl);
+    const courseProgressRef = userRef.collection("progress").doc(courseId);
 
-    const progressSnapshot = await progressRef.get();
-    const progressData = progressSnapshot.data();
+    // Retrieve the progress data for the course
+    const courseProgressSnapshot = await courseProgressRef.get();
+    let courseProgressData = courseProgressSnapshot.data().progress;
 
-    if (!progressData || progressData.progress < progress) {
-      await progressRef.set({
-        videoUrl: videoUrl,
-        currentTime: currentTime,
-        duration: duration,
-        progress: progress,
-      });
+    // Find the index of the video in the progress array
+    const videoIndex = courseProgressData.findIndex(
+      (item) => item.videoUrl === videoUrl
+    );
 
-      res.status(200).json({ message: "Progress updated successfully" });
+    if (videoIndex !== -1) {
+      // If the video is found in the progress array
+      if (progress > courseProgressData[videoIndex].progress) {
+        // Update progress only if incoming progress is greater
+        courseProgressData[videoIndex] = {
+          videoUrl: videoUrl,
+          currentTime: currentTime,
+          duration: duration,
+          progress: progress,
+        };
+
+        // Save the updated progress data for the course
+        await courseProgressRef.set({ progress: courseProgressData });
+
+        res.status(200).json({ message: "Progress updated successfully" });
+      } else {
+        res.status(200).json({
+          message:
+            "Progress not updated as it's less than or equal to existing progress",
+        });
+      }
     } else {
-      res.status(200).json({
-        message: "Progress not updated as it's less than existing progress",
-      });
+      res.status(404).json({ error: "Video not found in progress data" });
     }
   } catch (error) {
     console.error("Error updating progress:", error);
@@ -1192,6 +1286,26 @@ app.post("/proxy-correct", async (req, res) => {
   }
 });
 
+app.post("/proxy-process", async (req, res) => {
+  const input_text = req.body;
+  console.log(input_text);
+
+  try {
+    const response = await axios.post(
+      "https://18d8-102-42-140-48.ngrok-free.app/process_text",
+      {
+        input_text: input_text,
+      }
+    );
+    console.log(response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while sending data to Flask API" });
+  }
+});
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(port, () => {

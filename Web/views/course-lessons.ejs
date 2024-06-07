@@ -13,7 +13,7 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Control Courses</title>
+    <title>Course Lessons</title>
   </head>
 
   <body>
@@ -67,7 +67,7 @@
         </div>
         <div class="course-content" id="course-content">
           <% course.listvideoUrl.forEach((videoUrl, index) => { %>
-          <div class="box" onclick="openLessonVideo('<%= videoUrl %>')">
+          <div class="box" onclick="openLessonVideo('<%= videoUrl %>','<%= courseId %>')">
             <i class="fa-solid fa-circle-play"></i>
             <p class="lesson">
               <%= index + 1 %>. <%= course.Lessondescription[index] %>

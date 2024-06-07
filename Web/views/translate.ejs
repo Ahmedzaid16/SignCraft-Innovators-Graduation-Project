@@ -37,9 +37,9 @@
     <!-- /////////////////////////////////////////////// -->
     <!-- Start header -->
     <% if (typeof user !== 'undefined') { %> <%-
-      include('./components/header.ejs', { avatarUrl: user.avatarUrl, currentPage:
-      "translate" }) %> <% } else { %> <%- include('./components/header.ejs', {
-      avatarUrl: null, currentPage: "translate" }) %> <% } %>
+    include('./components/header.ejs', { avatarUrl: user.avatarUrl, currentPage:
+    "translate" }) %> <% } else { %> <%- include('./components/header.ejs', {
+    avatarUrl: null, currentPage: "translate" }) %> <% } %>
     <!-- End Header -->
     <!-- Start translate page -->
     <div class="translate">
@@ -92,9 +92,10 @@
             <div>
               <input
                 class="input voice"
-                name="text"
+                name="input_text"
                 id="text"
                 type="text"
+                onkeyup="correct()"
                 placeholder="Enter your text"
               />
               <i class="fa-solid fa-microphone"></i>
