@@ -154,6 +154,7 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    print(request.files)
     if 'video' not in request.files:
         return "No file part"
     file = request.files['video']
@@ -181,6 +182,6 @@ def upload_file():
         })
 
 if __name__ == "__main__":
-    init_pool(min(6, mp.cpu_count()))  # Initialize the pool with the desired number of cores
+    init_pool(min(4, mp.cpu_count()))  # Initialize the pool with the desired number of cores
     init_model()  # Initialize the model
     app.run(debug=True)
