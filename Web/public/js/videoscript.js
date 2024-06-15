@@ -97,43 +97,43 @@ startRecordingSvg.addEventListener("click", () => {
   get_start();
 });
 
-let typingTimer;
-const doneTypingInterval = 5000; // 5 seconds
+// let typingTimer;
+// const doneTypingInterval = 5000; // 5 seconds
 
-async function correct() {
-  clearTimeout(typingTimer);
+// async function correct() {
+//   clearTimeout(typingTimer);
 
-  // Start a new timer
-  typingTimer = setTimeout(async () => {
-    // Declare variables
-    var input;
-    input = document.getElementById("text");
-    filter = input.value.trim();
+//   // Start a new timer
+//   typingTimer = setTimeout(async () => {
+//     // Declare variables
+//     var input;
+//     input = document.getElementById("text");
+//     filter = input.value.trim();
 
-    try {
-      const response = await axios.post("/proxy-process", {
-        input_text: filter,
-      });
+//     try {
+//       const response = await axios.post("/proxy-process", {
+//         input_text: filter,
+//       });
 
-      // Check if response data contains 'output' key
-      if ("output" in response.data) {
-        // Access the 'output' property
-        let output = response.data.output;
+//       // Check if response data contains 'output' key
+//       if ("output" in response.data) {
+//         // Access the 'output' property
+//         let output = response.data.output;
 
-        // If 'output' is an array, take the first element
-        if (Array.isArray(output)) {
-          output = output[0];
-        }
+//         // If 'output' is an array, take the first element
+//         if (Array.isArray(output)) {
+//           output = output[0];
+//         }
 
-        // Trim the output
-        output = output.trim();
+//         // Trim the output
+//         output = output.trim();
 
-        console.log(output);
-      } else {
-        console.error("Error: Response does not contain 'output'");
-      }
-    } catch (error) {
-      console.error("Error correcting spelling:", error);
-    }
-  }, doneTypingInterval);
-}
+//         console.log(output);
+//       } else {
+//         console.error("Error: Response does not contain 'output'");
+//       }
+//     } catch (error) {
+//       console.error("Error correcting spelling:", error);
+//     }
+//   }, doneTypingInterval);
+// }
