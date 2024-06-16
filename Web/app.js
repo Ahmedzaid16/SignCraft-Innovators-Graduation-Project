@@ -626,6 +626,7 @@ app.post("/signUp", upload.none(), async (req, res) => {
     // Step 4: Redirect to the signIn page
     res.redirect("/signIn");
   } catch (error) {
+    console.log(error);
     req.session.msg = "The Email Address is Already in Use by Another Account";
     res.redirect("/signIn");
   }
