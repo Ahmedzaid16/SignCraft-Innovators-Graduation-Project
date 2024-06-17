@@ -5,7 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchTranslations(lang);
     updateButtonVisibility(lang);
     updateDirectionAndStylesheet(lang);
-    location.reload();
+    const currentPath = window.location.pathname;
+    console.log(currentPath);
+    if (currentPath === "/courses") {
+      window.location.href = `/courses?lang=${lang}`;
+    } else {
+      location.reload();
+    }
   };
 
   const fetchTranslations = (lang) => {
@@ -17,11 +23,18 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then((translations) => {
-        Object.keys(translations).forEach(key => {
-          const element = document.querySelector(`[data-i18n="${key}"]`);
-          if (element) {
-            element.textContent = translations[key];
-          }
+        Object.keys(translations).forEach((key) => {
+          const elements = document.querySelectorAll(`[data-i18n="${key}"]`);
+          elements.forEach((element) => {
+            if (
+              element.tagName === "INPUT" &&
+              element.hasAttribute("placeholder")
+            ) {
+              element.setAttribute("placeholder", translations[key]);
+            } else {
+              element.textContent = translations[key];
+            }
+          });
         });
       })
       .catch((error) => console.error("Error fetching translations:", error));

@@ -23,13 +23,13 @@
       </li>
       <li class="header-pages" id="education">
         <a
-          href="<%= avatarUrl ? '/courses' : '/signIn' %>"
+          href="/courses"
           class="<%= avatarUrl ? '' : 'edu' %><%= currentPage === 'courses' ? 'active' : null %>"
           data-i18n="Head_Education"
           >Education</a
         >
       </li>
-      <li>
+      <li id="changeLang">
         <a id="btn-ar" class="btn-lang">
           <svg
             xmlns="http://www.w3.org/2000/svg"

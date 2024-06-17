@@ -2,7 +2,7 @@ const i18n = require("i18n");
 const path = require("path");
 
 i18n.configure({
-  locales: ["en", "ar"], // List of supported languages
+  locales: ["ar"], // List of supported languages
   directory: path.join(__dirname, "../locales"), // Path to the locale files
   defaultLocale: "en", // Default language
   cookie: "lang", // Cookie name to store the selected language

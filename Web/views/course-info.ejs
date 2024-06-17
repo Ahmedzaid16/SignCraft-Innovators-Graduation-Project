@@ -21,7 +21,22 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Course Content</title>
+    <% if (courseData.language) { %>
+    <style>
+      #changeLang {
+        display: none;
+      }
+    </style>
+    <% } %> <% if (courseData.categories==="adult" ||
+    courseData.categories==="بالغ" ) { %>
+    <style>
+      .learn-buttom {
+        right: 273px !important;
+        top: 139px !important;
+      }
+    </style>
+    <% } %>
+    <title data-i18n="COURSE_CONTENT">Course Content</title>
   </head>
   <body>
     <!-- ///////////////////// Script in the Header Components ////////////////////////// -->
@@ -40,11 +55,13 @@
         >
           <div class="bottom-left-image">
             <img
-              src="<%= courseData.categories === 'kids' ? '/images/learn-now-kids.png' : '/images/learn-now.png' %>"
+              src="<%= courseData.categories === 'kids' || courseData.categories === 'اطفال' ? '/images/learn-now-kids.png' : '/images/learn-now.png' %>"
               alt="Bottom Left Image"
               class="kids-img"
             />
-            <button class="learn-buttom">Learn Now</button>
+            <button class="learn-buttom" data-i18n="LEARN_NOW">
+              Learn Now
+            </button>
           </div>
         </a>
       </div>
@@ -65,29 +82,37 @@
             <div class="info">
               <div class="categories">
                 <i class="fa-solid fa-list"></i>
-                <p id="categorie"><%= courseData.categories %></p>
+                <p id="categorie">
+                  <span data-i18n="COURSE_Category">Category</span>: <%=
+                  courseData.categories %>
+                </p>
               </div>
               <div class="duration">
                 <i class="fa-regular fa-clock"></i>
                 <p id="duration">
-                  <%= courseData.duration %> / <%= courseData.lesson %> lessons
+                  <span data-i18n="Course_Duration">Duration</span>: <%=
+                  courseData.duration %> / <%= courseData.lesson %>
+                  <span data-i18n="LESSONS_COURSES">Lessons</span>
                 </p>
               </div>
               <div class="language">
                 <i class="fa-solid fa-volume-high"></i>
-                <p>Course Language: Arabic</p>
+                <p>
+                  <span data-i18n="COURSE_LANGUAGE">Language</span>: <%=
+                  courseData.language === "arabic" ? 'العربية' : "English" %>
+                </p>
               </div>
             </div>
             <div class="learn" id="learn">
               <a
                 href="/courses/course_info/course_lessons?course=<%= courseId %>"
               >
-                <button>Learn Now</button>
+                <button data-i18n="LEARN_NOW">Learn Now</button>
               </a>
             </div>
             <div class="share" onclick="openShareModal()">
               <i class="fa-solid fa-share-nodes"></i>
-              <p>Share Course</p>
+              <p data-i18n="SHARE_COURSE">Share Course</p>
             </div>
           </div>
         </div>
@@ -95,72 +120,88 @@
       <div class="course-content">
         <div class="about">
           <div class="left">
-            <h3>About this course</h3>
+            <h3 data-i18n="ABOUT_COURSE">About this course</h3>
             <p id="about">
-              <% if (courseData.categories === "kids") { %> Today, we're going
-              to learn a cool game - it's called "Sign Language," and it's going
-              to be a lot of fun! Explore New Words! We'll be learning new words
-              that you use every day, like letters, days, colors, and even
-              fruits! Why Learn Sign Language? Learning sign language helps us
-              communicate better with our friends and family who might use it.
-              It helps us understand each other and be even better friends! And
-              that's not all! If you learn sign language, you'll be able to
-              discover a whole new world of friends and exciting adventures! Are
-              you ready to start? Let's kick off the fun and learn sign language
-              together! <% } else { %> This course introduces the principles of
-              sign language by initially reviewing the most important words used
-              in our daily lives. It covers various topics such as the alphabet,
-              weekdays, colors, family, household items, clothing, accessories,
-              fruits, beverages, food, vegetables, and unified Egyptian and
-              Arabic numbers. This course will make it easier to communicate
-              with a person who is deaf or hard of hearing—be it a family
-              member, friend, colleague, or neighbor. Learning sign language
-              will also give you the chance to get to know many of the people
-              who use it, and will allow you to discover a whole new world of
-              opportunities. <% } %>
+              <% if (courseData.categories === "kids" || courseData.categories
+              === "اطفال") { %>
+              <span data-i18n="ABOUT_KIDS">
+                Today, we're going to learn a cool game - it's called "Sign
+                Language," and it's going to be a lot of fun! Explore New Words!
+                We'll be learning new words that you use every day, like
+                letters, days, colors, and even fruits! Why Learn Sign Language?
+                Learning sign language helps us communicate better with our
+                friends and family who might use it. It helps us understand each
+                other and be even better friends! And that's not all! If you
+                learn sign language, you'll be able to discover a whole new
+                world of friends and exciting adventures! Are you ready to
+                start? Let's kick off the fun and learn sign language together!
+              </span>
+              <% } else { %>
+              <span data-i18n="ABOUT_ADULTS">
+                This course introduces the principles of sign language by
+                initially reviewing the most important words used in our daily
+                lives. It covers various topics such as the alphabet, weekdays,
+                colors, family, household items, clothing, accessories, fruits,
+                beverages, food, vegetables, and unified Egyptian and Arabic
+                numbers. This course will make it easier to communicate with a
+                person who is deaf or hard of hearing—be it a family member,
+                friend, colleague, or neighbor. Learning sign language will also
+                give you the chance to get to know many of the people who use
+                it, and will allow you to discover a whole new world of
+                opportunities.
+              </span>
+              <% } %>
             </p>
           </div>
           <div class="right" id="about-img">
-            <img src="<%= courseData.categories === "kids" ?
-            '/images/kids-about.png' : '/images/adult-about.png' %>" alt="man
-            img" />
+            <img src="<%= courseData.categories === "kids" ||
+            courseData.categories === "اطفال" ? '/images/kids-about.png' :
+            '/images/adult-about.png' %>" alt="man img" />
           </div>
         </div>
       </div>
       <div class="benefit">
         <div class="head">
-          <h3>By the end of this course, you will be able to</h3>
+          <h3 data-i18n="BENEFITS_COURSE">
+            By the end of this course, you will be able to
+          </h3>
         </div>
         <div class="center">
           <div class="one">
-            <p>
+            <p data-i18n="COMMUNICATE_DEAF">
               Some of the words and sentences you can use in sign language to
               communicate with someone who is deaf or hard of hearing.
             </p>
           </div>
           <div class="two" id="benfit-img">
-            <img src="<%= courseData.categories === "kids" ?
-            '/images/benfit-head-kids.jpg' : '/images/benfit-head.png' %>"
-            alt="girl" />
+            <img src="<%= courseData.categories === "kids" ||
+            courseData.categories === "اطفال" ? '/images/benfit-head-kids.jpg' :
+            '/images/benfit-head.png' %>" alt="girl" />
           </div>
           <div class="three">
-            <p>
+            <p data-i18n="INTRODUCE_SELF">
               How to understand a deaf person introducing themselves, and how to
               introduce yourself to a person who is deaf or hard of hearing.
             </p>
           </div>
         </div>
         <div class="bottom">
-          <div class="four"><p>The benefits of learning sign language.</p></div>
+          <div class="four">
+            <p data-i18n="BENEFITS_SIGN_LANGUAGE">
+              The benefits of learning sign language.
+            </p>
+          </div>
           <div class="five">
-            <img src="/images/benfit-bottom.png" alt="sign" />
+            <img src="<%= courseData.categories === "kids" ||
+            courseData.categories === "اطفال" ? '/images/sign-lauguage-app.avif'
+            : '/images/benfit-bottom.png' %>" alt="benfit img" />
           </div>
         </div>
       </div>
       <div class="section-content" onclick="toggleContent()">
-        <h2>Course Content</h2>
+        <h2 data-i18n="COURSE_CONTENT">Course Content</h2>
         <div class="section">
-          <p>Section 1 : Sign Language</p>
+          <p> <span data-i18n="SECTION">Section</span> 1 : <span data-i18n="SIGN_LANGUAGE">Sign Language</span></p>
           <i class="fa-solid fa-plus" id="icon"></i>
         </div>
         <div id="section1-content" class="contents">
@@ -168,7 +209,7 @@
           <p
             class="<%= index === courseData.Lessondescription.length - 1 ? 'last' : '' %>"
           >
-            Lesson <%= index + 1 %> : <%= lesson %>
+            <span data-i18n="LESSON">Lesson</span> <%= index + 1 %> : <%= lesson %>
           </p>
           <% }) %>
         </div>
@@ -178,14 +219,29 @@
           <span class="close" onclick="closeShareModal()">&times;</span>
           <p>Share on:</p>
           <div class="share-links">
-            <a href="#" class="share-link">Facebook</a>
-            <a href="#" class="share-link">Twitter</a>
+            <a
+              id="shareFacebook"
+              target="_blank"
+              class="share-link"
+              data-i18n="SHARE_FACEBOOK"
+              >Facebook</a
+            >
+            <a
+              id="shareTwitter"
+              target="_blank"
+              class="share-link"
+              data-i18n="SHARE_TWITTER"
+              >Twitter</a
+            >
           </div>
         </div>
       </div>
     </section>
-    <%- include('./components/footer.ejs') %>
     <!-- End course information -->
+    <!-- Start Footer -->
+    <%- include('./components/footer.ejs') %>
+    <!-- End Footer -->
+    <!-- Js -->
     <script src="/js/course-info.js"></script>
     <script src="/js/lang.js"></script>
   </body>

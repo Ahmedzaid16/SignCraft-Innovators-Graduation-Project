@@ -13,7 +13,14 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Course Lessons</title>
+    <% if (course.language) { %>
+    <style>
+      #changeLang {
+        display: none;
+      }
+    </style>
+    <% } %>
+    <title data-i18n="COURSE_LESSONS_TITLE">Course Lessons</title>
   </head>
 
   <body>
@@ -30,7 +37,7 @@
             <i class="fa-solid fa-hands"></i>
             <h2 id="course-name"><%= course.name %></h2>
           </div>
-          <p style="margin-bottom: 0">
+          <p style="margin-bottom: 0" data-i18n="COURSE_DESCRIPTION">
             You will learn sign language and practice it well.
           </p>
           <div>
@@ -44,26 +51,33 @@
                 <span class="two"></span>
                 <span class="three"></span>
               </div>
-              <p style="color: var(--main-color)">Intermediate</p>
+              <p
+                style="color: var(--main-color)"
+                data-i18n="LEVEL_INTERMEDIATE"
+              >
+                Intermediate
+              </p>
             </div>
           </div>
         </div>
         <div class="learn">
-          <h2>What did you learn</h2>
+          <h2 data-i18n="WHAT_YOU_LEARN">What did you learn</h2>
           <div class="complete">
             <i class="fa-solid fa-check"></i>
-            <p>You will learn sign language.</p>
+            <p data-i18n="LEARN_SIGN_LANGUAGE">You will learn sign language.</p>
           </div>
           <div class="complete">
             <i class="fa-solid fa-check"></i>
-            <p>Learn to interact with people who are deaf.</p>
+            <p data-i18n="INTERACT_WITH_DEAF">
+              Learn to interact with people who are deaf.
+            </p>
           </div>
         </div>
       </div>
       <div class="course-body">
         <div class="logo">
           <i class="fa-regular fa-file-video"></i>
-          <h2>Course content</h2>
+          <h2 data-i18n="COURSE_CONTENT">Course content</h2>
         </div>
         <div class="course-content" id="course-content">
           <% course.listvideoUrl.forEach((videoUrl, index) => { %>

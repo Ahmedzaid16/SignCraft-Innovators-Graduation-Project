@@ -1173,7 +1173,7 @@ ul {
   }
 }
 
-.translate form .input {
+.translate .form .input {
   position: relative;
   display: block;
   width: 100%;
@@ -1184,12 +1184,12 @@ ul {
   border-bottom: 1px solid #ccc;
 }
 
-.translate form div {
+.translate .form {
   display: flex;
   align-items: center;
   gap: 5px;
 }
-.translate form div i {
+.translate .form i {
   margin-bottom: 20px;
   font-weight: 900;
   font-size: 30px;
@@ -1201,16 +1201,16 @@ ul {
   letter-spacing: -2;
 }
 
-.translate form textarea.input {
+.translate .form textarea.input {
   resize: none;
   height: 200px;
 }
 
-.translate form .input:focus {
+.translate .form .input:focus {
   outline-color: var(--main-color);
 }
 
-.translate form [type="submit"] {
+.translate #button1 {
   display: block;
   width: 100%;
   padding: 15px;

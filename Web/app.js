@@ -93,8 +93,12 @@ const setAdmin = async (email) => {
   }
 };
 
-async function getCourses() {
-  const coursesSnapshot = await db.collection("courses").get();
+async function getCourses(lang) {
+  // Assuming the language field in the courses document is named 'language'
+  const coursesSnapshot = await db
+    .collection("courses")
+    .where("language", "==", lang)
+    .get();
   const courses = [];
   coursesSnapshot.forEach((doc) => {
     courses.push({ id: doc.id, ...doc.data() });
@@ -126,6 +130,61 @@ async function getUsers() {
   return Users;
 }
 
+function getEmailVerificationMessage(lang) {
+  if (lang === "en") {
+    return "Please Verify your Email to Access the Courses Page.";
+  } else {
+    return "الرجاء التحقق من بريدك الإلكتروني للوصول إلى صفحة الدورات.";
+  }
+}
+
+function getSignInMessage(lang) {
+  if (lang === "en") {
+    return "Please Sign In To Enter The Courses Page.";
+  } else {
+    return "الرجاء تسجيل الدخول للوصول إلى صفحة الدورات.";
+  }
+}
+
+function getSignUpErrorMessage(error, lang) {
+  let errorMessage = "An error occurred during sign up.";
+
+  if (lang === "en") {
+    if (error.code === "auth/email-already-exists") {
+      errorMessage = "The email address is already in use by another account.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "The email address is invalid.";
+    } else if (error.code === "auth/network-request-failed") {
+      errorMessage =
+        "There is a network issue. Please check your internet connection and try again.";
+    } else if (error.code && error.code.includes("Network Error")) {
+      errorMessage =
+        "There was a problem connecting to the server. Please check your internet connection and try again.";
+    } else if (error.message && error.message.includes("Network Error")) {
+      errorMessage =
+        "There was a problem connecting to the server. Please check your internet connection and try again.";
+    }
+  } else {
+    // Assuming "ar" for Arabic
+    if (error.code === "auth/email-already-exists") {
+      errorMessage = "عنوان البريد الإلكتروني مستخدم بالفعل من قبل حساب آخر.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "عنوان البريد الإلكتروني غير صالح.";
+    } else if (error.code === "auth/network-request-failed") {
+      errorMessage =
+        "هناك مشكلة في الشبكة. الرجاء التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.";
+    } else if (error.code && error.code.includes("Network Error")) {
+      errorMessage =
+        "كان هناك مشكلة في الاتصال بالخادم. الرجاء التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.";
+    } else if (error.message && error.message.includes("Network Error")) {
+      errorMessage =
+        "كان هناك مشكلة في الاتصال بالخادم. الرجاء التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.";
+    }
+  }
+
+  return errorMessage;
+}
+
 setAdmin("sherefalex34@gmail.com");
 setAdmin("omaradmin@gmail.com");
 //////////////////////////////////////////////////////////////////////////////
@@ -142,6 +201,7 @@ app.use(
     },
   })
 );
+
 ////////////////////////////////////////////////////////////////////////////
 // Render home page and handle the token and avatarUrl if available
 app.get("/", (req, res) => {
@@ -160,7 +220,7 @@ app.get("/", (req, res) => {
   } else if (user) {
     res.render("index", { user: user });
   } else {
-    res.render("index");
+    res.render("index");[]
   }
 });
 
@@ -169,8 +229,13 @@ app.get("/translate", async (req, res) => {
   res.render("translate", { user: user });
 });
 
+app.get("/unity", async (req, res) => {
+  res.render("unity");
+});
+
 app.get("/courses", async (req, res) => {
   const user = req.session.userData;
+  const lang = req.query.lang || req.cookies.lang || "en";
 
   if (user) {
     try {
@@ -178,29 +243,32 @@ app.get("/courses", async (req, res) => {
       const userRecord = await admin.auth().getUser(user.userId);
 
       if (userRecord.emailVerified) {
-        const courses = await getCourses();
+        const language = lang === "ar" ? "arabic" : "english";
+        const courses = await getCourses(language);
         res.render("courses", { user: user, courses: courses });
       } else {
         // Send email verification
         await sendEmail(userRecord.email);
-
-        req.session.alertMessage =
-          "Please Verify your Email to Access the Courses Page.";
+        req.session.alertMessage = getEmailVerificationMessage(lang);
         res.redirect("/");
       }
     } catch (error) {
-      req.session.alertMessage =
-        "Please Verify your Email to Access the Courses Page.";
+      if (lang === "en") {
+        req.session.alertMessage = "The User Not Found";
+      } else {
+        req.session.alertMessage = "هذا المستخدم غير موجود";
+      }
       res.redirect("/");
     }
   } else {
-    req.session.msg = "Please Sign In To Enter The Courses Page.";
+    req.session.msg = getSignInMessage(lang);
     res.redirect("/signIn");
   }
 });
 
 app.get("/courses/course_info", async (req, res) => {
   const user = req.session.userData;
+  const lang = req.query.lang || req.cookies.lang || "en";
   if (user) {
     const courseId = req.query.course;
 
@@ -214,7 +282,11 @@ app.get("/courses/course_info", async (req, res) => {
 
         if (!courseDoc.exists) {
           // If no course found with the provided courseId, return an error
-          req.session.message = "Course not found with the provided course ID.";
+          if (lang === "en") {
+            req.session.message = "Course not found";
+          } else {
+            req.session.message = "الدورة غير موجودة";
+          }
           return res.redirect("/");
         }
 
@@ -224,6 +296,7 @@ app.get("/courses/course_info", async (req, res) => {
         req.session.course = {
           Lessondescription: courseData.Lessondescription,
           listvideoUrl: courseData.listvideoUrl,
+          language: courseData.language,
           name: courseData.name,
           duration: courseData.duration,
         };
@@ -238,17 +311,21 @@ app.get("/courses/course_info", async (req, res) => {
         // Send email verification
         await sendEmail(userRecord.email);
 
-        req.session.alertMessage =
-          "Please Verify your Email to Access the Courses.";
+        req.session.alertMessage = getEmailVerificationMessage(lang);
+
         return res.redirect("/");
       }
     } catch (error) {
       console.error("Error finding course:", error);
-      req.session.message = "An error occurred while finding the course.";
+      if (lang === "en") {
+        req.session.message = "An error occurred while finding the course.";
+      } else {
+        req.session.message = "حدث خطأ أثناء البحث عن الدورة.";
+      }
       return res.redirect("/");
     }
   } else {
-    req.session.msg = "Please Sign In To Enter The Courses Page.";
+    req.session.msg = getSignInMessage(lang);
     return res.redirect("/signIn");
   }
 });
@@ -256,6 +333,7 @@ app.get("/courses/course_info", async (req, res) => {
 app.get("/courses/course_info/course_lessons", async (req, res) => {
   const user = req.session.userData;
   const courseId = req.query.course;
+  const lang = req.query.lang || req.cookies.lang || "en";
   req.session.courseId = courseId;
   if (user) {
     // Get the user record from Firebase Auth
@@ -301,12 +379,12 @@ app.get("/courses/course_info/course_lessons", async (req, res) => {
       // Send email verification if progress data exists
       await sendEmail(userRecord.email);
 
-      req.session.alertMessage =
-        "Please Verify your Email to Access the Courses.";
+      req.session.alertMessage = getEmailVerificationMessage(lang);
+
       res.redirect("/");
     }
   } else {
-    req.session.msg = "Please Sign In To Enter The Courses Page.";
+    req.session.msg = getSignInMessage(lang);
     res.redirect("/signIn");
   }
 });
@@ -468,7 +546,11 @@ app.get("/control/controlCoursesView", async (req, res) => {
     const idTokenResult = await admin.auth().verifyIdToken(user.idToken);
 
     if (idTokenResult.admin) {
-      const courses = await getCourses();
+      const coursesSnapshot = await db.collection("courses").get();
+      const courses = [];
+      coursesSnapshot.forEach((doc) => {
+        courses.push({ id: doc.id, ...doc.data() });
+      });
       if (msgAdmin) {
         delete req.session.msgAdmin;
         res.render("controlCoursesView", {
@@ -541,8 +623,7 @@ app.get("/getProgress", async (req, res) => {
       return res.status(404).json({ currentTime: 0, progress: 0 });
     }
   } catch (error) {
-    console.error("Error fetching progress:", error);
-    return res.status(500).json({ error: error.message });
+    res.redirect(`/courses/course_info/course_lessons?course=${courseId}`);
   }
 });
 
@@ -553,6 +634,7 @@ app.get("/play", (req, res) => {
 
 app.post("/signIn", upload.none(), async (req, res) => {
   const user = req.body;
+  const lang = req.query.lang || req.cookies.lang || "en";
   try {
     // Step 1: Authenticate the user
     const userCredential = await firebase
@@ -593,15 +675,19 @@ app.post("/signIn", upload.none(), async (req, res) => {
       res.redirect("/");
     }
   } catch (error) {
-    req.session.msg = "Wrong Email or password";
+    if (lang === "en") {
+      req.session.msg = "Wrong Email or password";
+    } else {
+      req.session.msg = "خطأ في البريد الإلكتروني أو كلمة المرور";
+    }
     res.redirect("/signIn");
   }
 });
 
 app.post("/signUp", upload.none(), async (req, res) => {
+  const user = req.body;
+  const lang = req.query.lang || req.cookies.lang || "en";
   try {
-    const user = req.body;
-
     // Step 1: Create the user in Firebase Authentication
     const userCredential = await admin.auth().createUser({
       email: user.email,
@@ -619,21 +705,22 @@ app.post("/signUp", upload.none(), async (req, res) => {
       isSignLanguageSpeaker: user.isSignLanguageSpeaker,
     });
 
-    //step 3: Send Email
+    // Step 3: Send Email
     sendEmail(user.email);
 
     // Step 4: Redirect to the signIn page
     res.redirect("/signIn");
   } catch (error) {
-    req.session.msg = "The Email Address is Already in Use by Another Account";
+    console.error("Signup error:", error);
+    req.session.msg = getSignUpErrorMessage(error, lang);
     res.redirect("/signIn");
   }
 });
 
 app.post("/reset", upload.none(), async (req, res) => {
   const userEmail = req.body.email;
-  // Construct the base URL from the request object
   const baseUrl = `${req.protocol}://${req.get("host")}`;
+  const lang = req.query.lang || req.cookies.lang || "en";
 
   try {
     const user = await admin.auth().getUserByEmail(userEmail);
@@ -657,7 +744,13 @@ app.post("/reset", upload.none(), async (req, res) => {
           <a href="${baseUrl}/reset/reset_password?userId=${userId}">ResetPassword</a>`,
       };
       await transporter.sendMail(mailOptions);
-      req.session.message = "We Will Send you an Email if your Account Exist";
+      if (lang === "en") {
+        req.session.message =
+          "We Will Send you an Email if your Account Exists.";
+      } else {
+        req.session.message =
+          "سنرسل لك بريدًا إلكترونيًا إذا كان حسابك موجودًا.";
+      }
       res.redirect("/");
     } else {
       res.redirect("/");
@@ -754,7 +847,7 @@ app.post("/Update_Password", upload.none(), async (req, res) => {
   const email = req.body.email;
   const newPassword = req.body.NewPassword;
   const currentPassword = req.body.CurrentPassword;
-
+  const lang = req.query.lang || req.cookies.lang || "en";
   try {
     const credentials = await firebase
       .auth()
@@ -771,7 +864,11 @@ app.post("/Update_Password", upload.none(), async (req, res) => {
       }
     });
   } catch (error) {
-    req.session.PassMsg = "Wrong Password Try Again";
+    if (lang === "en") {
+      req.session.PassMsg = "Wrong Password Try Again";
+    } else {
+      req.session.PassMsg = "كلمة مرور خاطئة. الرجاء المحاولة مرة أخرى.";
+    }
     res.redirect("/profile");
   }
 });
@@ -895,10 +992,12 @@ app.post(
       course.listvideoUrl = listvideoUrl;
 
       course.Lessondescription = course.Lessondescription.split(/\r?\n/);
+      course.language = course.language.toLowerCase();
 
       // Create a new document in the 'courses' collection
       await admin.firestore().collection("courses").add({
         code: course.code,
+        language: course.language,
         name: course.name,
         duration: course.duration,
         lesson: course.lesson,
@@ -1102,6 +1201,10 @@ app.post(
         course.Lessondescription = course.Lessondescription.split(/\r?\n/);
       }
 
+      if (course.language) {
+        course.language = course.language.toLowerCase();
+      }
+
       delete course.courseId; // Remove courseId from the course object
       delete course.choose;
 
@@ -1264,9 +1367,15 @@ app.get("/translations", (req, res) => {
   // Get the language from the query parameter or default to "en"
   const lang = req.query.lang || "en";
   // Get all keys and values for the specified language
-  const translations = i18n.getCatalog(lang);
-  // Send the translations as JSON response
-  res.json(translations);
+  if (lang !== "en") {
+    const translations = i18n.getCatalog(lang);
+    // Send the translations as JSON response
+    res.json(translations);
+  } else {
+    const translations = "";
+    // Send the translations as JSON response
+    res.json(translations);
+  }
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

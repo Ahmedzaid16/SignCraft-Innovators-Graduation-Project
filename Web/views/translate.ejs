@@ -10,9 +10,6 @@
     <link rel="stylesheet" href="/css/all.min.css" />
     <link rel="stylesheet" href="/css/framework.css" />
     <link rel="stylesheet" href="/css/master.css" />
-    <link rel="shortcut icon" href="/animation/TemplateData/favicon.ico" />
-    <link rel="stylesheet" href="/animation/TemplateData/style.css" />
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,13 +20,18 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Sign Language</title>
+    <title data-i18n="Head_Translate">Translate</title>
     <style>
       body {
         height: 90vh;
       }
       #divvideo {
         display: none;
+      }
+      #unity-iframe {
+        width: 100%;
+        height: 600px;
+        border: none;
       }
     </style>
   </head>
@@ -47,18 +49,9 @@
     <!-- Start translate page -->
     <div class="translate">
       <div class="T1">
-        <div id="content" class="content">
-          <div id="unity-container" class="unity-desktop">
-            <canvas
-              id="unity-canvas"
-              width="560"
-              height="500"
-              tabindex="-1"
-            ></canvas>
-          </div>
-        </div>
+        <iframe id="unity-iframe" src="/unity"></iframe>
         <div id="divvideo">
-          <h2>recording video</h2>
+          <h2 data-i18n="Recording">Recording Video</h2>
           <video
             id="video"
             autoplay
@@ -91,14 +84,15 @@
       </div>
       <div class="T2">
         <div class="content">
-          <h2>Do the translate</h2>
-          <div>
+          <h2 data-i18n="Start_Translate">Start Translating</h2>
+          <div class="form">
             <input
               class="input voice"
               name="input_text"
               id="inputParams"
               type="text"
               placeholder="Enter your text"
+              data-i18n="TEXT"
             />
             <i class="fa-solid fa-microphone"></i>
             <svg
@@ -135,66 +129,33 @@
                 />
               </g>
             </svg>
+            <i class="fa-brands fa-unity fa-sm" id="unity-reload-button"></i>
           </div>
-          <button id="button1">Send to Unity</button>
+          <button id="button1" data-i18n="SEND">Send</button>
         </div>
       </div>
     </div>
     <!-- End translate page -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- <script src="node_modules/axios/dist/axios.min.js"></script> -->
+    <script>
+      // Function to send message to Unity iframe
+      function sendMessageToUnity(message) {
+        var unityIframe = document.getElementById("unity-iframe");
+        if (unityIframe.contentWindow) {
+          unityIframe.contentWindow.postMessage(message, "*");
+        } else {
+          console.error("Unity iframe not initialized.");
+        }
+      }
+
+      // Add event listener for the button to send data to Unity
+      document.getElementById("button1").addEventListener("click", () => {
+        var inputText = document.getElementById("inputParams").value;
+        sendMessageToUnity(inputText);
+      });
+    </script>
     <script src="/js/videoscript.js"></script>
     <script src="/js/lang.js"></script>
-    <script>
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-
-      var buildUrl = "/animation/Build";
-      var loaderUrl = buildUrl + "/test5.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/test5.data",
-        frameworkUrl: buildUrl + "/test5.framework.js",
-        codeUrl: buildUrl + "/test5.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "signlang",
-        productName: "signlang",
-        productVersion: "1.0",
-      };
-      
-      canvas.style.width = "560px";
-      canvas.style.height = "500px";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-
-        })
-          .then((unityInstance) => { 
-            // Set up button event listener after Unity instance is ready
-            document.getElementById("button1").addEventListener("click", () => {
-              var inputParams = document.getElementById("inputParams").value;
-              if (inputParams.toLowerCase() === 'and' || inputParams === "و") {
-                inputParams = 1;
-              } else if (
-                inputParams.toLowerCase() === "milk" ||
-                inputParams === "حليب"
-              ) {
-                inputParams = 2;
-              }
-              unityInstance.SendMessage(
-                "Ch09_nonPBR",
-                "StartPlayAnimationThenReset",
-                `${inputParams}`
-              );
-            });
-          })
-          .catch((message) => {
-            alert(message);
-          });
-      };
-
-      document.body.appendChild(script);
-    </script>
   </body>
 </html>

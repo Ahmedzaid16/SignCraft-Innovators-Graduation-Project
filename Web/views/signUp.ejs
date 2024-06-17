@@ -20,7 +20,7 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Sign Language</title>
+    <title data-i18n="SIGN_UP">Sign Up</title>
   </head>
 
   <body>
@@ -36,11 +36,11 @@
     <div class="signUp">
       <div class="containerU">
         <div class="intro">
-          <h1 class="c-white">Welcome Back!</h1>
-          <p class="fw-bold c-white">
+          <h1 data-i18n="WELCOME_BACK" class="c-white">Welcome Back!</h1>
+          <p data-i18n="KEEP_CONNECTED" class="fw-bold c-white">
             To keep connected with us please login with your personal info
           </p>
-          <a href="/signIn"><button class="dif mt-20">SIGN IN</button></a>
+          <a href="/signIn"><button data-i18n="SIGN_IN" class="dif mt-20">SIGN IN</button></a>
         </div>
         <div class="content">
           <form
@@ -49,7 +49,7 @@
             method="post"
             enctype="multipart/form-data"
           >
-            <h1 class="fw-bold mb-30">Create Account</h1>
+            <h1 data-i18n="CREATE_ACCOUNT" class="fw-bold mb-30">Create Account</h1>
             <div class="text">
               <div class="form-control">
                 <input
@@ -58,8 +58,9 @@
                   id="username"
                   autocomplete="username"
                   placeholder="Enter username"
+                  data-i18n="ENTER_USERNAME"
                 />
-                <small>Error username</small>
+                <small data-i18n="ERROR_USERNAME">Error username</small>
               </div>
               <div class="form-control">
                 <input
@@ -68,8 +69,9 @@
                   type="text"
                   id="email"
                   placeholder="Enter email"
+                  data-i18n="ENTER_EMAIL"
                 />
-                <small>Error message</small>
+                <small data-i18n="ERROR_EMAIL">Error message</small>
               </div>
               <div class="form-control">
                 <input
@@ -77,8 +79,9 @@
                   type="password"
                   id="password"
                   placeholder="Enter password"
+                  data-i18n="ENTER_PASSWORD"
                 />
-                <small>Error message</small>
+                <small data-i18n="ERROR_PASSWORD">Error message</small>
               </div>
               <div class="form-control">
                 <input
@@ -86,8 +89,9 @@
                   type="password"
                   id="password2"
                   placeholder="Enter password"
+                  data-i18n="REPEAT_PASSWORD"
                 />
-                <small>Error message</small>
+                <small data-i18n="ERROR_PASSWORD_REPEAT">Error message</small>
               </div>
               <div class="gender d-flex">
                 <input
@@ -97,7 +101,7 @@
                   value="male"
                   id="Male"
                 />
-                <label class="mr-30" for="Male">Male</label>
+                <label data-i18n="MALE" class="mr-30" for="Male">Male</label>
                 <input
                   class="mr-10"
                   type="radio"
@@ -105,10 +109,10 @@
                   value="female"
                   id="female"
                 />
-                <label for="female">female</label>
+                <label data-i18n="FEMALE" for="female">female</label>
               </div>
               <div class="d-flex mt-15">
-                <label class="mr-5" for="language"
+                <label class="mr-5" for="language" data-i18n="SIGN_LANGUAGE_SPEAKER"
                   >Sign Language Speaker?</label
                 >
                 <input
@@ -118,7 +122,7 @@
                   name="isSignLanguageSpeaker"
                 />
               </div>
-              <button class="mt-20" type="submit">SIGN UP</button>
+              <button data-i18n="SIGN_UP" class="mt-20" type="submit">SIGN UP</button>
             </div>
           </form>
         </div>
@@ -126,5 +130,6 @@
     </div>
     <!-- End Home -->
     <script src="/js/signUp.js"></script>
+    <script src="/js/lang.js"></script>
   </body>
 </html>

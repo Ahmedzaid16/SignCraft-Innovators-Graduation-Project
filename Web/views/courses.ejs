@@ -14,15 +14,19 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Courses</title>
+    <style>
+      #span_lesson {
+        position: relative;
+        padding: 0;
+        border-radius: 0;
+        margin: 0;
+      }
+    </style>
+    <title data-i18n="Courses">Courses</title>
   </head>
   <body>
     <!-- ///////////////////// Script in the Header Components ////////////////////////// -->
@@ -38,19 +42,25 @@
         <div class="slider-container">
           <div class="left-slide">
             <div style="background-color: #2a86ba">
-              <h1>Interactive Exercises and Quizzes</h1>
-              <p>Designed to test your knowledge and reinforce your skills.</p>
+              <h1 data-i18n="INTERACTIVE_EXERCISES">
+                Interactive Exercises and Quizzes
+              </h1>
+              <p data-i18n="INTERACTIVE_EXERCISES_DESC">
+                Designed to test your knowledge and reinforce your skills.
+              </p>
             </div>
             <div style="background-color: #252e33">
-              <h1>Sign Language Courses</h1>
-              <p>
+              <h1 data-i18n="SIGN_LANGUAGE_COURSES">Sign Language Courses</h1>
+              <p data-i18n="SIGN_LANGUAGE_COURSES_DESC">
                 We offer comprehensive sign language courses in Arabic, designed
                 for both adults and children.
               </p>
             </div>
             <div style="background-color: var(--main-color)">
-              <h1>Sign Language Education</h1>
-              <p>
+              <h1 data-i18n="SIGN_LANGUAGE_EDUCATION">
+                Sign Language Education
+              </h1>
+              <p data-i18n="SIGN_LANGUAGE_EDUCATION_DESC">
                 Our mission is to offer comprehensive sign language education
                 for all levels.
               </p>
@@ -116,7 +126,16 @@
       <!-- /////////////////////////////////////// -->
       <!-- <div class="categories">
         <div class="categories-info">
+<<<<<<< HEAD
           <h2 class="main-title">Course Categories</h2>
+=======
+          <h2 data-i18n="COURSE_CATEGORIES" class="rectangular-animation">
+            Course Categories
+          </h2>
+          <p data-i18n="WE_VE_GOT_COURSES_FOR_EVERYONE">
+            We've got courses for everyone!
+          </p>
+>>>>>>> e9f6c00a660ffaa370f2fefb16f0d610f0c1f1bb
         </div>
         <div class="categories-content">
           <div
@@ -127,20 +146,30 @@
               src="/images/adult-categories.png"
               alt="Adult Arabic Sign Language (ArSL) Courses"
             />
-            <p>Ages 15+</p>
+            <p data-i18n="AGES_15">Ages 15+</p>
           </div>
           <div class="kids-categories" onclick="scrollToElement('kidsCourses')">
             <img
               src="/images/kids-categories.png"
               alt="Kids Arabic Sign Language (ArSL) Courses"
             />
-            <p>Kids</p>
+            <p data-i18n="KIDS">Kids</p>
           </div>
         </div>
       </div> -->
       <div class="courses">
         <div class="head-courses">
+<<<<<<< HEAD
           <h2 class="main-title" id="arsl-head">ArSL Courses</h2>
+=======
+          <h3
+            data-i18n="arsl_head"
+            class="rectangular-animation2"
+            id="arsl-head"
+          >
+            ArSL Courses
+          </h3>
+>>>>>>> e9f6c00a660ffaa370f2fefb16f0d610f0c1f1bb
         </div>
         <div class="subscribe">
           <form action="">
@@ -160,11 +189,17 @@
           id="myInput"
           onkeyup="search()"
           placeholder="Search for Courses.."
+<<<<<<< HEAD
         /> -->
         <div class="div-courses" id="adultCourses">
+=======
+          data-i18n="SEARCH_FOR_COURSES"
+        />
+        <div class="div-courses line" id="adultCourses">
+>>>>>>> e9f6c00a660ffaa370f2fefb16f0d610f0c1f1bb
           <div class="adult-info-content">
-            <h4>Adult ArSL Courses</h4>
-            <p>
+            <h4 data-i18n="ADULT_ARSL_COURSES">Adult ArSL Courses</h4>
+            <p data-i18n="ADULT_COURSES_DESCRIPTION">
               Embrace the beauty of Arabic Sign Language (ArSL) with our
               individual Online Arabic Sign Language Courses. Whether you're a
               beginner or looking to enhance your skills, each course offers a
@@ -176,7 +211,7 @@
             </p>
             <div id="adult-courses-videos" class="div-courses-videos">
               <% courses.forEach(course => { %> <% if (course.categories ===
-              'adult') { %>
+              'adult' || course.categories ==='بالغ') { %>
               <a
                 href="/courses/course_info?course=<%= course.id %>"
                 class="course"
@@ -184,7 +219,12 @@
                 <div class="course-content">
                   <div class="course-img">
                     <img src="<%= course.imageUrl %>" alt="course img" />
-                    <span><%= course.lesson %> Lessons</span>
+                    <span
+                      ><%= course.lesson %>
+                      <span id="span_lesson" data-i18n="LESSONS_COURSES"
+                        >Lessons
+                      </span>
+                    </span>
                   </div>
                   <div class="course-info">
                     <h4><%= course.name %></h4>
@@ -199,17 +239,20 @@
 
         <div class="div-courses" id="kidsCourses">
           <div class="kids-info-content">
-            <h4>ArSL Courses for Kids</h4>
-            <p>
-              Learn Arabic Sign Language (ArSL) in a fun and interactive way
-              with Sign Language 101 for Kids! Our online courses, designed by
-              Deaf curriculum specialists, will engage kids ages 8-15 in an
-              immersive learning experience. Unlock the power of communication
-              and bring clarity to conversations with this hands-on opportunity.
+            <h4 data-i18n="ARSL_COURSES_FOR_KIDS">Kids ArSL Courses</h4>
+            <p data-i18n="KIDS_COURSES_DESCRIPTION">
+              Discover the joy of learning Arabic Sign Language (ArSL) with our
+              engaging Online Arabic Sign Language Courses for kids. Specially
+              designed to captivate young minds, each course provides a fun and
+              interactive experience led by skilled Arabic Sign Language
+              instructors. Watch as your child explores a new world of
+              communication, expression, and culture, mastering the art of
+              signing in Arabic Sign Language (ArSL) with enthusiasm and ease.
+              Start their signing journey today!
             </p>
             <div id="kids-courses-videos" class="div-courses-videos">
               <% courses.forEach(course => { %> <% if (course.categories ===
-              'kids') { %>
+              'kids' || course.categories ==='اطفال') { %>
               <a
                 href="/courses/course_info?course=<%= course.id %>"
                 class="course"
@@ -217,7 +260,12 @@
                 <div class="course-content">
                   <div class="course-img">
                     <img src="<%= course.imageUrl %>" alt="course img" />
-                    <span><%= course.lesson %> Lessons</span>
+                    <span
+                      ><%= course.lesson %>
+                      <span id="span_lesson" data-i18n="LESSONS_COURSES"
+                        >Lessons</span
+                      >
+                    </span>
                   </div>
                   <div class="course-info">
                     <h4><%= course.name %></h4>
@@ -231,11 +279,86 @@
         </div>
       </div>
     </section>
-    <%- include('./components/footer.ejs') %>
     <!-- End COURSES -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <div class="chatbot-ready" id="chat-ready">
+      <div class="chatbot-close" id="close">
+        <button>
+          <span id="close_mess" data-i18n="Close">Close</span>
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="chatbot-message" id="chatbot-message">
+        <p class="one" id="help" data-i18n="HELP_SUPPORT">Help & Support</p>
+        <p class="two" id="hello_service">
+          <span id="hello1" data-i18n="HELLO_MESSAGE_1">Hello</span>, <br />
+          <span id="hello2" data-i18n="HELLO_MESSAGE_2"
+            >We're at your service, click here to start the conversation now!
+          </span>
+        </p>
+      </div>
+      <div class="chatbot-img" id="chatbot-img">
+        <img src="images/chatbot.png" alt="chatbot" />
+      </div>
+    </div>
+    <div class="chatbot-start dis" id="chat-start">
+      <div class="chat">
+        <h4 id="chat_robo" data-i18n="CHAT_WITH_ROBO">Chat With Robo</h4>
+        <i id="close-chat" class="fa-solid fa-xmark fa-lg"></i>
+      </div>
+      <div class="messages">
+        <div class="new-message" onclick="scrollToBottom()">
+          <i class="fa-solid fa-chevron-down"></i>
+          <p id="new_mess" data-i18n="NEW_MESSAGE">New Message</p>
+        </div>
+        <div class="message">
+          <img src="images/chatbot.png" alt="chatbot" />
+          <p id="greetings" data-i18n="ROBO_GREETINGS">
+            Greetings. I am Robo, your dedicated personal assistant, ready and
+            at your service to provide insightful answers to any inquiries you
+            may have.
+          </p>
+        </div>
+        <div class="message">
+          <p id="assist" data-i18n="HOW_CAN_I_ASSIST">
+            How may I assist you today? Kindly choose from the following options
+            to guide me in providing the support you require:
+          </p>
+        </div>
+        <div class="options">
+          <button
+            id="one"
+            onclick="chooseButton('one')"
+            data-i18n="CHOOSE_BUTTON_ERROR"
+          >
+            Error in sign language App
+          </button>
+          <button
+            id="two"
+            onclick="chooseButton('two')"
+            data-i18n="CHOOSE_BUTTON_ACCOUNT"
+          >
+            Account-related Inquiries
+          </button>
+          <button
+            id="three"
+            onclick="chooseButton('three')"
+            data-i18n="CHOOSE_BUTTON_EDUCATION"
+          >
+            Education and Courses
+          </button>
+          <button
+            id="four"
+            onclick="chooseButton('four')"
+            data-i18n="CHOOSE_BUTTON_OTHER"
+          >
+            Other
+          </button>
+        </div>
+      </div>
+    </div>
     <script src="/js/chatbot.js"></script>
-    <script src="/js/courses.js"></script>
     <script src="/js/lang.js"></script>
+    <script src="/js/courses.js"></script>
   </body>
 </html>

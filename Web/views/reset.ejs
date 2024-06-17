@@ -26,7 +26,7 @@
         color: #000;
       }
     </style>
-    <title>Forgot Password</title>
+    <title data-i18n="FORGOT_PASSWORD_TITLE">Forgot Password</title>
   </head>
 
   <body>
@@ -48,8 +48,10 @@
         id="resetForm"
       >
         <p class="lock-icon"><i class="fa-solid fa-lock"></i></p>
-        <h2 class="hfor">Forgot Password?</h2>
-        <p class="prest">You can reset your Password here</p>
+        <h2 data-i18n="FORGOT_PASSWORD_TITLE" class="hfor">Forgot Password?</h2>
+        <p data-i18n="RESET_PASSWORD_DESCRIPTION" class="prest">
+          You can reset your Password here
+        </p>
         <div class="form-control">
           <input
             type="email"
@@ -57,11 +59,19 @@
             name="email"
             autocomplete="email"
             class="passInput"
-            placeholder="Email address"
+            placeholder="Email"
+            data-i18n="EMAIL"
           />
-          <small>Error message</small>
+          <small data-i18n="ERROR_MESSAGE">Error message</small>
         </div>
-        <button id="send" type="submit" class="send-email">Send Email</button>
+        <button
+          id="send"
+          type="submit"
+          class="send-email"
+          data-i18n="SEND_EMAIL"
+        >
+          Send Email
+        </button>
       </form>
     </div>
     <!-- End Reset Password -->
