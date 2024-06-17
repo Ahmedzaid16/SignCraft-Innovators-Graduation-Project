@@ -1,8 +1,9 @@
 const video = document.getElementById("video");
 const recorded_v_elem = document.querySelector("#display_video");
 const divvideo = document.getElementById("divvideo");
-const content = document.getElementById("content");
+const content = document.getElementById("unity-iframe");
 const startRecordingSvg = document.getElementById("startRecordingSvg");
+const unityReloadButton = document.getElementById("unity-reload-button");
 
 let stream = null;
 let mediaRecorder = null;
@@ -91,10 +92,20 @@ const get_start = async () => {
 };
 
 startRecordingSvg.addEventListener("click", () => {
+  content.contentWindow.postMessage("START_RECORDING", "*"); 
   content.style.display = "none";
   divvideo.style.display = "block";
   recorded_v_elem.style.display = "none";
   get_start();
+});
+
+unityReloadButton.addEventListener("click", () => {
+  divvideo.style.display = "none";
+  recorded_v_elem.style.display = "none";
+  content.style.display = "block";
+  // Reload the iframe
+  const unityIframe = document.getElementById("unity-iframe");
+  unityIframe.src = "/unity"; 
 });
 
 // let typingTimer;

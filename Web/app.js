@@ -220,7 +220,7 @@ app.get("/", (req, res) => {
   } else if (user) {
     res.render("index", { user: user });
   } else {
-    res.render("index");
+    res.render("index");[]
   }
 });
 

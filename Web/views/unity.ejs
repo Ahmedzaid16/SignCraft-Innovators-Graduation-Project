@@ -56,7 +56,13 @@
               window.addEventListener("message", (event) => {
                 var message = event.data;
                 console.log(message);
-                if (typeof message === "string") {
+                if (message === "START_RECORDING") {
+                  // Stop Unity
+                  UnityInstance.Quit().then(function () {
+                    console.log("Unity quit successfully");
+                    UnityInstance = null;
+                  });
+                } else if (typeof message === "string") {
                   UnityInstance.SendMessage(
                     "Ch09_nonPBR",
                     "StartPlayAnimationThenReset",
