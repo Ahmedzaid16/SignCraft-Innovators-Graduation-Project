@@ -65,7 +65,7 @@ const get_start = async () => {
 
     try {
       const uploadResponse = await axios.post(
-        `https://cda6-154-134-63-11.ngrok-free.app/upload`,
+        `https://jennet-elegant-ferret.ngrok-free.app/upload`,
         videoDataForm,
         {
           headers: {
