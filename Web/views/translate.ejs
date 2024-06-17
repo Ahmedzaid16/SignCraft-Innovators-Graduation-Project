@@ -28,6 +28,11 @@
       #divvideo {
         display: none;
       }
+      #unity-iframe {
+        width: 100%;
+        height: 600px;
+        border: none;
+      }
     </style>
   </head>
 
@@ -44,11 +49,7 @@
     <!-- Start translate page -->
     <div class="translate">
       <div class="T1">
-        <div id="content" class="content">
-          <div id="unity-container" class="unity-desktop">
-            <canvas id="unity-canvas" width="560" height="500"></canvas>
-          </div>
-        </div>
+        <iframe id="unity-iframe" src="/unity"></iframe>
         <div id="divvideo">
           <h2 data-i18n="Recording">Recording Video</h2>
           <video
@@ -84,7 +85,7 @@
       <div class="T2">
         <div class="content">
           <h2 data-i18n="Start_Translate">Start Translating</h2>
-          <div>
+          <div class="form">
             <input
               class="input voice"
               name="input_text"
@@ -139,65 +140,20 @@
     <script src="/js/videoscript.js"></script>
     <script src="/js/lang.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", (event) => {
-        // Unity container and canvas
-        var canvas = document.querySelector("#unity-canvas");
+      // Function to send message to Unity iframe
+      function sendMessageToUnity(message) {
+        var unityIframe = document.getElementById("unity-iframe");
+        if (unityIframe.contentWindow) {
+          unityIframe.contentWindow.postMessage(message, "*");
+        } else {
+          console.error("Unity iframe not initialized.");
+        }
+      }
 
-        var buildUrl = "/animation/Build";
-        var loaderUrl = buildUrl + "/test5.loader.js";
-        var config = {
-          dataUrl: buildUrl + "/test5.data",
-          frameworkUrl: buildUrl + "/test5.framework.js",
-          codeUrl: buildUrl + "/test5.wasm",
-          streamingAssetsUrl: "StreamingAssets",
-          companyName: "signlang",
-          productName: "signlang",
-          productVersion: "1.0",
-        };
-
-        canvas.style.width = "560px";
-        canvas.style.height = "500px";
-
-        var script = document.createElement("script");
-        script.src = loaderUrl;
-        script.onload = () => {
-          createUnityInstance(canvas, config, (progress) => {})
-            .then((unityInstance) => {
-              // Ensure Unity does not capture all keyboard input
-              unityInstance.Module.webGLContextAttributes = {
-                captureAllKeyboardInput: false,
-              };
-
-              // Event listener for the Send bu[tton
-              document
-                .getElementById("button1")
-                .addEventListener("click", () => {
-                  var inputParamsValue =
-                    document.getElementById("inputParams").value;
-                  if (
-                    inputParamsValue.toLowerCase() === "and" ||
-                    inputParamsValue === "و"
-                  ) {
-                    inputParamsValue = 1;
-                  } else if (
-                    inputParamsValue.toLowerCase() === "milk" ||
-                    inputParamsValue === "حليب"
-                  ) {
-                    inputParamsValue = 2;
-                  }
-                  unityInstance.SendMessage(
-                    "Ch09_nonPBR",
-                    "StartPlayAnimationThenReset",
-                    `${inputParamsValue}`
-                  );
-                });
-            })
-            .catch((message) => {
-              alert(message);
-            });
-        };
-
-        document.body.appendChild(script);
+      // Add event listener for the button to send data to Unity
+      document.getElementById("button1").addEventListener("click", () => {
+        var inputText = document.getElementById("customInput").value;
+        sendMessageToUnity(inputText);
       });
     </script>
   </body>

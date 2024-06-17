@@ -229,6 +229,10 @@ app.get("/translate", async (req, res) => {
   res.render("translate", { user: user });
 });
 
+app.get("/unity", async (req, res) => {
+  res.render("unity");
+});
+
 app.get("/courses", async (req, res) => {
   const user = req.session.userData;
   const lang = req.query.lang || req.cookies.lang || "en";

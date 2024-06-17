@@ -1,5 +1,3 @@
-/* This Function Scrolls Smoothly To The Specified HTML Element With The Given 'elementId'
-   (id="adultCourses" or id="kidsCourses") */
 function scrollToElement(elementId) {
   // Retrieve the Document Object Model (DOM) Element Using the Provided 'elementId'
   var element = document.getElementById(elementId);
