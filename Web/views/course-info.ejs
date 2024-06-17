@@ -24,33 +24,67 @@
     <title>Course Content</title>
   </head>
   <body>
+    <!-- ///////////////////// Script in the Header Components ////////////////////////// -->
+    <div class="scroller"></div>
+    <!-- /////////////////////////////////////////////// -->
     <!-- Start header -->
     <%- include('./components/header.ejs', { avatarUrl: user.avatarUrl,
     currentPage: "courses" }) %>
     <!-- End Header -->
     <!-- Start course information -->
     <section>
-      <div id="bottom"></div>
+      <div id="bottom">
+        <a
+          href="/courses/course_info/course_lessons?course=<%= courseId %>"
+          class="img-link"
+        >
+          <div class="bottom-left-image">
+            <img
+              src="<%= courseData.categories === 'kids' ? '/images/learn-now-kids.png' : '/images/learn-now.png' %>"
+              alt="Bottom Left Image"
+              class="kids-img"
+            />
+            <button class="learn-buttom">Learn Now</button>
+          </div>
+        </a>
+      </div>
       <div class="course-head">
-        <div class="left-head" id="intro"></div>
+        <div class="left-head" id="intro">
+          <video
+            src="<%= courseData.videoUrl %>"
+            controls
+            autoplay
+            muted
+          ></video>
+        </div>
         <div class="right-head">
-          <div class="course-name"><h2 id="course-name"></h2></div>
+          <div class="course-name">
+            <h2 id="course-name"><%= courseData.name %></h2>
+          </div>
           <div class="course-info">
             <div class="info">
               <div class="categories">
                 <i class="fa-solid fa-list"></i>
-                <p id="categorie"></p>
+                <p id="categorie"><%= courseData.categories %></p>
               </div>
               <div class="duration">
                 <i class="fa-regular fa-clock"></i>
-                <p id="duration"></p>
+                <p id="duration">
+                  <%= courseData.duration %> / <%= courseData.lesson %> lessons
+                </p>
               </div>
               <div class="language">
                 <i class="fa-solid fa-volume-high"></i>
                 <p>Course Language: Arabic</p>
               </div>
             </div>
-            <div class="learn" id="learn"></div>
+            <div class="learn" id="learn">
+              <a
+                href="/courses/course_info/course_lessons?course=<%= courseId %>"
+              >
+                <button>Learn Now</button>
+              </a>
+            </div>
             <div class="share" onclick="openShareModal()">
               <i class="fa-solid fa-share-nodes"></i>
               <p>Share Course</p>
@@ -63,20 +97,33 @@
           <div class="left">
             <h3>About this course</h3>
             <p id="about">
-              This course introduces the principles of sign language by
-              initially reviewing the most important words used in our daily
-              lives. It covers various topics such as the alphabet, weekdays,
-              colors, family, household items, clothing, accessories, fruits,
-              beverages, food, vegetables, and unified Egyptian and Arabic
-              numbers. This course will make it easier to communicate with a
-              person who is deaf or hard of hearing—be it a family member,
-              friend, colleague, or neighbor. Learning sign language will also
-              give you the chance to get to know many of the people who use it,
-              and will allow you to discover a whole new world of opportunities.
+              <% if (courseData.categories === "kids") { %> Today, we're going
+              to learn a cool game - it's called "Sign Language," and it's going
+              to be a lot of fun! Explore New Words! We'll be learning new words
+              that you use every day, like letters, days, colors, and even
+              fruits! Why Learn Sign Language? Learning sign language helps us
+              communicate better with our friends and family who might use it.
+              It helps us understand each other and be even better friends! And
+              that's not all! If you learn sign language, you'll be able to
+              discover a whole new world of friends and exciting adventures! Are
+              you ready to start? Let's kick off the fun and learn sign language
+              together! <% } else { %> This course introduces the principles of
+              sign language by initially reviewing the most important words used
+              in our daily lives. It covers various topics such as the alphabet,
+              weekdays, colors, family, household items, clothing, accessories,
+              fruits, beverages, food, vegetables, and unified Egyptian and
+              Arabic numbers. This course will make it easier to communicate
+              with a person who is deaf or hard of hearing—be it a family
+              member, friend, colleague, or neighbor. Learning sign language
+              will also give you the chance to get to know many of the people
+              who use it, and will allow you to discover a whole new world of
+              opportunities. <% } %>
             </p>
           </div>
           <div class="right" id="about-img">
-            <img src="/images/adult-about.png" alt="man img" />
+            <img src="<%= courseData.categories === "kids" ?
+            '/images/kids-about.png' : '/images/adult-about.png' %>" alt="man
+            img" />
           </div>
         </div>
       </div>
@@ -92,7 +139,9 @@
             </p>
           </div>
           <div class="two" id="benfit-img">
-            <img src="/images/benfit-head.png" alt="girl" />
+            <img src="<%= courseData.categories === "kids" ?
+            '/images/benfit-head-kids.jpg' : '/images/benfit-head.png' %>"
+            alt="girl" />
           </div>
           <div class="three">
             <p>
@@ -114,7 +163,15 @@
           <p>Section 1 : Sign Language</p>
           <i class="fa-solid fa-plus" id="icon"></i>
         </div>
-        <div id="section1-content" class="content"></div>
+        <div id="section1-content" class="contents">
+          <% courseData.Lessondescription.forEach((lesson, index) => { %>
+          <p
+            class="<%= index === courseData.Lessondescription.length - 1 ? 'last' : '' %>"
+          >
+            Lesson <%= index + 1 %> : <%= lesson %>
+          </p>
+          <% }) %>
+        </div>
       </div>
       <div class="share-on" id="shareModal">
         <div class="share-content">
@@ -130,7 +187,6 @@
     <%- include('./components/footer.ejs') %>
     <!-- End course information -->
     <script src="/js/course-info.js"></script>
-    <script src="/js/logout.js"></script>
     <script src="/js/lang.js"></script>
   </body>
 </html>

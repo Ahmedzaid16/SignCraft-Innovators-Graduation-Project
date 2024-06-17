@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="We enable hearing impaired and deaf individuals who have difficulty in
+      understanding what they read or are illiterate to access information,
+      services and video content with the ai powered sign language , which
+      is their mother tongue."
+    />
     <link rel="website icon" type="png" href="" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/css/all.min.css" />
@@ -24,7 +31,7 @@
   </head>
 
   <body>
-    <!-- if User reset Email -->
+    <!-- if User reset Email or Enter admin Section -->
     <% if (typeof message !== 'undefined') { %>
     <div class="alert-bar"><%= message %></div>
     <% } %>
@@ -32,7 +39,9 @@
     <% if (typeof alertMessage !== 'undefined') { %>
     <div class="alert-bar"><%= alertMessage %></div>
     <% } %>
+    <!-- ///////////////////// Script in the Header Components ////////////////////////// -->
     <div class="scroller"></div>
+    <!-- /////////////////////////////////////////////// -->
     <!-- Start header -->
     <% if (typeof user !== 'undefined') { %> <%-
     include('./components/header.ejs', { avatarUrl: user.avatarUrl, currentPage:
@@ -177,17 +186,6 @@
     <!-- Start Footer -->
     <%- include('./components/footer.ejs') %>
     <!-- End Footer -->
-    <script>
-      let scroller = document.querySelector(".scroller");
-      let scrollerHeight =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      window.addEventListener("scroll", () => {
-        let scrollTop = document.documentElement.scrollTop;
-        scroller.style.width = `${(scrollTop / scrollerHeight) * 100}%`;
-      });
-    </script>
     <script src="./js/lang.js"></script>
-    <!-- <script src="js/footer.js"></script> -->
   </body>
 </html>

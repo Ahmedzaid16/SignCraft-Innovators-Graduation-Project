@@ -25,6 +25,9 @@
     <title>Courses</title>
   </head>
   <body>
+    <!-- ///////////////////// Script in the Header Components ////////////////////////// -->
+    <div class="scroller"></div>
+    <!-- /////////////////////////////////////////////// -->
     <!-- Start header -->
     <%- include('./components/header.ejs', {avatarUrl:
     user.avatarUrl,currentPage: "courses"}) %>
@@ -83,10 +86,37 @@
       <!-- <div class="bottom-left-image">
         <img src="images/adult-bottom.png" alt="Bottom Left Image" />
       </div> -->
-      <div class="categories">
+      <div class="articles" id="articles">
+        <h2 class="main-title">Course Categories</h2>
+        <div class="container">
+          <div class="box">
+            <img src="/images/Women_hand.jpg" alt="" />
+            <div class="content">
+              <h3>Ages 15+</h3>
+              <p>Adult Arabic Sign Language (ArSL) Courses</p>
+            </div>
+            <div class="info">
+              <a onclick="scrollToElement('adultCourses')">Read More</a>
+              <i class="fas fa-long-arrow-alt-right"></i>
+            </div>
+          </div>
+          <div class="box">
+            <img src="images/الاهتمام.jpeg" alt="" />
+            <div class="content">
+              <h3>Kids</h3>
+              <p>Kids Arabic Sign Language (ArSL) Courses</p>
+            </div>
+            <div class="info">
+              <a onclick="scrollToElement('kidsCourses')">Read More</a>
+              <i class="fas fa-long-arrow-alt-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /////////////////////////////////////// -->
+      <!-- <div class="categories">
         <div class="categories-info">
-          <h2 class="rectangular-animation">Course Categories</h2>
-          <p>We've got courses for everyone!</p>
+          <h2 class="main-title">Course Categories</h2>
         </div>
         <div class="categories-content">
           <div
@@ -107,20 +137,33 @@
             <p>Kids</p>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="courses">
         <div class="head-courses">
-          <h3 class="rectangular-animation2" id="arsl-head">ArSL Courses</h3>
+          <h2 class="main-title" id="arsl-head">ArSL Courses</h2>
         </div>
-        <input
+        <div class="subscribe">
+          <form action="">
+            <input
+              type="text"
+              id="myInput"
+              onkeyup="search()"
+              placeholder="Search for Courses.."
+            />
+            <input type="submit" value="Search" />
+          </form>
+        </div>
+
+        <!-- ///////////////////////////// -->
+        <!-- <input
           type="text"
           id="myInput"
           onkeyup="search()"
           placeholder="Search for Courses.."
-        />
-        <div class="div-courses line" id="adultCourses">
+        /> -->
+        <div class="div-courses" id="adultCourses">
           <div class="adult-info-content">
-            <h4 id="">Adult ArSL Courses</h4>
+            <h4>Adult ArSL Courses</h4>
             <p>
               Embrace the beauty of Arabic Sign Language (ArSL) with our
               individual Online Arabic Sign Language Courses. Whether you're a
@@ -131,7 +174,26 @@
               learn to converse fluently in Arabic Sign Language (ArSL), one
               course at a time. Start your signing adventure today!
             </p>
-            <div id="adult-courses-videos" class="div-courses-videos"></div>
+            <div id="adult-courses-videos" class="div-courses-videos">
+              <% courses.forEach(course => { %> <% if (course.categories ===
+              'adult') { %>
+              <a
+                href="/courses/course_info?course=<%= course.id %>"
+                class="course"
+              >
+                <div class="course-content">
+                  <div class="course-img">
+                    <img src="<%= course.imageUrl %>" alt="course img" />
+                    <span><%= course.lesson %> Lessons</span>
+                  </div>
+                  <div class="course-info">
+                    <h4><%= course.name %></h4>
+                    <p><%= course.description %></p>
+                  </div>
+                </div>
+              </a>
+              <% } %> <% }); %>
+            </div>
           </div>
         </div>
 
@@ -145,7 +207,26 @@
               immersive learning experience. Unlock the power of communication
               and bring clarity to conversations with this hands-on opportunity.
             </p>
-            <div id="kids-courses-videos" class="div-courses-videos"></div>
+            <div id="kids-courses-videos" class="div-courses-videos">
+              <% courses.forEach(course => { %> <% if (course.categories ===
+              'kids') { %>
+              <a
+                href="/courses/course_info?course=<%= course.id %>"
+                class="course"
+              >
+                <div class="course-content">
+                  <div class="course-img">
+                    <img src="<%= course.imageUrl %>" alt="course img" />
+                    <span><%= course.lesson %> Lessons</span>
+                  </div>
+                  <div class="course-info">
+                    <h4><%= course.name %></h4>
+                    <p><%= course.description %></p>
+                  </div>
+                </div>
+              </a>
+              <% } %> <% }); %>
+            </div>
           </div>
         </div>
       </div>
@@ -155,7 +236,6 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/chatbot.js"></script>
     <script src="/js/courses.js"></script>
-    <script src="/js/search.js"></script>
     <script src="/js/lang.js"></script>
   </body>
 </html>

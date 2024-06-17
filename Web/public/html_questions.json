@@ -1,0 +1,72 @@
+[
+  {
+    "title": "images/الاهتمام.jpeg",
+    "answer_1": "الاهتمام",
+    "answer_2": "الحب",
+    "answer_3": "الرزق",
+    "right_answer": "الاهتمام"
+  },
+  {
+    "title": "images/الاحباط.png",
+    "answer_1": "السرقه",
+    "answer_2": "الضرب",
+    "answer_3": "الاحباط",
+    "right_answer": "الاحباط"
+  },
+  {
+    "title": "images/التصميم.jpeg",
+    "answer_1": "التصميم",
+    "answer_2": "العناد",
+    "answer_3": "الذكاء",
+    "right_answer": "التصميم"
+  },
+  {
+    "title": "images/التوتر.png",
+    "answer_1": "الرعب",
+    "answer_2": "الفرحة",
+    "answer_3": "التوتر",
+    "right_answer": "التوتر"
+  },
+  {
+    "title": "images/الغيره.jpeg",
+    "answer_1": "الكره",
+    "answer_2": "الحب",
+    "answer_3": "الغيرة",
+    "right_answer": "الغيرة"
+  },
+  {
+    "title": "images/stop.png",
+    "answer_1": "قف",
+    "answer_2": "اهلا",
+    "answer_3": "هناك",
+    "right_answer": "قف"
+  },
+  {
+    "title": "images/الخوف.png",
+    "answer_1": "الخوف",
+    "answer_2": "الاطمئنان",
+    "answer_3": "التحدي",
+    "right_answer": "الخوف"
+  },
+  {
+    "title": "images/الحزن.png",
+    "answer_1": "الفرح",
+    "answer_2": "الحزن",
+    "answer_3": "الغضب",
+    "right_answer": "الحزن"
+  },
+  {
+    "title": "images/شكرا.png",
+    "answer_1": "الي اللقاء",
+    "answer_2": "مرحباً",
+    "answer_3": "شكراً",
+    "right_answer": "شكراً"
+  },
+  {
+    "title": "images/مرحبا.png",
+    "answer_1": "مرحباً",
+    "answer_2": "سلام",
+    "answer_3": "عذراً",
+    "right_answer": "مرحباً"
+  }
+]

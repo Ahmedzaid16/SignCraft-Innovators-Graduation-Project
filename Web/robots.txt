@@ -1,0 +1,14 @@
+# Block all web crawlers from the /private/ directory
+user-agent: *
+disallow: /private/
+
+# Allow Googlebot to crawl everything
+user-agent: Googlebot
+allow: /
+
+# Block a specific bot from accessing /downloads/
+user-agent: BadBot
+disallow: /downloads/
+
+# Specify the location of the sitemap
+sitemap: https://example.com/sitemap-file.xml

@@ -1,12 +1,13 @@
+<!-- controlCoursesAccount.ejs -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/normalize.css" />
-    <link rel="stylesheet" href="./css/master.css" />
-    <link rel="stylesheet" href="./css/user-account-view.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/master.css" />
+    <link rel="stylesheet" href="/css/user-account-view.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,97 +22,90 @@
     <title>User Accounts</title>
   </head>
   <body>
-    <div id="allAccounts"></div>
+    <!-- if Admin Enter Wrong Password Or Error deleting course -->
+    <% if (typeof msgAdmin !== 'undefined') { %>
+    <div class="alert-bar"><%= msgAdmin %></div>
+    <% } %>
+    <a style="top: 40px; left: 40px; position: relative" href="/control"
+      ><i class="fa-solid fa-arrow-left-long fa-lg"></i
+    ></a>
+    <input
+      type="text"
+      id="searchInput"
+      onkeyup="searchUser()"
+      placeholder="Search for Users by ID or Email.."
+    />
+    <div id="allAccounts">
+      <% users.forEach((user, index) => { %>
+      <div class="user-info">
+        <h2>User <%= index + 1 %></h2>
+        <div class="user-property-id">
+          ID: <span class="searchId"><%= user.id %></span>
+        </div>
+        <div class="user-property-Email">
+          Email: <span class="searchEmail"><%= user.email %></span> (Verified:
+          <%= user.emailVerified ? 'Yes' : 'No' %>)
+        </div>
+        <div class="user-property-username">Username: <%= user.username %></div>
+        <div class="user-property-avatarurl">
+          Avatar URL: <a target="_blank" href="<%= user.avatarUrl %>">Avatar</a>
+        </div>
+        <div class="user-property-gender">Gender: <%= user.gender %></div>
+        <div class="user-property-issignlanguagespeaker">
+          Is Sign Language Speaker: <%= user.isSignLanguageSpeaker === "on" ?
+          'Yes' : 'No' %>
+        </div>
+        <button class="del" data-user-id="<%= user.id %>">
+          Delete Account
+        </button>
+      </div>
+      <% }); %>
+    </div>
+
     <div class="modal-container" id="modal-add">
       <div class="modal">
         <button class="close-btn" id="close">
           <i class="fa-regular fa-circle-xmark"></i>
         </button>
         <div class="modal-header">
-          <h3>Are you sure!</h3>
+          <h3>Are you sure you want to delete this account?</h3>
         </div>
         <div class="modal-content">
-          <form class="form-input">
-            <input type="password" placeholder="Enter your password" />
+          <form
+            action="/deleteUser"
+            method="post"
+            enctype="multipart/form-data"
+            class="form-input"
+            id="delete-form"
+          >
+            <input type="hidden" id="userId" name="userId" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+            />
+            <input
+              type="submit"
+              value="Delete"
+              class="submit-btn"
+              id="delete-button"
+            />
           </form>
-          <input type="submit" value="Delete" class="submit-btn" />
         </div>
       </div>
     </div>
+
     <script>
       const close = document.getElementById("close");
       const modalAdd = document.getElementById("modal-add");
-
-      // Retrieve user data from local storage
-      const users = JSON.parse(localStorage.getItem("Users"));
-      const usersView = document.getElementById("allAccounts");
-
-      // Display user data
-      if (users) {
-        users.forEach((user, index) => {
-          const accountElement = document.createElement("div");
-          accountElement.classList.add("user-info");
-
-          // Display user number
-          const userNumber = document.createElement("h2");
-          userNumber.textContent = `User ${index + 1}`;
-          accountElement.appendChild(userNumber);
-
-          // Display user properties
-          for (const [key, value] of Object.entries(user)) {
-            const propertyElement = document.createElement("div");
-            propertyElement.classList.add(
-              `user-property-${key.toLowerCase().replace(/\s/g, "-")}`
-            );
-            propertyElement.textContent = `${key}: ${value}`;
-            accountElement.appendChild(propertyElement);
-          }
-
-          // Create button to delete account
-          const deleteButton = document.createElement("button");
-          deleteButton.textContent = "Delete Account";
-          deleteButton.classList.add("del");
-          deleteButton.id = "del";
-          deleteButton.addEventListener("click", () => {});
-          accountElement.appendChild(deleteButton);
-
-          usersView.appendChild(accountElement);
-        });
-      } else {
-        // Handle case when no user data is available
-        usersView.textContent = "No user accounts available.";
-      }
-
       const delButtons = document.querySelectorAll(".del");
-      const avatarUrls = document.querySelectorAll(".user-property-avatarurl");
+      const deleteForm = document.getElementById("delete-form");
+      const userIdInput = document.getElementById("userId");
 
-      avatarUrls.forEach((avatarUrl) => {
-        const avatarUrlText = avatarUrl.textContent;
-        const startIndex = avatarUrlText.indexOf("https://");
-        if (startIndex !== -1) {
-          // Extract the substring starting from the index of "https://"
-          const text = avatarUrlText.substring(startIndex).trim();
-          // while (avatarUrl.firstChild) {
-          //   avatarUrl.removeChild(avatarUrl.firstChild);
-          // }
-          // const newDiv = document.createElement("div");
-          // const newLink = document.createElement("a");
-          // newLink.href = "Text";
-          // newLink.textContent = "Avatar";
-          // avatarUrl.appendChild(newLink);
-          const newLink = `<div>Avatar URL: <a href="${text}">Avatar</a>`;
-
-          // Set the innerHTML of the avatarUrl element to the new <a> tag
-          avatarUrl.innerHTML = newLink;
-        } else {
-          console.log("URL not found.");
-        }
-      });
-
-      // avatarUrls.classList.add("omar");
-
-      // Function to  show modal
-      const addModal = () => {
+      // Function to show modal
+      const addModal = (event) => {
+        const userId = event.target.dataset.userId;
+        userIdInput.value = userId;
         modalAdd.classList.add("show-modal");
       };
 
@@ -127,8 +121,32 @@
       delButtons.forEach((button) => {
         button.addEventListener("click", addModal);
       });
-      // Show Add modal
-      // delButtons.addEventListener("click", addModal);
+
+      function searchUser() {
+        // Get the input field value and convert it to upper case for case-insensitive search
+        let input = document.getElementById("searchInput").value.toUpperCase();
+
+        // Get the list of all course containers
+        let users = document.querySelectorAll(".user-info");
+
+        // Loop through all course containers and hide those that don't match the search query
+        users.forEach((course) => {
+          let idElement = course.querySelector(".searchId");
+          let emailElement = course.querySelector(".searchEmail");
+
+          // If the course code matches the input, display the course, otherwise hide it
+          if (
+            (idElement &&
+              idElement.innerText.toUpperCase().indexOf(input) > -1) ||
+            (emailElement &&
+              emailElement.innerText.toUpperCase().indexOf(input) > -1)
+          ) {
+            course.style.display = "";
+          } else {
+            course.style.display = "none";
+          }
+        });
+      }
     </script>
   </body>
 </html>

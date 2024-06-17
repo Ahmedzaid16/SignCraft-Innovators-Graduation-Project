@@ -11,9 +11,10 @@ const duration = document.getElementById("durationCourse");
 const full = document.getElementById("full");
 const volumeBtn = document.querySelector(".controls .volume i");
 const volumeSlider = document.querySelector(".controls .volume input");
-var first = false;
 
-//Pause & play video
+let lastProgressUpdate = -1; // Initialize to -1 to ensure the first update
+let first = false;
+
 function toggleVideoStatus() {
   if (video.paused) {
     video.play();
@@ -22,7 +23,6 @@ function toggleVideoStatus() {
   }
 }
 
-//Update Pause & play icon
 function updatePlayIcon() {
   if (video.paused) {
     play.innerHTML = '<i class="fa-solid fa-play fa-2x"></i>';
@@ -31,72 +31,70 @@ function updatePlayIcon() {
   }
 }
 
-//Update progress & timestamp
 async function updateProgress() {
-  const userId = localStorage.getItem("userId");
-  progress.value = (video.currentTime / video.duration) * 100;
-  // Get minutes.[[
+  let currentProgress = (video.currentTime / video.duration) * 100;
+  currentProgress = parseFloat(currentProgress.toFixed(1)); // Format to one decimal place
+  progress.value = currentProgress;
+
+  // Get minutes and seconds for current time
   let mins = Math.floor(video.currentTime / 60);
+  let secs = Math.floor(video.currentTime % 60);
   if (mins < 10) {
-    mins = "0" + String(mins);
+    mins = "0" + mins;
+  }
+  if (secs < 10) {
+    secs = "0" + secs;
   }
 
+  // Get minutes and seconds for video duration
   let currentMins = Math.floor(video.duration / 60);
   let currentSecs = Math.floor(video.duration % 60);
-
-  // Get minutes
-  let secs = Math.floor(video.currentTime % 60);
-  if (secs < 10) {
-    secs = "0" + String(secs);
-  }
 
   timestamp.innerHTML = `${mins}:${secs}`;
   videoDuration.innerHTML = `${currentMins}:${currentSecs}`;
 
-  const videoId = video.src; // Use video URL as identifier
-  // Example assuming you have userId, videoUrl, currentTime, duration, and progress values
-  if (first) {
-    fetch("/updateProgress", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userId,
-        videoUrl: videoId,
-        currentTime: video.currentTime,
-        duration: video.duration,
-        progress: progress.value,
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("Progress updated successfully!");
-          // ... any additional actions after successful update ...
-        } else {
-          // Handle error (e.g., display error message to user)
-          console.error("Error updating progress:", response.statusText);
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating progress:", error);
+  if (first && Math.abs(currentProgress - lastProgressUpdate) >= 1) {
+    const videoId = video.src;
+    console.log(
+      `Updating progress from ${lastProgressUpdate} to ${currentProgress}`
+    );
+
+    try {
+      const response = await fetch("/updateProgress", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          videoUrl: videoId,
+          currentTime: video.currentTime,
+          duration: video.duration,
+          progress: currentProgress,
+        }),
       });
+
+      if (response.ok) {
+        console.log("Progress updated successfully!");
+        lastProgressUpdate = currentProgress;
+      } else {
+        console.error("Error updating progress:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating progress:", error);
+    }
   }
   first = true;
 }
 
-//Set video time to progress
-async function setVideoProgress() {
+function setVideoProgress() {
   video.currentTime = (+progress.value * video.duration) / 100;
 }
 
-//Stop video
-async function stopVideo() {
+function stopVideo() {
   video.currentTime = 0;
   video.pause();
 }
 
-// Event listeners
 video.addEventListener("click", toggleVideoStatus);
 video.addEventListener("pause", updatePlayIcon);
 video.addEventListener("play", updatePlayIcon);
@@ -109,8 +107,6 @@ videoDisplay.addEventListener("click", (e) => {
   if (e.target == videoDisplay) {
     videoDisplay.classList.remove("show");
     video.pause();
-
-    // Trigger progress update when closing the modal
     window.location.reload();
   }
 });
@@ -119,13 +115,10 @@ full.addEventListener("click", function () {
   if (video.requestFullscreen) {
     video.requestFullscreen();
   } else if (video.mozRequestFullScreen) {
-    /* Firefox */
     video.mozRequestFullScreen();
   } else if (video.webkitRequestFullscreen) {
-    /* Chrome, Safari & Opera */
     video.webkitRequestFullscreen();
   } else if (video.msRequestFullscreen) {
-    /* IE/Edge */
     video.msRequestFullscreen();
   }
 });
@@ -149,103 +142,26 @@ volumeSlider.addEventListener("input", (e) => {
   volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
 });
 
-var urlParams = new URLSearchParams(window.location.search);
-var code = urlParams.get("course");
-
-async function fetchCourses() {
+async function openLessonVideo(videoUrl, courseId) {
   try {
-    const response = await fetch("/findcourse", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code }),
-    });
-    const course = await response.json();
-    // Wrap the single course object into an array
-    return Array.isArray(course) ? course : [course];
-  } catch (error) {
-    console.error("Error fetching course:", error);
-    return [];
-  }
-}
-
-async function fetchProgressData(videoUrl) {
-  try {
-    const userId = localStorage.getItem("userId");
-    const response = await fetch("/getProgress", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userId, // Replace userId with actual user ID
-        videoUrl: videoUrl,
-      }),
-    });
+    const response = await fetch(
+      `/getProgress?videoUrl=${encodeURIComponent(
+        videoUrl
+      )}&courseId=${courseId}`
+    );
     if (response.ok) {
-      const progressData = await response.json();
-      // Use progressValue as needed, e.g., updating the progress bar
-      return progressData;
+      const data = await response.json();
+      video.src = videoUrl;
+      video.currentTime = data.currentTime || 0; // Set the video's current time
+      videoDisplay.classList.add("show");
     } else {
-      throw new Error("Failed to fetch progress data from server");
+      console.error("Error fetching progress:", response.statusText);
+      video.src = videoUrl; // Fallback to starting from the beginning if there's an error
+      videoDisplay.classList.add("show");
     }
   } catch (error) {
-    console.error("Error fetching progress data from server:", error);
+    console.error("Error fetching progress:", error);
+    video.src = videoUrl; // Fallback to starting from the beginning if there's an error
+    videoDisplay.classList.add("show");
   }
 }
-
-// Modify populateCourses function to use the fetched course data
-async function populateCourses() {
-  try {
-    const courses = await fetchCourses();
-    // Check if courses is an array
-    if (!Array.isArray(courses)) {
-      throw new Error("Courses data is not an array");
-    }
-    // Populate HTML with course data
-    for (const course of courses) {
-      // Use for...of loop to allow asynchronous code
-      courseName.textContent = course.name;
-      duration.textContent = course.duration;
-
-      let lessonHTML = "";
-      for (let index = 0; index < course.Lessondescription.length; index++) {
-        const lesson = course.Lessondescription[index];
-        const videoUrl = course.listvideoUrl[index];
-        const progressData = await fetchProgressData(videoUrl);
-        const progressValue = progressData ? progressData.progress : 0;
-        lessonHTML += `
-        <div class="box" onclick="openLessonVideo('${videoUrl}')">
-          <i class="fa-solid fa-circle-play"></i>
-          <p class="lesson">${index + 1}.${lesson}</p>
-          <div class="progress-courses p-relative">
-            <span class="blue" style="width: ${progressValue}%">
-              <span class="bg-blue">${progressValue}%</span>
-            </span>
-          </div>
-        </div>`;
-      }
-      // Set the HTML content for the contentLessons element
-      lessons.innerHTML = lessonHTML;
-    }
-  } catch (error) {
-    console.error("Error populating courses:", error);
-  }
-}
-
-// Function to open lesson video
-// Load progress from local storage when opening a lesson
-async function openLessonVideo(videoUrl) {
-  video.src = videoUrl;
-  videoDisplay.classList.add("show");
-
-  const progressData = await fetchProgressData(videoUrl);
-  if (progressData) {
-    video.currentTime = progressData.currentTime;
-    progress.value = progressData.progress;
-  }
-}
-
-// Call the populateCourses function when the DOM is loaded
-document.addEventListener("DOMContentLoaded", populateCourses);

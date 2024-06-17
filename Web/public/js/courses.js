@@ -7,89 +7,46 @@ function scrollToElement(elementId) {
   element.scrollIntoView({ behavior: "smooth" });
 }
 
-// Modify fetchCourses function to fetch course data from the new endpoint
-async function fetchCourses() {
+async function search() {
+  // Declare variables
+  var input, filter, ulAdult, ulKids, aAdult, aKids, i, txtValue, correctedText;
+  input = document.getElementById("myInput");
+  filter = input.value.trim().toLowerCase();
+  ulAdult = document.getElementById("adultCourses");
+  ulKids = document.getElementById("kidsCourses");
+  aAdult = ulAdult.getElementsByTagName("a");
+  aKids = ulKids.getElementsByTagName("a");
+
   try {
-    const response = await fetch("/courses");
-    const courses = await response.json();
-    return courses;
-  } catch (error) {
-    console.error("Error fetching courses:", error);
-    return [];
-  }
-}
-
-// Modify populateCourses function to use the fetched course data
-async function populateCourses() {
-  try {
-    const courses = await fetchCourses();
-    const adultCoursesContainer = document.getElementById(
-      "adult-courses-videos"
-    );
-    const kidsCoursesContainer = document.getElementById("kids-courses-videos");
-
-    // Clear existing content
-    adultCoursesContainer.innerHTML = "";
-    kidsCoursesContainer.innerHTML = "";
-
-    // Populate HTML with course data
-    courses.forEach((course) => {
-      const courseLink = document.createElement("a");
-      courseLink.href = `course-info.html?course=${course.code}`;
-      courseLink.classList.add("course");
-
-      const courseContent = document.createElement("div");
-      courseContent.classList.add("course-content");
-
-      const courseImg = document.createElement("div");
-      courseImg.classList.add("course-img");
-
-      const img = document.createElement("img");
-      img.src = course.imageUrl; // Assuming you have an 'imageUrl' field in your course data
-      img.alt = "course img";
-
-      const span = document.createElement("span");
-
-      courseImg.appendChild(img);
-
-      const courseInfo = document.createElement("div");
-      courseInfo.classList.add("course-info");
-
-      const h4 = document.createElement("h4");
-      const p = document.createElement("p");
-      if (localStorage.getItem("lang") == "en") {
-        h4.textContent = course.name; // Assuming you have a 'name' field in your course data
-        p.textContent = course.description; // Assuming you have a 'description' field in your course data
-        span.textContent = `${course.lesson} Lessons`;
-      } else {
-        h4.textContent = course.name_ar;
-        p.textContent = course.description_ar;
-        span.textContent = `${course.lesson} درس`;
-      }
-
-      courseImg.appendChild(span);
-      courseInfo.appendChild(h4);
-      courseInfo.appendChild(p);
-
-      courseContent.appendChild(courseImg);
-      courseContent.appendChild(courseInfo);
-
-      courseLink.appendChild(courseContent);
-
-      // Check if the course is for adults or kids and append it to the respective container
-      if (course.categories === "adult") {
-        adultCoursesContainer.appendChild(courseLink);
-      } else if (course.categories === "kids") {
-        kidsCoursesContainer.appendChild(courseLink);
-      }
+    const response = await axios.post("/proxy-correct", {
+      text: filter,
     });
+    correctedText = response.data.corrected_text.trim().toUpperCase();
+    console.log(correctedText);
+
+    // Loop through all adult course items, and hide those who don't match the search query
+    for (i = 0; i < aAdult.length; i++) {
+      txtValue = aAdult[i].textContent || aAdult[i].innerText;
+      if (txtValue.toUpperCase().indexOf(correctedText) > -1) {
+        aAdult[i].style.display = "";
+      } else {
+        aAdult[i].style.display = "none";
+      }
+    }
+
+    // Loop through all kids course items, and hide those who don't match the search query
+    for (i = 0; i < aKids.length; i++) {
+      txtValue = aKids[i].textContent || aKids[i].innerText;
+      if (txtValue.toUpperCase().indexOf(correctedText) > -1) {
+        aKids[i].style.display = "";
+      } else {
+        aKids[i].style.display = "none";
+      }
+    }
   } catch (error) {
-    console.error("Error populating courses:", error);
+    console.error("Error correcting spelling:", error);
   }
 }
-
-// Call the populateCourses function when the DOM is loaded
-document.addEventListener("DOMContentLoaded", populateCourses);
 
 const sliderContainer = document.querySelector(".slider-container");
 const slideRight = document.querySelector(".right-slide");

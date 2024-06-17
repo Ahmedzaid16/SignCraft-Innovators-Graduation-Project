@@ -3,37 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Font Awesome -->
+    <link rel="website icon" type="png" href="" />
     <link rel="stylesheet" href="/css/all.min.css" />
     <link rel="stylesheet" href="/css/framework.css" />
     <link rel="stylesheet" href="/css/course-lessons.css" />
     <link rel="stylesheet" href="/css/progress.css" />
     <link rel="stylesheet" href="/css/master.css" />
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Control Courses</title>
+    <title>Course Lessons</title>
   </head>
+
   <body>
-    <!-- Start header -->
+    <!-- ///////////////////// Script in the Header Components ////////////////////////// -->
+    <div class="scroller"></div>
+    <!-- /////////////////////////////////////////////// -->
     <%- include('./components/header.ejs', { avatarUrl: user.avatarUrl,
     currentPage: "courses" }) %>
-    <!-- End Header -->
-    <!-- Start courses -->
+
     <div class="container-course">
       <div class="course-description">
         <div class="title">
           <div class="icon">
             <i class="fa-solid fa-hands"></i>
-            <h2 id="course-name">ArESL Course</h2>
+            <h2 id="course-name"><%= course.name %></h2>
           </div>
           <p style="margin-bottom: 0">
             You will learn sign language and practice it well.
@@ -41,7 +36,7 @@
           <div>
             <div class="time">
               <i class="fa-regular fa-clock"></i>
-              <p id="durationCourse"></p>
+              <p id="durationCourse"><%= course.duration %></p>
             </div>
             <div class="limit">
               <div class="rate">
@@ -70,13 +65,33 @@
           <i class="fa-regular fa-file-video"></i>
           <h2>Course content</h2>
         </div>
-        <div class="coures-content" id="coures-content"></div>
+        <div class="course-content" id="course-content">
+          <% course.listvideoUrl.forEach((videoUrl, index) => { %>
+          <div
+            class="box"
+            onclick="openLessonVideo('<%= videoUrl %>','<%= courseId %>')"
+          >
+            <i class="fa-solid fa-circle-play"></i>
+            <p class="lesson">
+              <%= index + 1 %>. <%= course.Lessondescription[index] %>
+            </p>
+            <div class="progress-courses p-relative">
+              <% const videoProgress = progress.find(p => p.videoUrl ===
+              videoUrl); const progressValue = videoProgress ?
+              videoProgress.progress : 0; %>
+              <span class="blue" style="width: <%= progressValue %>%">
+                <span class="bg-blue"><%= progressValue %>%</span>
+              </span>
+            </div>
+          </div>
+          <% }); %>
+        </div>
       </div>
     </div>
     <div class="video-display" id="video-display">
       <div class="content">
         <video
-          src="/videos/kids-courses/Primary School ArSL/kids_arsl(1).mp4"
+          src=""
           id="video"
           class="screen"
           poster="/images/poster.png"
@@ -110,17 +125,20 @@
         </div>
       </div>
     </div>
-    <div class="quiz">
-      <a href="../views/translate.ejs"></a>
+    <div class="container-quiz">
+      <div class="exercise-lessons">
+        <p>Play with cards</p>
+        <a href="/exercise">Exercise</a>
+      </div>
+      <div class="quiz">
+        <p>Test your knowledge</p>
+        <a href="/quiz">Quiz</a>
+      </div>
     </div>
     <!-- End courses -->
 
-    <!-- Start Footer -->
     <%- include('./components/footer.ejs') %>
-    <!-- End Footer -->
-
     <script src="/js/courses-lessons.js"></script>
-    <script src="/js/logout.js"></script>
     <script src="/js/lang.js"></script>
   </body>
 </html>

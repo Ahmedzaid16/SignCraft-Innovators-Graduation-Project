@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./css/all.min.css" />
-    <link rel="stylesheet" href="./css/normalize.css" />
-    <link rel="stylesheet" href="./css/master.css" />
-    <link rel="stylesheet" href="./css/control-courses-view.css" />
+    <link rel="stylesheet" href="/css/all.min.css" />
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/master.css" />
+    <link rel="stylesheet" href="/css/control-courses-view.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,9 +21,122 @@
     <title>View Courses</title>
   </head>
   <body>
-    <div id="allCourses"></div>
+    <!-- if Admin Enter Wrong Password Or Error deleting course -->
+    <% if (typeof msgAdmin !== 'undefined') { %>
+    <div class="alert-bar"><%= msgAdmin %></div>
+    <% } %>
+    <a style="top: 40px; left: 40px; position: relative" href="/control"
+      ><i class="fa-solid fa-arrow-left-long fa-lg"></i></a>
+    <input
+      type="text"
+      id="searchInput"
+      onkeyup="searchCoursesByCode()"
+      placeholder="Search for courses by code.."
+    />
+    <div id="allCourses">
+      <% if (courses.length > 0) { %> <% courses.forEach((course, index) => { %>
+      <div class="course-0">
+        <div class="course-property-code">
+          Code: <span class="searchCode"><%= course.code %></span>
+        </div>
+        <div class="course-property-name">Name: <%= course.name %></div>
+        <div class="course-property-imageurl">
+          Image URL: <a target="_blank" href="<%= course.imageUrl %>">Image</a>
+        </div>
+        <div class="course-property-categories">
+          Category: <%= course.categories %>
+        </div>
+        <div class="course-property-duration">
+          Duration: <%= course.duration %>
+        </div>
+        <div class="course-property-description">
+          Description: <%= course.description %>
+        </div>
+        <div class="course-property-lesson">Lessons: <%= course.lesson %></div>
+        <div class="course-property-videourl">
+          Intro Video URL:
+          <a
+            target="_blank"
+            href="/play?video=<%= encodeURIComponent(course.videoUrl) %>"
+            >Video</a
+          >
+        </div>
+        <div class="course-property-property-listvideourl">
+          <h3>Lessons Name And Video:</h3>
+          <% const numLessons = course.Lessondescription ?
+          course.Lessondescription.length : 0; %> <% for (let i = 0; i <
+          numLessons; i++) { %>
+          <p style="margin-left: 10px">
+            <%= i + 1 %> - <%= course.Lessondescription[i] || '' %> : <% if
+            (course.listvideoUrl && Array.isArray(course.listvideoUrl) && i <
+            course.listvideoUrl.length) { %> <% if (course.listvideoUrl[i] !==
+            "Video Deleted") { %>
+            <a
+              target="_blank"
+              href="/play?video=<%= encodeURIComponent(course.listvideoUrl[i]) %>"
+              >Video
+            </a>
+            <% } else { %>
+            <em>Video Deleted</em>
+            <% } %> <% } else { %>
+            <em>No video available</em>
+            <% } %>
+            <button
+              class="edit"
+              data-course-id="<%= course.id %>"
+              data-course-name="<%= course.name %>"
+              data-course-video="<%= course.listvideoUrl && Array.isArray(course.listvideoUrl) && course.listvideoUrl[i] ? course.listvideoUrl[i] : '' %>"
+            >
+              Edit
+            </button>
+            <% if (course.listvideoUrl && Array.isArray(course.listvideoUrl) &&
+            course.listvideoUrl[i] !== "Video Deleted" &&
+            course.listvideoUrl[i]) { %>
+            <button
+              class="delete"
+              data-course-id="<%= course.id %>"
+              data-course-video="<%= course.listvideoUrl[i] %>"
+            >
+              Delete
+            </button>
+            <% } %>
+          </p>
+          <% } %>
+        </div>
+        <div class="btn-control">
+          <div class="modify">
+            <button
+              class="modify"
+              data-course-id="<%= course.id %>"
+              data-course-name="<%= course.name %>"
+              data-course-categories="<%= course.categories %>"
+              data-course-description="<%= course.description %>"
+              data-course-duration="<%= course.duration %>"
+              data-course-lesson="<%= course.lesson %>"
+              data-course-Lessondescription="<%= Array.isArray(course.Lessondescription) ? course.Lessondescription.join(',').split(',').join('\n') : (course.Lessondescription || '').split(',').join('\n') %>"
+              data-course-index="<%= index %>"
+            >
+              Modify
+            </button>
+          </div>
+          <div class="remove">
+            <button
+              class="remove"
+              data-course-id="<%= course.id %>"
+              data-course-index="<%= index %>"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <% }); %> <% } else { %>
+      <p>No courses available.</p>
+      <% } %>
+    </div>
+
     <div class="modal-container-mod" id="modal-mod">
-      <div class="modal" style="top: 50%">
+      <div class="modal">
         <button class="close-btn" id="close">
           <i class="fa-regular fa-circle-xmark"></i>
         </button>
@@ -32,74 +145,146 @@
         </div>
         <div class="modal-content">
           <p>Enter this required info to modify any course:</p>
-          <form class="modal-form" id="form-mod">
-            <div style="display: flex">
-              <label for="custom-image-upload-mod" class="choose"
-                >Choose an Image:</label
-              >
-              <input
-                type="file"
-                id="custom-image-upload-mod"
-                accept="image/*"
-                class="choose-btn"
-                required
-              />
-            </div>
+          <form
+            action="/updateCourse"
+            method="post"
+            enctype="multipart/form-data"
+            class="modal-form"
+            id="form-mod"
+          >
+            <input type="hidden" name="courseId" id="courseIdUp" />
             <div>
-              <label for="code-mod">Course Code</label>
-              <input
-                type="number"
-                id="code-mod"
-                placeholder="Enter course Code"
-                class="form-input"
-                required
-              />
-            </div>
-            <div>
-              <label for="name-mod">Course name</label>
+              <label for="nameAdd">Course name</label>
               <input
                 type="text"
-                id="name-mod"
-                placeholder="Enter course name"
+                id="nameAdd"
+                placeholder="Enter Name"
                 class="form-input"
+                name="name"
+                autocomplete="name"
                 required
               />
             </div>
             <div>
-              <label for="Categories-mod">Course Category</label>
+              <label for="CategoriesAdd">Course Category</label>
               <input
                 type="text"
-                id="Categories-mod"
+                id="CategoriesAdd"
                 placeholder="Enter Category"
                 class="form-input"
-                required
+                name="categories"
               />
             </div>
             <div>
-              <label for="lesson-mod">Number of Lessons</label>
+              <label for="lessonAdd">Number of Lesson</label>
               <input
                 type="number"
-                id="lesson-mod"
-                placeholder="Enter number of lesson"
+                id="lessonAdd"
+                placeholder="Enter Number"
                 class="form-input"
-                required
+                name="lesson"
+                min="1"
               />
             </div>
             <div>
-              <label for="description-mod">Edit course description</label>
+              <label for="durationAddinfo">Course duration</label>
+              <input
+                type="text"
+                name="duration"
+                id="durationAddinfo"
+                placeholder="Enter course time (3h / 12m)"
+                class="form-input"
+              />
+            </div>
+            <div>
+              <label for="descriptionAdd">Course description</label>
               <textarea
-                name="textarea"
-                id="description-mod"
-                required
+                name="description"
+                id="descriptionAdd"
+                cols="35"
+                rows="5"
               ></textarea>
+            </div>
+            <div>
+              <label for="descriptionAddinfo">Course lesson</label>
+              <textarea
+                name="Lessondescription"
+                id="descriptionAddinfo"
+                cols="35"
+                rows="5"
+              ></textarea>
+            </div>
+            <div style="display: flex">
+              <label for="custom-image-upload-add" class="choose">
+                Course Image:
+              </label>
+              <input
+                name="imageUrl"
+                type="file"
+                id="custom-image-upload-add"
+                accept="image/*"
+                class="choose-btn"
+              />
+            </div>
+            <div style="display: flex">
+              <label for="custom-video-upload-add" class="choose">
+                Intro video:
+              </label>
+              <input
+                name="videoUrl"
+                type="file"
+                id="custom-video-upload-add"
+                accept="video/*"
+                class="chooseVideo-btn"
+              />
+            </div>
+            <h3 style="margin: 0">Upload videos</h3>
+            <div style="display: flex; justify-content: space-around">
+              <div style="display: flex; margin-left: -20px">
+                <input
+                  type="radio"
+                  name="choose"
+                  value="upload"
+                  id="radio-upload"
+                />
+                <label style="margin: 0" for="radio-upload">Upload video</label>
+              </div>
+              <div style="display: flex">
+                <input type="radio" name="choose" value="url" id="radio-url" />
+                <label style="margin: 0" for="radio-url">Url</label>
+              </div>
+            </div>
+
+            <div class="device-video" id="device-video">
+              <label for="custom-video-upload-course" class="choose"
+                >Choose an video:
+              </label>
+              <input
+                type="file"
+                id="custom-video-upload-course"
+                accept="video/*"
+                class="chooseVideo-btn"
+                name="listvideoUrl"
+                multiple
+              />
+            </div>
+            <div class="url-video" id="url-video">
+              <label for="url">Video url</label>
+              <input
+                type="url"
+                id="url"
+                placeholder="Enter url"
+                class="form-input"
+              />
             </div>
             <input type="submit" value="Modify" class="submit-btn" />
           </form>
         </div>
       </div>
     </div>
+
     <div class="modal-container" id="modal-add">
-      <div class="modal">
+      <div style="top: 50%" class="modal">
         <button class="close-btn" id="close-rem">
           <i class="fa-regular fa-circle-xmark"></i>
         </button>
@@ -107,164 +292,305 @@
           <h3>Are you sure!</h3>
         </div>
         <div class="modal-content">
-          <form class="form-input">
-            <input type="password" placeholder="Enter your password" />
+          <form
+            action="/deleteCourse"
+            method="post"
+            enctype="multipart/form-data"
+            class="form-input"
+            id="remove-form"
+          >
+            <input type="hidden" name="courseId" id="courseIdRem" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+            <input type="submit" value="Delete" class="submit-btn" />
           </form>
-          <input type="submit" value="Delete" class="submit-btn" />
         </div>
       </div>
     </div>
+
+    <div class="modal-container" id="modal-video-rem">
+      <div style="top: 50%" class="modal">
+        <button class="close-btn" id="close-video-rem">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Are you sure!</h3>
+        </div>
+        <div class="modal-content">
+          <form
+            action="/deleteVideo"
+            method="post"
+            enctype="multipart/form-data"
+            class="form-input"
+            id="remove-Video-form"
+          >
+            <input type="hidden" name="courseId" id="courseIdVideoRem" />
+            <input type="hidden" name="videoUrl" id="videoUrlRem" />
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+            <input type="submit" value="Delete" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-container" id="modal-video-edit">
+      <div style="top: 50%" class="modal">
+        <button class="close-btn" id="close-video-edit">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <div class="modal-header">
+          <h3>Upload New Video</h3>
+        </div>
+        <div class="modal-content">
+          <form
+            action="/editVideo"
+            method="post"
+            enctype="multipart/form-data"
+            class="form-input"
+            id="edit-video-form"
+          >
+            <input type="hidden" name="courseId" id="courseIdVideoEdit" />
+            <input type="hidden" name="videoUrl" id="videoUrlEdit" />
+            <input type="hidden" name="playList" id="playListEdit" />
+            <label for="newVideoEdit"> New video: </label>
+            <input type="file" name="newVideo" id="newVideoEdit" required />
+            <input type="submit" value="Edit" class="submit-btn" />
+          </form>
+        </div>
+      </div>
+    </div>
+
     <script>
-      // Retrieve courses data from local storage
-      const courses = JSON.parse(localStorage.getItem("courses"));
-      const coursesView = document.getElementById("allCourses");
-
-      // Display courses data
-      if (courses) {
-        courses.forEach((course, courseIndex) => {
-          const url = course.videoUrl;
-          console.log(url);
-
-          const courseElement = document.createElement("div");
-          courseElement.classList.add(`course-${courseIndex}`);
-          for (const [key, value] of Object.entries(course)) {
-            const propertyElement = document.createElement("div");
-            propertyElement.classList.add(
-              `course-property-${key.toLowerCase().replace(/\s/g, "-")}`
-            );
-            propertyElement.textContent = `${key}: ${value}`;
-            courseElement.appendChild(propertyElement);
-          }
-          // Create buttons for each course
-          const buttons = `<div class="btn-control">
-          <div id="mod" class="modify">
-            <button class="modify" id="modify">Modify</button>
-          </div>
-          <div id="rem" class="remove">
-            <button class="remove" id="remove">Remove</button>
-          </div>
-          </div>`;
-          // Append buttons along with course information
-          courseElement.insertAdjacentHTML("beforeend", buttons);
-          coursesView.appendChild(courseElement);
-        });
-      } else {
-        // Handle case when no courses are available
-        coursesView.textContent = "No courses available.";
-      }
-
-      const imageUrls = document.querySelectorAll(".course-property-imageurl");
-
-      imageUrls.forEach((imageUrl) => {
-        const imageUrlText = imageUrl.textContent;
-        const startIndex = imageUrlText.indexOf("https://");
-        if (startIndex !== -1) {
-          // Extract the substring starting from the index of "https://"
-          const text = imageUrlText.substring(startIndex).trim();
-          const newLink = `<div>image URL: <a href="${text}">Image</a>`;
-          imageUrl.innerHTML = newLink;
-        } else {
-          console.log("URL not found.");
-        }
-      });
-
-      const videoUrls = document.querySelectorAll(".course-property-videourl");
-
-      videoUrls.forEach((videoUrl) => {
-        const videoUrlText = videoUrl.textContent;
-        const startIndex = videoUrlText.indexOf("https://");
-        if (startIndex !== -1) {
-          // Extract the substring starting from the index of "https://"
-          const text = videoUrlText.substring(startIndex).trim();
-          const newLink = `<div>video URL: <a href="${text}">Video</a>`;
-          videoUrl.innerHTML = newLink;
-        } else {
-          console.log("URL not found.");
-        }
-      });
-
-      // Step 1: Select the element containing the list of video URLs from the HTML
-      const videoUrlsElements = document.querySelectorAll(
-        ".course-property-listvideourl"
-      );
-
-      // Iterate over each element
-      videoUrlsElements.forEach((videoUrlsElement, index) => {
-        // Get the text content of the element and split it into an array
-        const videoUrlsText = videoUrlsElement.textContent.trim();
-        const videoUrlsArray = videoUrlsText.split(",");
-
-        // Clear existing content
-        videoUrlsElement.innerHTML = "";
-
-        // Display each lesson with its corresponding video URL
-        videoUrlsArray.forEach((url, urlIndex) => {
-          const lessonNumber = urlIndex + 1;
-          const lessonName = `Lesson_${lessonNumber}`;
-          const lessonLink = document.createElement("a");
-          lessonLink.href = url;
-          lessonLink.textContent = `${lessonName}: Video`;
-          lessonLink.target = "_blank"; // Open link in a new tab
-
-          // Create a new paragraph element for each lesson and append it to the container
-          const lessonParagraph = document.createElement("p");
-          lessonParagraph.appendChild(lessonLink);
-          videoUrlsElement.appendChild(lessonParagraph);
-        });
-      });
-
-      const modify = document.querySelectorAll(".modify");
-      const remove = document.querySelectorAll(".remove");
-      const close = document.getElementById("close");
-      const closeRem = document.getElementById("close-rem");
+      const modifyButtons = document.querySelectorAll(".modify");
+      const removeButtons = document.querySelectorAll(".remove");
+      const deleteButtons = document.querySelectorAll(".delete");
+      const editButtons = document.querySelectorAll(".edit");
+      const closeModalButton = document.getElementById("close");
+      const closeRemModalButton = document.getElementById("close-rem");
+      const closeVideoRemModalButton =
+        document.getElementById("close-video-rem");
+      const closeVideoEditModalButton =
+        document.getElementById("close-video-edit");
       const modalMod = document.getElementById("modal-mod");
       const modalAdd = document.getElementById("modal-add");
+      const modalVideoRem = document.getElementById("modal-video-rem");
+      const modalVideoEdit = document.getElementById("modal-video-edit");
+      const courseIdInputRem = document.getElementById("courseIdRem");
+      const courseIdInputUp = document.getElementById("courseIdUp");
+      const courseNameInput = document.getElementById("nameAdd");
+      const courseCategoriesInput = document.getElementById("CategoriesAdd");
+      const courseLessonInput = document.getElementById("lessonAdd");
+      const courseDurationInput = document.getElementById("durationAddinfo");
+      const courseDescriptionInput = document.getElementById("descriptionAdd");
+      const courseLessonDescriptionInput =
+        document.getElementById("descriptionAddinfo");
+      const courseIdVideoInputRem = document.getElementById("courseIdVideoRem");
+      const videoUrlInputRem = document.getElementById("videoUrlRem");
+      const courseIdVideoInputEdit =
+        document.getElementById("courseIdVideoEdit");
+      const videoUrlInputEdit = document.getElementById("videoUrlEdit");
+      const playListInputEdit = document.getElementById("playListEdit");
 
-      // Function to  show modal
-      const addModal = () => {
+      // Function to show the modify modal
+      const showModifyModal = (
+        courseId,
+        name,
+        categories,
+        description,
+        duration,
+        lesson,
+        Lessondescription
+      ) => {
+        courseIdInputUp.value = courseId;
+        courseNameInput.value = name;
+        courseCategoriesInput.value = categories;
+        courseDescriptionInput.value = description;
+        courseDurationInput.value = duration;
+        courseLessonInput.value = lesson;
+        courseLessonDescriptionInput.value = Lessondescription;
         modalMod.classList.add("show-modal");
       };
 
-      // Function to remove the "show-modal" class
-      const closeModal = () => {
+      // Function to close the modify modal
+      const closeModifyModal = () => {
         modalMod.classList.remove("show-modal");
       };
 
-      // Attach the event listener to the "close" button for Add modal
-      close.addEventListener("click", closeModal);
+      // Attach the event listener to the "close" button for the modify modal
+      closeModalButton.addEventListener("click", closeModifyModal);
 
-      // Attach the event listener to all buttons with the class "del"
-      modify.forEach((button) => {
-        button.addEventListener("click", addModal);
+      modifyButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const courseId = e.target.getAttribute("data-course-id");
+          const name = e.target.getAttribute("data-course-name");
+          const categories = e.target.getAttribute("data-course-categories");
+          const description = e.target.getAttribute("data-course-description");
+          const duration = e.target.getAttribute("data-course-duration");
+          const lesson = e.target.getAttribute("data-course-lesson");
+          const Lessondescription = e.target.getAttribute(
+            "data-course-Lessondescription"
+          );
+          showModifyModal(
+            courseId,
+            name,
+            categories,
+            description,
+            duration,
+            lesson,
+            Lessondescription
+          );
+        });
       });
 
-      // Hide modal on outside click
-      window.addEventListener("click", (e) =>
-        e.target == modalMod ? modalMod.classList.remove("show-modal") : false
-      );
+      // Hide modify modal on outside click
+      window.addEventListener("click", (e) => {
+        if (e.target == modalMod) {
+          modalMod.classList.remove("show-modal");
+        }
+      });
 
-      // Function to  show modal
-      const addRemModal = () => {
+      // Function to show the remove modal and set courseId
+      const showRemoveModal = (courseId) => {
+        courseIdInputRem.value = courseId;
         modalAdd.classList.add("show-modal");
       };
 
-      // Function to remove the "show-modal" class
-      const closeRemModal = () => {
+      // Function to close the remove modal
+      const closeRemoveModal = () => {
         modalAdd.classList.remove("show-modal");
       };
 
-      // Attach the event listener to the "close" button for Add modal
-      closeRem.addEventListener("click", closeRemModal);
+      // Attach the event listener to the "close" button for the remove modal
+      closeRemModalButton.addEventListener("click", closeRemoveModal);
 
-      // Attach the event listener to all buttons with the class "del"
-      remove.forEach((button) => {
-        button.addEventListener("click", addRemModal);
+      // Attach the event listener to all remove buttons
+      removeButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const courseId = e.target.getAttribute("data-course-id");
+          showRemoveModal(courseId);
+        });
       });
 
-      // Hide modal on outside click
-      window.addEventListener("click", (e) =>
-        e.target == modalAdd ? modalAdd.classList.remove("show-modal") : false
-      );
+      // Hide remove modal on outside click
+      window.addEventListener("click", (e) => {
+        if (e.target == modalAdd) {
+          modalAdd.classList.remove("show-modal");
+        }
+      });
+
+      // Function to show the remove modal and set courseId
+      const showVideoRemoveModal = (courseId, videoUrl) => {
+        courseIdVideoInputRem.value = courseId;
+        videoUrlInputRem.value = videoUrl;
+        modalVideoRem.classList.add("show-modal");
+      };
+
+      // Function to close the remove modal
+      const closeVideoRemoveModal = () => {
+        modalVideoRem.classList.remove("show-modal");
+      };
+
+      // Attach the event listener to the "close" button for the remove modal
+      closeVideoRemModalButton.addEventListener("click", closeVideoRemoveModal);
+
+      // Attach the event listener to all remove buttons
+      deleteButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const courseId = e.target.getAttribute("data-course-id");
+          const videoUrl = e.target.getAttribute("data-course-video");
+          showVideoRemoveModal(courseId, videoUrl);
+        });
+      });
+
+      // Hide remove modal on outside click
+      window.addEventListener("click", (e) => {
+        if (e.target == modalVideoRem) {
+          modalVideoRem.classList.remove("show-modal");
+        }
+      });
+
+      // Function to show the remove modal and set courseId
+      const showVideoEditModal = (courseId, videoUrl, playList) => {
+        courseIdVideoInputEdit.value = courseId;
+        videoUrlInputEdit.value = videoUrl;
+        playListInputEdit.value = playList;
+        modalVideoEdit.classList.add("show-modal");
+      };
+
+      // Function to close the remove modal
+      const closeVideoEditModal = () => {
+        modalVideoEdit.classList.remove("show-modal");
+      };
+
+      // Attach the event listener to the "close" button for the remove modal
+      closeVideoEditModalButton.addEventListener("click", closeVideoEditModal);
+
+      // Attach the event listener to all remove buttons
+      editButtons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const courseId = e.target.getAttribute("data-course-id");
+          const videoUrl = e.target.getAttribute("data-course-video");
+          const playList = e.target.getAttribute("data-course-name");
+          showVideoEditModal(courseId, videoUrl, playList);
+        });
+      });
+
+      // Hide remove modal on outside click
+      window.addEventListener("click", (e) => {
+        if (e.target == modalVideoEdit) {
+          modalVideoEdit.classList.remove("show-modal");
+        }
+      });
+
+      function searchCoursesByCode() {
+        // Get the input field value and convert it to upper case for case-insensitive search
+        let input = document.getElementById("searchInput").value.toUpperCase();
+
+        // Get the list of all course containers
+        let courses = document.querySelectorAll(".course-0");
+
+        // Loop through all course containers and hide those that don't match the search query
+        courses.forEach((course) => {
+          let codeElement = course.querySelector(".searchCode");
+
+          // If the course code matches the input, display the course, otherwise hide it
+          if (
+            codeElement &&
+            codeElement.innerText.toUpperCase().indexOf(input) > -1
+          ) {
+            course.style.display = "";
+          } else {
+            course.style.display = "none";
+          }
+        });
+      }
+
+      document
+        .getElementById("form-mod")
+        .addEventListener("submit", (event) => {
+          const numberOfLessons = courseLessonInput.value;
+          const lessonDescriptionsArray = courseLessonDescriptionInput.value
+            .split(/\r?\n/)
+            .map((desc) => desc.trim())
+            .filter((desc) => desc !== "");
+
+          if (numberOfLessons != lessonDescriptionsArray.length) {
+            event.preventDefault();
+            alert(
+              `The number of lessons (${numberOfLessons}) must match the number of lesson descriptions (${lessonDescriptionsArray.length}).`
+            );
+          }
+        });
     </script>
+    <script src="/js/controlCourses.js"></script>
   </body>
 </html>

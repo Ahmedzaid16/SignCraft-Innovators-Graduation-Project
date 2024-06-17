@@ -157,3 +157,21 @@
   // Event listener
   menuIcon.addEventListener("click", () => menu.classList.toggle("show-menu"));
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    let scroller = document.querySelector(".scroller");
+
+    function updateScroller() {
+      let scrollerHeight = document.body.scrollHeight - window.innerHeight;
+      let scrollTop = window.scrollY;
+      let width = (scrollTop / scrollerHeight) * 100;
+      scroller.style.width = `${Math.min(width, 100)}%`;
+    }
+
+    window.addEventListener("scroll", updateScroller);
+    window.addEventListener("resize", updateScroller);
+
+    // Initial call to set the scroller width correctly
+    updateScroller();
+  });
+</script>

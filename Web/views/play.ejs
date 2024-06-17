@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Play Video</title>
+  </head>
+  <body style="background-color: #212529">
+    <video
+      width="fit-content"
+      height="300px"
+      id="video"
+      preload="none"
+      controls
+    >
+      <source src="<%= video %>" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <script>
+      const video = document.getElementById("video");
+      // Show loading animation.
+      console.log("<%= video %>");
+      var playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then((_) => {})
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    </script>
+  </body>
+</html>
