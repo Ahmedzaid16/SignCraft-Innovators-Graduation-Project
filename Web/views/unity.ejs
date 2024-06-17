@@ -63,6 +63,17 @@
                     UnityInstance = null;
                   });
                 } else if (typeof message === "string") {
+                  message = message.trim().toLowerCase();
+                  if (message === "and" || message === "مرحبا") {
+                    message = "1";
+                  } else if (
+                    message === "milk" ||
+                    message === "حليب" ||
+                    message === "لبن"
+                  ) {
+                    message = "2";
+                  }
+                  console.log(message);
                   UnityInstance.SendMessage(
                     "Ch09_nonPBR",
                     "StartPlayAnimationThenReset",
