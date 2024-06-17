@@ -132,6 +132,7 @@ section {
   display: flex;
   align-items: flex-end;
   width: 120px;
+  position: relative;
 }
 .profile-section .profile-container .avatar input {
   display: none;
@@ -166,9 +167,10 @@ section {
 }
 
 .profile-section .profile-container .avatar .camera {
-  translate: -40px;
-  cursor: pointer;
+  position: absolute;
+  right: 0;
 }
+
 .profile-section .profile-container .nav-section {
   grid-row-start: 2;
   width: 80%;

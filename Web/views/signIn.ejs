@@ -20,7 +20,7 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Sign Language</title>
+    <title data-i18n="SIGN_IN">Sign In</title>
   </head>
 
   <body>
@@ -29,8 +29,8 @@
     <!-- /////////////////////////////////////////////// -->
     <!-- if User Enter Wrong Email or Password or Enter Admin Section -->
     <% if (typeof msg !== 'undefined') { %>
-      <div class="alert-bar"><%= msg %></div>
-      <% } %>
+    <div class="alert-bar"><%= msg %></div>
+    <% } %>
     <!-- Start header -->
     <%- include('./components/header.ejs', { avatarUrl: null, currentPage: null
     }) %>
@@ -46,7 +46,7 @@
             enctype="multipart/form-data"
             id="signinForm"
           >
-            <h1 class="fw-bold mb-30">Sign in</h1>
+            <h1 data-i18n="SIGN_IN" class="fw-bold mb-30">Sign in</h1>
             <div class="mb-20">
               <a href="#" class="social"
                 ><i class="fa-brands fa-linkedin"></i
@@ -57,7 +57,9 @@
               <a href="#" class="social"><i class="fa-brands fa-google"></i></a>
             </div>
             <div class="text">
-              <span class="mb-10 mt-10 fw-bold">or use your account</span>
+              <span data-i18n="OR_USE_ACCOUNT" class="mb-10 mt-10 fw-bold"
+                >or use your account</span
+              >
               <div class="form-control">
                 <input
                   type="email"
@@ -65,8 +67,9 @@
                   name="email"
                   id="email"
                   placeholder="Enter email"
+                  data-i18n="ENTER_EMAIL"
                 />
-                <small>Error message</small>
+                <small data-i18n="ERROR_MESSAGE">Error message</small>
               </div>
               <div class="form-control">
                 <input
@@ -74,22 +77,27 @@
                   type="password"
                   id="password"
                   placeholder="Enter password"
+                  data-i18n="ENTER_PASSWORD"
                 />
-                <small>Error message</small>
+                <small data-i18n="ERROR_MESSAGE">Error message</small>
               </div>
               <span class="mt-15 fw-bold c-black"
-                ><a href="/reset">Forgot your password?</a></span
+                ><a href="/reset" data-i18n="FORGOT_PASSWORD">Forgot your password?</a></span
               >
-              <button class="mt-20" type="submit">SIGN IN</button>
+              <button data-i18n="SIGN_IN" class="mt-20" type="submit">
+                SIGN IN
+              </button>
             </div>
           </form>
         </div>
         <div class="intro">
-          <h1 class="c-white">Hello, Friend!</h1>
-          <p class="m-10 fw-bold c-white">
+          <h1 data-i18n="HELLO_FRIEND" class="c-white">Hello, Friend!</h1>
+          <p data-i18n="PERSONAL_DETAILS" class="m-10 fw-bold c-white">
             Enter your personal details and start journey with us
           </p>
-          <a href="/signUp"><button class="dif mt-20">SIGN UP</button></a>
+          <a href="/signUp"
+            ><button data-i18n="SIGN_UP" class="dif mt-20">SIGN UP</button></a
+          >
         </div>
       </div>
     </div>

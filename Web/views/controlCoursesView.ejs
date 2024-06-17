@@ -39,6 +39,7 @@
         <div class="course-property-code">
           Code: <span class="searchCode"><%= course.code %></span>
         </div>
+        <div class="course-property-name">language: <%= course.language %></div>
         <div class="course-property-name">Name: <%= course.name %></div>
         <div class="course-property-imageurl">
           Image URL: <a target="_blank" href="<%= course.imageUrl %>">Image</a>
@@ -110,6 +111,7 @@
               data-course-id="<%= course.id %>"
               data-course-name="<%= course.name %>"
               data-course-categories="<%= course.categories %>"
+              data-course-language="<%= course.language %>"
               data-course-description="<%= course.description %>"
               data-course-duration="<%= course.duration %>"
               data-course-lesson="<%= course.lesson %>"
@@ -163,6 +165,17 @@
                 name="name"
                 autocomplete="name"
                 required
+              />
+            </div>
+            <div>
+              <label for="languageAdd">Course language</label>
+              <input
+                type="text"
+                id="languageAdd"
+                placeholder="Arabic Or English"
+                class="form-input"
+                name="language"
+                autocomplete="language"
               />
             </div>
             <div>
@@ -388,6 +401,7 @@
       const courseIdInputUp = document.getElementById("courseIdUp");
       const courseNameInput = document.getElementById("nameAdd");
       const courseCategoriesInput = document.getElementById("CategoriesAdd");
+      const courseLanguageInput = document.getElementById("languageAdd");
       const courseLessonInput = document.getElementById("lessonAdd");
       const courseDurationInput = document.getElementById("durationAddinfo");
       const courseDescriptionInput = document.getElementById("descriptionAdd");
@@ -405,6 +419,7 @@
         courseId,
         name,
         categories,
+        language,
         description,
         duration,
         lesson,
@@ -413,6 +428,7 @@
         courseIdInputUp.value = courseId;
         courseNameInput.value = name;
         courseCategoriesInput.value = categories;
+        courseLanguageInput.value = language;
         courseDescriptionInput.value = description;
         courseDurationInput.value = duration;
         courseLessonInput.value = lesson;
@@ -433,6 +449,7 @@
           const courseId = e.target.getAttribute("data-course-id");
           const name = e.target.getAttribute("data-course-name");
           const categories = e.target.getAttribute("data-course-categories");
+          const language = e.target.getAttribute("data-course-language");
           const description = e.target.getAttribute("data-course-description");
           const duration = e.target.getAttribute("data-course-duration");
           const lesson = e.target.getAttribute("data-course-lesson");
@@ -443,6 +460,7 @@
             courseId,
             name,
             categories,
+            language,
             description,
             duration,
             lesson,

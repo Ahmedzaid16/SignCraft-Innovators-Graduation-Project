@@ -50,9 +50,20 @@ function closeShareModal() {
   modal.style.display = "none";
 }
 
-// Event listener to open the share window when the DOM content is loaded
-document.addEventListener("DOMContentLoaded", function () {
+ // Event listener to open the share window when the DOM content is loaded
+ document.addEventListener("DOMContentLoaded", function () {
   var shareButton = document.querySelector(".share");
   // Add a click event listener to the share button, to open share window
   shareButton.addEventListener("click", openShareModal);
+
+  // Define the URL you want to share
+  var urlToShare = encodeURIComponent(window.location.href);
+
+  // Set the Facebook share link
+  var facebookLink = document.getElementById("shareFacebook");
+  facebookLink.href = "https://www.facebook.com/sharer/sharer.php?u=" + urlToShare;
+
+  // Set the Twitter share link
+  var twitterLink = document.getElementById("shareTwitter");
+  twitterLink.href = "https://twitter.com/intent/tweet?url=" + urlToShare + "&text=" + encodeURIComponent("Check out this awesome course!");
 });

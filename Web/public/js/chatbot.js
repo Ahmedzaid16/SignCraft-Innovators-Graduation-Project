@@ -1,60 +1,3 @@
-// Wait for the DOM content to be fully loaded
-document.addEventListener("DOMContentLoaded", function () {
-  // Create the chatbot-ready div element
-  const chatReady = document.createElement("div");
-  chatReady.classList.add("chatbot-ready"); // Add the "chatbot-ready" class
-  chatReady.id = "chat-ready"; // Set the ID to "chat-ready"
-  // Create the chatbot-start div element
-  const chatStart = document.createElement("div");
-  chatStart.classList.add("chatbot-start"); // Add the "chatbot-start" class
-  chatStart.classList.add("dis");
-  chatStart.id = "chat-start"; // Set the ID to "chat-start"
-  // Append the created div elements to the body
-  document.body.appendChild(chatReady);
-  document.body.appendChild(chatStart);
-  // Populate chatReady section with initial HTML
-  chatReady.innerHTML = `<div class="chatbot-close" id="close">
-    <button><span id="close_mess">Close</span> <i class="fa-solid fa-xmark"></i></button>
-  </div>
-  <div class="chatbot-message" id="chatbot-message">
-    <p class="one" id="help">Help & Support</p>
-    <p class="two" id="hello_service">
-    <span id="hello1">Hello</span>, <br />
-    <span id="hello2">We're at your service, click here to start the conversation now!</span>
-    </p>
-  </div>
-  <div class="chatbot-img" id="chatbot-img">
-    <img src="images/chatbot.png" alt="chatbot" />
-  </div>`;
-  // Populate chatStart section with initial HTML
-  chatStart.innerHTML = `<div class="chat">
-  <h4 id="chat_robo">Chat With Robo</h4>
-  <i id="close-chat" class="fa-solid fa-xmark fa-lg"></i>
-</div>
-<div class="messages">
-  <div class="new-message" onclick="scrollToBottom()">
-    <i class="fa-solid fa-chevron-down"></i>
-    <p id="new_mess">New Message</p>
-  </div>
-  <div class="message">
-    <img src="images/chatbot.png" alt="chatbot" />
-    <p id="greetings">
-      Greetings. I am Robo, your dedicated personal assistant, ready and
-      at your service to provide insightful answers to any inquiries you
-      may have.
-    </p>
-  </div>
-  <div class="message">
-    <p id="assist">
-      How may I assist you today? Kindly choose from the following
-      options to guide me in providing the support you require:
-    </p>
-  </div>
-  <div class="options" id="options">
-  </div>
-</div>`;
-});
-
 document.addEventListener("DOMContentLoaded", function () {
   // Select necessary elements from the DOM
   const messagesContainer = document.querySelector(".messages");
@@ -122,17 +65,55 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 });
 
-function chooseButton(buttonName, roboMessage) {
-  console.log(buttonName);
+function chooseButton(buttonId) {
+  // Define responses based on button id
+  let roboMessage = "";
+  const lang = localStorage.getItem("lang");
+  if (lang === "en") {
+    switch (buttonId) {
+      case "one":
+        roboMessage = `<span>Please take a screenshot of the error you encountered, whether it's related to avatar movement or written text (when using sign language), and send it to our <a href='mailto:sherefalex34@gmail.com'>Email</a> along with details of the error. The error will be fixed as soon as possible.</span>`;
+        break;
+      case "two":
+        roboMessage = `<span>1- If you have forgotten your account password, please go to the <a href='/reset'>Password Reset page</a>, enter your email, and a message with a link will be sent to your email. Click on the link to be able to set a new password.</span><br><br><span>2- If you are experiencing issues updating your personal information, please make sure to use a name that does not contain an ampersand (&), equals sign (=), underscore (_), apostrophe ('), dash (-), plus sign (+), comma (,), brackets (<,>), or more than one period (.).</span>`;
+        break;
+      case "three":
+        roboMessage = `<span>1- If you are facing issues accessing the learning platform or if the course videos are unavailable, please send us the details via <a href='mailto:sherefalex34@gmail.com'>Email</a> along with some screenshots illustrating the problem.</span><br><br><span>2- If you would like us to provide another course for you, please provide us with the course details through our <a href='mailto:sherefalex34@gmail.com'>Email</a>.</span>`;
+        break;
+      case "four":
+        roboMessage = `<span>Please contact us via <a href='mailto:sherefalex34@gmail.com'>Email</a> if you are experiencing any unmentioned issues.</span>`;
+        break;
+      default:
+        roboMessage = "Default message if no case matches"; // Add a default case if needed
+    }
+  } else if (lang === "ar") {
+    switch (buttonId) {
+      case "one":
+        roboMessage = `<span>يرجى التقاط لقطة شاشة للخطأ الذي واجهته، سواء كان ذلك يتعلق بحركة الافاتار أو النص المكتوب (عند استخدام لغة الإشارة)، وإرسالها إلى <a href='mailto:sherefalex34@gmail.com'>البريد الإلكتروني</a> لدينا مع تفاصيل الخطأ. سيتم إصلاح الخطأ في أقرب وقت ممكن.</span>`;
+        break;
+      case "two":
+        roboMessage = `<span>1- إذا نسيت كلمة المرور الخاصة بحسابك، يرجى الانتقال إلى <a href='/reset'>صفحة إعادة تعيين كلمة المرور</a>، أدخل بريدك الإلكتروني، وسيتم إرسال رسالة بريد إلكتروني تحتوي على رابط إلى بريدك الإلكتروني. انقر فوق الرابط لتتمكن من ضبط كلمة مرور جديدة.</span><br><br><span>2- إذا كنت تواجه مشاكل في تحديث معلوماتك الشخصية، يرجى التأكد من استخدام اسم لا يحتوي على علامة التعجب (&)، علامة اليساوي (=)، شرطة سفلية (_)، علامة اقتباس ('،)، شرطة (-)، علامة زائد (+)، فاصلة (،)، أقواس زاوية (<،>)، أو أكثر من نقطة واحدة (.).</span>`;
+        break;
+      case "three":
+        roboMessage = `<span>1- إذا كنت تواجه مشكلات في الوصول إلى منصة التعلم أو إذا كانت مقاطع الفيديو التعليمية غير متاحة، يرجى إرسال لنا التفاصيل عبر <a href='mailto:sherefalex34@gmail.com'>البريد الإلكتروني</a> مع بعض اللقطات لشرح المشكلة.</span><br><br><span>2- إذا كنت ترغب في أن نقدم لك دورة أخرى، يرجى تقديم تفاصيل الدورة من خلال <a href='mailto:sherefalex34@gmail.com'>البريد الإلكتروني</a> الخاص بنا.</span>`;
+        break;
+      case "four":
+        roboMessage = `<span>يرجى الاتصال بنا عبر <a href='mailto:sherefalex34@gmail.com'>البريد الإلكتروني</a> إذا كنت تواجه أي مشاكل غير مذكورة.</span>`;
+        break;
+      default:
+        roboMessage = "الرسالة الافتراضية إذا لم يتم التطابق مع أي حالة"; // Add a default case if needed
+    }
+  }
+
   // Select necessary elements from the DOM
   const messagesContainer = document.querySelector(".messages");
-  var newMessageSection = document.querySelector(".new-message");
-  var allButtons = document.querySelectorAll(".options button");
+  const newMessageSection = document.querySelector(".new-message");
+  const allButtons = document.querySelectorAll(".options button");
 
   // Create new elements for user message, robo message, and options
-  var newDivUser = document.createElement("div");
-  var newDivRobo = document.createElement("div");
-  var newDivOptions = document.createElement("div");
+  const newDivUser = document.createElement("div");
+  const newDivRobo = document.createElement("div");
+  const newDivOptions = document.createElement("div");
 
   // Add classes to the newly created elements
   newDivUser.classList.add("user-message");
@@ -140,7 +121,8 @@ function chooseButton(buttonName, roboMessage) {
   newDivOptions.classList.add("options");
 
   // Set innerHTML for user message and robo message
-  newDivUser.innerHTML = `<p>${buttonName}</p>`;
+  const buttonText = document.getElementById(buttonId).textContent.trim();
+  newDivUser.innerHTML = `<p>${buttonText}</p>`;
   newDivRobo.innerHTML = `<img src="images/chatbot.png" alt="chatbot" /> <p>${roboMessage}</p>`;
 
   // Adjust styling for the robo message

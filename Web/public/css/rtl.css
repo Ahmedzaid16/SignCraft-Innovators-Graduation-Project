@@ -40,3 +40,16 @@ body {
   right: auto;
   left: 10px;
 }
+
+.profile-section .profile-container .avatar .camera {
+  right: auto;
+  left: 0;
+}
+
+.fa-chevron-right:before {
+  content: "\f053";
+}
+
+.fa-chevron-left:before {
+  content: "\f054";
+}

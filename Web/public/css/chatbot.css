@@ -75,6 +75,7 @@
   margin: 1rem;
   padding: 0;
   color: #fdfffc;
+  z-index: 1000;
   /* background-color: #011627; */
   background-image: url(/images/chatback.jpg);
   background-size: cover;

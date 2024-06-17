@@ -27,7 +27,7 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <title>Sign Language</title>
+    <title data-i18n="SIGN_LANGUAGE">Sign Language</title>
   </head>
 
   <body>
@@ -53,10 +53,10 @@
     <!-- Start intro -->
     <div class="home">
       <div class="content">
-        <h2 class="home-title">
+        <h2 data-i18n="HOME_TITLE" class="home-title">
           Artificial Itelligence Supported Sign Language Translator
         </h2>
-        <p class="home-description">
+        <p data-i18n="HOME_DESCRIPTION" class="home-description">
           We enable hearing impaired and deaf individuals who have difficulty in
           understanding what they read or are illiterate to access information,
           services and video content with the ai powered sign language , which
@@ -71,11 +71,13 @@
     </div>
     <!-- Start About Section -->
     <div class="about">
-      <h2 class="main-title about-title">About</h2>
+      <h2 data-i18n="ABOUT_TITLE" class="main-title about-title">About</h2>
       <div class="container one">
         <div class="text text_left">
-          <h1 class="sign-intro">Sign Language Translator</h1>
-          <p class="about-intro">
+          <h1 data-i18n="ABOUT_SIGN_INTRO" class="sign-intro">
+            Sign Language Translator
+          </h1>
+          <p data-i18n="ABOUT_INTRO" class="about-intro">
             Welcome to our Sign Language Translator Project! We aim to bridge
             the communication gap between individuals using sign language and
             those who use written text.
@@ -92,10 +94,12 @@
         </div>
         <div class="text text_right">
           <h1>
-            <span class="web-page">Web</span>
-            <span class="sign-intro">Sign Language Translator</span>
+            <span data-i18n="WEB_PAGE" class="web-page">Web</span>
+            <span data-i18n="ABOUT_SIGN_INTRO" class="sign-intro"
+              >Sign Language Translator</span
+            >
           </h1>
-          <p class="about-web-description">
+          <p data-i18n="WEB_DESCRIPTION" class="about-web-description">
             Our website aims to offer courses focusing on sign language
             education for schools and colleges, providing a comprehensive
             resource for learning and understanding sign language.
@@ -106,10 +110,12 @@
       <div class="container one">
         <div class="text text_left">
           <h1>
-            <span class="app-page">App</span>
-            <span class="sign-intro">Sign Language Translator</span>
+            <span data-i18n="APP_PAGE" class="app-page">App</span>
+            <span data-i18n="ABOUT_SIGN_INTRO" class="sign-intro"
+              >Sign Language Translator</span
+            >
           </h1>
-          <p class="about-app-description">
+          <p data-i18n="APP_DESCRIPTION" class="about-app-description">
             Welcome to our Sign Language Translator application! Our goal is to
             introduce a sign language translation feature facilitating
             communication between users. Additionally, we aim to provide courses
@@ -128,10 +134,17 @@
         </div>
         <div class="text text_right">
           <h1>
-            <span class="edu-page">Education</span>
-            <span class="sign-intro">Sign Language Translator</span>
+            <span data-i18n="EDUCATION_PAGE_HOME" class="edu-page"
+              >Education</span
+            >
+            <span data-i18n="ABOUT_SIGN_INTRO" class="sign-intro"
+              >Sign Language Translator</span
+            >
           </h1>
-          <p class="about-education-description">
+          <p
+            data-i18n="EDUCATION_DESCRIPTION"
+            class="about-education-description"
+          >
             We provide rducational content for children and adults through a
             group of video lessons. Stay tuned for many updates.
           </p>
@@ -143,10 +156,17 @@
       <div class="container one">
         <div class="text text_left">
           <h1>
-            <span class="edu-page">Education</span>
-            <span class="sign-intro">Sign Language Translator</span>
+            <span data-i18n="EDUCATION_PAGE_HOME" class="edu-page"
+              >Education</span
+            >
+            <span data-i18n="ABOUT_SIGN_INTRO" class="sign-intro"
+              >Sign Language Translator</span
+            >
           </h1>
-          <p class="about-education-description">
+          <p
+            data-i18n="EDUCATION_DESCRIPTION"
+            class="about-education-description"
+          >
             We provide rducational content for children and adults through a
             group of video lessons. Stay tuned for many updates.
           </p>
@@ -168,10 +188,12 @@
         </div>
         <div class="text text_right">
           <h1>
-            <span class="sup-page">Support</span>
-            <span class="sign-intro">Sign Language Translator</span>
+            <span data-i18n="SUPPORT_PAGE" class="sup-page">Support</span>
+            <span data-i18n="ABOUT_SIGN_INTRO" class="sign-intro"
+              >Sign Language Translator</span
+            >
           </h1>
-          <p class="about-support-description">
+          <p data-i18n="SUPPORT_DESCRIPTION" class="about-support-description">
             We designed chatbot support. It is a collection of questions and
             their answers, and you can write to the admin.<br />
             lets try it.
@@ -186,6 +208,6 @@
     <!-- Start Footer -->
     <%- include('./components/footer.ejs') %>
     <!-- End Footer -->
-    <script src="./js/lang.js"></script>
+    <script src="/js/lang.js"></script>
   </body>
 </html>
