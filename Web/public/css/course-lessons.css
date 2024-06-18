@@ -342,7 +342,8 @@ ul {
 /* End header */
 
 /* Start courses */
-.container-course {
+.container-course,
+.container-quiz {
   display: flex;
   background-color: var(--white-color);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -353,17 +354,20 @@ ul {
 }
 
 @media (max-width: 991px) {
-  .container-course {
+  .container-course,
+  .container-quiz {
     flex-direction: column;
     margin: 20px 30px;
   }
-  .container-course .course-description {
+  .container-course .course-description,
+  .container-quiz .exercise-lessons {
     margin-bottom: 30px;
   }
 }
 
 @media (max-width: 600px) {
-  .container-course {
+  .container-course,
+  .container-quiz {
     margin: 10px 15px;
     padding: 15px 20px;
   }
@@ -378,6 +382,47 @@ ul {
   height: 100%;
   width: 100%;
   flex: 2;
+}
+
+.container-quiz p {
+  margin-top: 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.container-quiz a {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: var(--main-color);
+  color: var(--white-color);
+  cursor: pointer;
+  transition: var(--main-transition);
+}
+
+.container-quiz a:hover {
+  background-color: var(--white-color);
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
+}
+
+.exercise-lessons {
+  margin-right: 80px;
+  background-color: #f8f9fa;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  border-radius: 8px;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.quiz {
+  background-color: #f8f9fa;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  padding: 30px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
 }
 
 .container-course .course-description .title .icon {

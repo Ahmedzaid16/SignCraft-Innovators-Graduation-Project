@@ -1424,3 +1424,23 @@ app.post("/proxy-process", async (req, res) => {
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`);
 });
+
+app.get("/exercise", async (req, res) => {
+  const user = req.session.userData;
+  if (user) {
+    res.render("exercise.ejs");
+  } else {
+    req.session.msg = "Please Sign in To Enter the Exercise";
+    res.redirect("/signIn");
+  }
+});
+
+app.get("/quiz", async (req, res) => {
+  const user = req.session.userData;
+  if (user) {
+    res.render("quiz.ejs");
+  } else {
+    req.session.msg = "Please Sign in To Enter the Quiz";
+    res.redirect("/signIn");
+  }
+});
