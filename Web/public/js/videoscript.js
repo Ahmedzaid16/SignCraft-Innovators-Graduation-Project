@@ -95,6 +95,7 @@ startRecordingSvg.addEventListener("click", () => {
   content.contentWindow.postMessage("START_RECORDING", "*"); 
   content.style.display = "none";
   divvideo.style.display = "block";
+  video.style.display = "block";
   recorded_v_elem.style.display = "none";
   get_start();
 });
@@ -102,6 +103,7 @@ startRecordingSvg.addEventListener("click", () => {
 unityReloadButton.addEventListener("click", () => {
   divvideo.style.display = "none";
   recorded_v_elem.style.display = "none";
+  video.style.display = "none";
   content.style.display = "block";
   // Reload the iframe
   const unityIframe = document.getElementById("unity-iframe");
