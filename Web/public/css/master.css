@@ -187,7 +187,7 @@ ul {
 }
 
 .header .logo h1 {
-  font-size: 23.5px;
+  font-size: 23px;
 }
 
 .header .logo i {
@@ -206,7 +206,7 @@ ul {
 }
 
 @media (max-width: 767px) {
-  .header .container a h3 {
+  .header .container a h1 {
     display: none;
   }
 }
