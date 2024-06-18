@@ -1,4 +1,4 @@
-const port = 4000;
+const port = process.env.PORT || 4000;
 const firebase = require("firebase");
 const nodemailer = require("nodemailer");
 const express = require("express");
@@ -14,6 +14,8 @@ const upload = multer({
 });
 const User = require("./config");
 const session = require("express-session");
+const { createClient } = require("redis");
+const RedisStore = require("connect-redis").default;
 const ffmpeg = require("ffmpeg");
 const path = require("path");
 const fs = require("fs");
@@ -189,15 +191,27 @@ setAdmin("sherefalex34@gmail.com");
 setAdmin("omaradmin@gmail.com");
 //////////////////////////////////////////////////////////////////////////////
 
+const redisClient = createClient({
+  password: "eVLuzcezIri8rpauQcx0ThNE2TkrUInE",
+  socket: {
+    host: "redis-17305.c11.us-east-1-2.ec2.redns.redis-cloud.com",
+    port: 17305,
+  },
+});
+
+redisClient.connect().catch(console.error);
+
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     secret: secretKey,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Set to true if in production
-      httpOnly: true, // Helps prevent cross-site scripting (XSS) attacks
-      sameSite: "strict", // Helps prevent CSRF attacks
+      secure: false,
+      sameSite: "strict",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000
     },
   })
 );
@@ -385,6 +399,36 @@ app.get("/courses/course_info/course_lessons", async (req, res) => {
     }
   } else {
     req.session.msg = getSignInMessage(lang);
+    res.redirect("/signIn");
+  }
+});
+
+app.get("/exercise", async (req, res) => {
+  const user = req.session.userData;
+  const lang = req.query.lang || req.cookies.lang || "en";
+  if (user) {
+    res.render("exercise");
+  } else {
+    if (lang === "en") {
+      req.session.msg = "Please Sign in To Enter the Exercise";
+    } else {
+      req.session.msg = "يرجى تسجيل الدخول للدخول إلى التمرين";
+    }
+    res.redirect("/signIn");
+  }
+});
+
+app.get("/quiz", async (req, res) => {
+  const user = req.session.userData;
+  const lang = req.query.lang || req.cookies.lang || "en";
+  if (user) {
+    res.render("quiz");
+  } else {
+    if (lang === "en") {
+      req.session.msg = "Please Sign in To Enter the Quiz";
+    } else {
+      req.session.msg = "يرجى تسجيل الدخول للدخول إلى الاختبار";
+    }
     res.redirect("/signIn");
   }
 });
@@ -1423,24 +1467,4 @@ app.post("/proxy-process", async (req, res) => {
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`);
-});
-
-app.get("/exercise", async (req, res) => {
-  const user = req.session.userData;
-  if (user) {
-    res.render("exercise.ejs");
-  } else {
-    req.session.msg = "Please Sign in To Enter the Exercise";
-    res.redirect("/signIn");
-  }
-});
-
-app.get("/quiz", async (req, res) => {
-  const user = req.session.userData;
-  if (user) {
-    res.render("quiz.ejs");
-  } else {
-    req.session.msg = "Please Sign in To Enter the Quiz";
-    res.redirect("/signIn");
-  }
 });
