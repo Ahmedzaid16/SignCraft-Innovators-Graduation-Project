@@ -220,7 +220,7 @@ app.get("/", (req, res) => {
   } else if (user) {
     res.render("index", { user: user });
   } else {
-    res.render("index");[]
+    res.render("index");
   }
 });
 
@@ -406,7 +406,12 @@ app.get("/signIn", async (req, res) => {
 });
 
 app.get("/signUp", async (req, res) => {
-  res.render("signUp");
+  const user = req.session.userData;
+  if (user) {
+    res.redirect("/");
+  } else {
+    res.render("signUp");
+  }
 });
 
 app.get("/profile", async (req, res) => {
