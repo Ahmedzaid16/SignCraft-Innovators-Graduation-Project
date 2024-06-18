@@ -186,6 +186,10 @@ ul {
   align-items: center;
 }
 
+.header .logo h1 {
+  font-size: 23.5px;
+}
+
 .header .logo i {
   color: var(--white-color);
   background-color: var(--main-color);
