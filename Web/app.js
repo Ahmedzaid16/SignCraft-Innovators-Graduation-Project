@@ -6,7 +6,6 @@ const cors = require("cors");
 const admin = require("./models/admin");
 const axios = require("axios");
 const Typo = require("typo-js");
-const livereload = require("livereload");
 const multer = require("multer");
 const Storage = multer.memoryStorage();
 const upload = multer({
@@ -45,17 +44,21 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Auto refresh livereload for All Files ===> there is script in package.json
-const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, "public"));
+if (process.env.NODE_ENV === 'development') {
+  const livereload = require("livereload");
+  const connectLivereload = require("connect-livereload");
 
-const connectLivereload = require("connect-livereload");
-app.use(connectLivereload());
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.watch(path.join(__dirname, "public"));
 
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
+  app.use(connectLivereload());
+
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+}
 //////////////////////////////////////////////////////////////////////////////
 
 // fection to send Email
@@ -404,7 +407,7 @@ app.get("/courses/course_info/course_lessons", async (req, res) => {
   }
 });
 
-app.get("/exercise", async (req, res) => {
+app.get("/courses/course_info/course_lessons/exercise", async (req, res) => {
   const user = req.session.userData;
   const lang = req.query.lang || req.cookies.lang || "en";
   if (user) {
@@ -419,7 +422,7 @@ app.get("/exercise", async (req, res) => {
   }
 });
 
-app.get("/quiz", async (req, res) => {
+app.get("/courses/course_info/course_lessons/quiz", async (req, res) => {
   const user = req.session.userData;
   const lang = req.query.lang || req.cookies.lang || "en";
   if (user) {
@@ -920,14 +923,6 @@ app.post("/Update_Password", upload.none(), async (req, res) => {
       req.session.PassMsg = "كلمة مرور خاطئة. الرجاء المحاولة مرة أخرى.";
     }
     res.redirect("/profile");
-  }
-});
-
-app.post('/uploadAudio', upload.single('audio'), (req, res) => {
-  if (req.file) {
-      res.json({ message: 'File uploaded successfully', file: req.file });
-  } else {
-      res.status(400).json({ message: 'File upload failed' });
   }
 });
 
@@ -1470,6 +1465,14 @@ app.post("/proxy-process", async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while sending data to Flask API" });
+  }
+});
+
+app.post('/uploadAudio', upload.single('audio'), (req, res) => {
+  if (req.file) {
+      res.json({ message: 'File uploaded successfully', file: req.file });
+  } else {
+      res.status(400).json({ message: 'File upload failed' });
   }
 });
 /////////////////////////////////////////////////////////////////////////////////////////////////
