@@ -5,6 +5,7 @@ const content = document.getElementById("unity-iframe");
 const startRecordingSvg = document.getElementById("startRecordingSvg");
 const unityReloadButton = document.getElementById("unity-reload-button");
 
+// for Video
 let stream = null;
 let mediaRecorder = null;
 let recordedblob = [];
@@ -76,9 +77,6 @@ const get_start = async () => {
       );
       console.log(uploadResponse.data);
 
-      // const translateResponse = await axios.get(`/api/video/gettranslate`);
-      // console.log(translateResponse.data.translate);
-      // const translation = translateResponse.data.translate;
       const translation = uploadResponse.data.prediction;
       translationLabel = document.createElement("div");
       translationLabel.setAttribute("id", "translationLabel");
@@ -92,7 +90,9 @@ const get_start = async () => {
 };
 
 startRecordingSvg.addEventListener("click", () => {
-  content.contentWindow.postMessage("START_RECORDING", "*"); 
+  unityReloadButton.style.color = "black";
+  startRecordingSvg.style.fill = "#2ec4b6";
+  content.contentWindow.postMessage("START_RECORDING", "*");
   content.style.display = "none";
   divvideo.style.display = "block";
   video.style.display = "block";
@@ -101,13 +101,15 @@ startRecordingSvg.addEventListener("click", () => {
 });
 
 unityReloadButton.addEventListener("click", () => {
+  unityReloadButton.style.color = "#2ec4b6";
+  startRecordingSvg.style.fill = "black";
   divvideo.style.display = "none";
   recorded_v_elem.style.display = "none";
   video.style.display = "none";
   content.style.display = "block";
   // Reload the iframe
   const unityIframe = document.getElementById("unity-iframe");
-  unityIframe.src = "/unity"; 
+  unityIframe.src = "/unity";
 });
 
 // let typingTimer;
@@ -150,3 +152,102 @@ unityReloadButton.addEventListener("click", () => {
 //     }
 //   }, doneTypingInterval);
 // }
+
+const recordButton = document.getElementById("recordButton");
+const mint = document.getElementById("mint");
+const spinner = document.querySelector(".spinner");
+const timer = document.querySelector(".timer");
+const minutesSpan = document.querySelector(".minutes");
+const secondsSpan = document.querySelector(".seconds");
+let mediaRecorderAudio;
+let audioChunks = [];
+let recordingStartTime;
+let timerInterval;
+
+// For Audio
+recordButton.addEventListener("click", async () => {
+  if (mediaRecorderAudio && mediaRecorderAudio.state === "recording") {
+    stopAudioRecording();
+  } else {
+    await startAudioRecording();
+  }
+});
+
+async function startAudioRecording() {
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorderAudio = new MediaRecorder(stream);
+
+    mediaRecorderAudio.ondataavailable = (event) => {
+      audioChunks.push(event.data);
+    };
+
+    mediaRecorderAudio.onstart = () => {
+      recordButton.classList.add("loading");
+      spinner.style.display = "flex"; // Show the spinner
+      timer.style.display = "flex"; // Show the timer
+      recordingStartTime = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+    };
+
+    mediaRecorderAudio.onstop = async () => {
+      recordButton.classList.remove("loading");
+      spinner.style.display = "none"; // Hide the spinner
+      timer.style.display = "none"; // Hide the timer
+      clearInterval(timerInterval); // Stop the timer
+      minutesSpan.textContent = "0"; // Reset the minutes text
+      secondsSpan.textContent = "0"; // Reset the seconds text
+      mint.style.display = "none";
+      minutesSpan.style.display = "none";
+
+      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      audioChunks = [];
+
+      await uploadToServer(audioBlob);
+    };
+
+    mediaRecorderAudio.start();
+  } else {
+    console.error("getUserMedia not supported on your browser!");
+  }
+}
+
+function stopAudioRecording() {
+  if (mediaRecorderAudio && mediaRecorderAudio.state === "recording") {
+    mediaRecorderAudio.stop();
+    const tracks = mediaRecorderAudio.stream.getTracks();
+    tracks.forEach((track) => track.stop());
+  }
+}
+
+function updateTimer() {
+  const elapsedSeconds = Math.floor((Date.now() - recordingStartTime) / 1000);
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
+  if (minutes > 0) {
+    if (minutes === 1) {
+      mint.style.display = "inline-block";
+      minutesSpan.style.display = "inline-block";
+    }
+    minutesSpan.textContent = `${minutes}`;
+  } else {
+    minutesSpan.textContent = "0";
+  }
+  secondsSpan.textContent = `${seconds < 10 ? "0" + seconds : seconds}`;
+}
+
+async function uploadToServer(audioBlob) {
+  const formData = new FormData();
+  formData.append("audio", audioBlob, "recording.wav");
+
+  try {
+    const response = await fetch("/uploadAudio", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    console.log("Upload successful:", data);
+  } catch (error) {
+    console.error("Upload failed:", error);
+  }
+}

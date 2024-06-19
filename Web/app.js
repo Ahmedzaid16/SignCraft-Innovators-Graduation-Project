@@ -923,6 +923,14 @@ app.post("/Update_Password", upload.none(), async (req, res) => {
   }
 });
 
+app.post('/uploadAudio', upload.single('audio'), (req, res) => {
+  if (req.file) {
+      res.json({ message: 'File uploaded successfully', file: req.file });
+  } else {
+      res.status(400).json({ message: 'File upload failed' });
+  }
+});
+
 app.post("/updateProgress", async (req, res) => {
   const userId = req.session.userData.userId;
   const { videoUrl, currentTime, duration, progress } = req.body;
