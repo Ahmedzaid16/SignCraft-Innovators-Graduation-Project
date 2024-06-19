@@ -101,6 +101,7 @@ startRecordingSvg.addEventListener("click", () => {
 });
 
 unityReloadButton.addEventListener("click", () => {
+  stopVideoRecording();
   unityReloadButton.style.color = "#2ec4b6";
   startRecordingSvg.style.fill = "black";
   divvideo.style.display = "none";
@@ -108,9 +109,18 @@ unityReloadButton.addEventListener("click", () => {
   video.style.display = "none";
   content.style.display = "block";
   // Reload the iframe
-  const unityIframe = document.getElementById("unity-iframe");
-  unityIframe.src = "/unity";
+  content.src = "/unity";
 });
+
+function stopVideoRecording() {
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+    const tracks = video.srcObject.getTracks();
+    tracks.forEach((track) => track.stop());
+  }
+  video.style.display = "none";
+  recorded_v_elem.style.display = "none";
+}
 
 // let typingTimer;
 // const doneTypingInterval = 5000; // 5 seconds
@@ -251,3 +261,28 @@ async function uploadToServer(audioBlob) {
     console.error("Upload failed:", error);
   }
 }
+
+// Function to send message to Unity iframe
+function sendMessageToUnity(message) {
+  if (content.contentWindow) {
+    content.contentWindow.postMessage(message, "*");
+  } else {
+    console.error("Unity iframe not initialized.");
+  }
+}
+
+// Add event listener for the button to send data to Unity
+document.getElementById("button1").addEventListener("click", () => {
+  stopVideoRecording();
+  unityReloadButton.style.color = "#2ec4b6";
+  startRecordingSvg.style.fill = "black";
+  divvideo.style.display = "none";
+  recorded_v_elem.style.display = "none";
+  video.style.display = "none";
+  if (content.style.display === "none") {
+    content.style.display = "block";
+    content.src = "/unity";
+  }
+  var inputText = document.getElementById("inputParams").value;
+  sendMessageToUnity(inputText);
+});
