@@ -17,46 +17,67 @@
     <title>Control Courses</title>
   </head>
   <body>
+    <nav>
+      <div class="logo">
+        <img src="./images/hand.png" alt="user" />
+      </div>
+      <ul>
+        <li><a href="/logout">Home</a></li>
+        <li>
+          <a
+            href="https://www.linkedin.com/in/omar-ashraf-abdul-qader/"
+            target="_blank"
+            >Portfolio</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <header>
+      <button class="toggle" id="toggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <h1>Admin Page</h1>
+      <p>You can control the courses and users from this page</p>
+      <button class="cta-btn" id="open">
+        <a class="log" href="/logout">Logout</a>
+      </button>
+    </header>
+
     <% if (typeof msgAdmin !== 'undefined') { %>
     <div class="alert-bar"><%= msgAdmin %></div>
     <% } %>
-    <div class="controlCourses">
-      <h1>Control any course as you need!</h1>
-      <div class="content">
-        <div class="add">
-          <button class="add" id="openAdd">Add course</button>
-        </div>
-        <div class="view-course">
-          <a
-            href="/control/controlCoursesView"
-            class="view-course"
-            id="view-course"
-          >
-            View Courses
-          </a>
+
+    <div class="control-container">
+      <div class="controlCourses">
+        <h1>Control any course as you need!</h1>
+        <div class="content">
+          <div class="add">
+            <button class="add" id="openAdd">Add course</button>
+          </div>
+          <div class="view-course">
+            <a
+              href="/control/controlCoursesView"
+              class="view-course"
+              id="view-course"
+            >
+              View Courses
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="controlCourses">
-      <h1>Manage User Account</h1>
-      <div class="content">
-        <div class="view-account">
-          <a
-            href="/control/controlCoursesAccount"
-            class="view-account"
-            id="view-account"
-            >View Accounts</a
-          >
-        </div>
-      </div>
-    </div>
-
-    <div class="controlCourses">
-      <h1>Admin</h1>
-      <div class="content">
-        <div class="logout">
-          <a href="/logout"> Logout </a>
+      <div class="controlCourses">
+        <h1>Manage User Account</h1>
+        <div class="content">
+          <div class="view-account">
+            <a
+              href="/control/controlCoursesAccount"
+              class="view-account"
+              id="view-account"
+              >View Accounts</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -294,6 +315,28 @@
           );
         }
       });
+      const toggle = document.getElementById("toggle");
+      const open = document.getElementById("open");
+      const closeMenu = document.getElementById("close");
+      const modal = document.getElementById("modal");
+
+      // Toggle nav
+      toggle.addEventListener("click", () =>
+        document.body.classList.toggle("show-nav")
+      );
+
+      // Show modal
+      open.addEventListener("click", () => modal.classList.add("show-modal"));
+
+      //Hide modal
+      closeMenu.addEventListener("click", () =>
+        modal.classList.remove("show-modal")
+      );
+
+      // Hide modal on outside click
+      window.addEventListener("click", (e) =>
+        e.target == modal ? modal.classList.remove("show-modal") : false
+      );
     </script>
   </body>
 </html>

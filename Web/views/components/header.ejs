@@ -105,7 +105,7 @@
       <li id="logoutLink" style="display: block" class="logout">
         <a href="/logout">
           <i class="fa-solid fa-sign-out fs-16 mr-5"></i>
-          <span data-i18n="Head_Logout">Logout</span>
+          <span data-i18n="Head_Logout"></span>
         </a>
       </li>
       <% } else { %>
@@ -148,6 +148,9 @@
         </div>
         <!-- End Megamenu -->
       </li>
+      <li>
+        <i class="fa-solid fa-moon dark-mode" id="dark-mode"></i>
+      </li>
     </ul>
   </div>
 </div>
@@ -162,7 +165,8 @@
     let scroller = document.querySelector(".scroller");
 
     function updateScroller() {
-      let scrollerHeight = document.body.scrollHeight - window.innerHeight;
+      let scrollerH;
+      eight = document.body.scrollHeight - window.innerHeight;
       let scrollTop = window.scrollY;
       let width = (scrollTop / scrollerHeight) * 100;
       scroller.style.width = `${Math.min(width, 100)}%`;
@@ -174,4 +178,14 @@
     // Initial call to set the scroller width correctly
     updateScroller();
   });
+
+  const dark = document.getElementById("dark-mode");
+  dark.onclick = function () {
+    document.body.classList.toggle("dark");
+    if (document.body.classList.contains("dark")) {
+      dark.className = "fa-solid fa-sun dark-mode";
+    } else {
+      dark.className = "fa-solid fa-moon dark-mode";
+    }
+  };
 </script>
