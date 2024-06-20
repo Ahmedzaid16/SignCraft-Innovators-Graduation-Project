@@ -44,7 +44,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Auto refresh livereload for All Files ===> there is script in package.json
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   const livereload = require("livereload");
   const connectLivereload = require("connect-livereload");
 
@@ -215,7 +215,7 @@ app.use(
       secure: false,
       sameSite: "strict",
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
@@ -551,10 +551,6 @@ app.get("/reset", async (req, res) => {
 app.get("/reset/reset_password", async (req, res) => {
   const userId = req.query.userId;
   res.render("reset-password", { userId: userId });
-});
-
-app.get("/support", async (req, res) => {
-  res.render("courses");
 });
 
 app.get("/logout", (req, res) => {

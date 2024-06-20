@@ -6,24 +6,14 @@ const unityReloadButton = document.getElementById("unity-reload-button");
 const playButton = document.getElementById("playButton");
 const pauseButton = document.getElementById("pauseButton");
 const videoControls = document.getElementById("videoControls");
+const inputParams = document.getElementById("inputParams");
 
 // for Video
 let stream = null;
 let mediaRecorder = null;
 let recordedblob = [];
-let record_bl = null;
-let translationLabel = null; // Keep track of translation label
-
-let recordingStartTime = null;
-let lastSendTime = null;
 
 const get_start = async () => {
-  // Remove the translation label if it exists
-  if (translationLabel) {
-    translationLabel.remove();
-    translationLabel = null;
-  }
-
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: true });
     console.log("successful access");
@@ -45,8 +35,6 @@ const get_start = async () => {
   };
 
   mediaRecorder.start();
-  recordingStartTime = new Date(); // Mark the start time of recording
-  lastSendTime = recordingStartTime; // Initialize last send time
 };
 
 const sendVideoToApi = async () => {
@@ -80,31 +68,9 @@ const sendVideoToApi = async () => {
     console.log(uploadResponse.data);
 
     const translation = uploadResponse.data.prediction;
-
-    const currentTime = new Date();
-    const segmentStartTime = lastSendTime;
-    const segmentEndTime = currentTime;
-    lastSendTime = currentTime; // Update last send time
-
-    if (!translationLabel) {
-      translationLabel = document.createElement("div");
-      translationLabel.setAttribute("id", "translationLabel");
-      divvideo.appendChild(translationLabel);
-    }
-
-    const newTranslation = document.createElement("div");
-    newTranslation.style.marginTop = "5px";
-    const url = URL.createObjectURL(videoSegment);
-    newTranslation.innerHTML = `
-      <strong>Segment from ${segmentStartTime.toLocaleTimeString()} to ${segmentEndTime.toLocaleTimeString()}:</strong>
-      <label style="resize:none; background-color:#fff; color:black; border-radius: 10px; padding:10px; margin: 5px;">${translation}</label>
-      <a href="${url}" download="segment_${segmentStartTime
-      .toLocaleTimeString()
-      .replace(/:/g, "_")}_${segmentEndTime
-      .toLocaleTimeString()
-      .replace(/:/g, "_")}.mp4">Download the recorded segment</a>
-    `;
-    translationLabel.appendChild(newTranslation);
+    inputParams.value === ""
+      ? (inputParams.value = translation)
+      : (inputParams.value += " " + translation);
   } catch (err) {
     console.log(err);
   }
@@ -143,6 +109,7 @@ function stopVideoRecording() {
     const tracks = video.srcObject.getTracks();
     tracks.forEach((track) => track.stop());
   }
+  startRecordingSvg.style.fill = "black";
   video.style.display = "none";
   divvideo.style.display = "none";
 }
@@ -210,10 +177,6 @@ async function startAudioRecording() {
         "file",
         new File([audioBlob], "output.wav", { type: "audio/wav" })
       );
-      // formData.append(
-      //   "file",
-      //   new File([audioBlob], "output.wav", { type: "audio/wav" })
-      // );
 
       try {
         const response = await axios.post(
@@ -294,6 +257,8 @@ function updateTimer() {
 function sendMessageToUnity(message) {
   if (content.contentWindow) {
     content.contentWindow.postMessage(message, "*");
+  } else {
+    console.error("Unity iframe not initialized.");
   }
 }
 
@@ -301,8 +266,16 @@ startRecordingSvg.addEventListener("click", () => {
   sendMessageToUnity("START_RECORDING");
 });
 
-unityReloadButton.addEventListener("click", () => {
-  sendMessageToUnity("STOP_RECORDING");
+// Add event listener for the button to send data to Unity
+document.getElementById("button1").addEventListener("click", () => {
+  stopVideoRecording();
+  unityReloadButton.style.color = "#2ec4b6";
+  if (content.style.display === "none") {
+    content.style.display = "block";
+    content.src = "/unity";
+  }
+  var inputText = inputParams.value;
+  sendMessageToUnity(inputText);
 });
 
 // let typingTimer;

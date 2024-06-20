@@ -140,7 +140,7 @@
               </a>
             </li>
             <li>
-              <a href="/support">
+              <a href="/courses">
                 <i class="fa-solid fa-headset"></i>
                 <span data-i18n="Head_Support">Support</span>
               </a>
@@ -166,8 +166,7 @@
     let scroller = document.querySelector(".scroller");
 
     function updateScroller() {
-      let scrollerH;
-      eight = document.body.scrollHeight - window.innerHeight;
+      scrollerHeight = document.body.scrollHeight - window.innerHeight;
       let scrollTop = window.scrollY;
       let width = (scrollTop / scrollerHeight) * 100;
       scroller.style.width = `${Math.min(width, 100)}%`;
