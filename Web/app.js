@@ -1468,15 +1468,6 @@ app.post("/proxy-process", async (req, res) => {
   }
 });
 
-app.post('/uploadAudio', upload.single('audio'), (req, res) => {
-  if (req.file) {
-      res.json({ message: 'File uploaded successfully', file: req.file });
-  } else {
-      res.status(400).json({ message: 'File upload failed' });
-  }
-});
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`);
 });

@@ -225,6 +225,10 @@ ul {
   margin-right: 10px;
 }
 
+.btlang{
+  fill: var(--black-color);
+}
+
 @media (max-width: 767px) {
   .header .container a h1 {
     display: none;
