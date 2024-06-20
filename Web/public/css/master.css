@@ -206,6 +206,10 @@ ul {
   align-items: center;
 }
 
+.header .logo h1 {
+  font-size: 23px;
+}
+
 .header .logo i {
   color: var(--white-color);
   background-color: var(--main-color);
@@ -222,7 +226,7 @@ ul {
 }
 
 @media (max-width: 767px) {
-  .header .container a h3 {
+  .header .container a h1 {
     display: none;
   }
 }

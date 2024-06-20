@@ -20,79 +20,79 @@ const cardsEl = [];
 const cardsData = [
   {
     question: "احباط",
-    src: "images/الاحباط.png",
+    src: "/images/الاحباط.png",
   },
   {
     question: "توقف",
-    src: "images/stop.png",
+    src: "/images/stop.png",
   },
   {
     question: "التوتر",
-    src: "images/التوتر.png",
+    src: "/images/التوتر.png",
   },
   {
     question: "الحزن",
-    src: "images/الحزن.png",
+    src: "/images/الحزن.png",
   },
   {
     question: "الخوف",
-    src: "images/الخوف.png",
+    src: "/images/الخوف.png",
   },
   {
     question: "مرحباً",
-    src: "images/مرحبا.png",
+    src: "/images/مرحبا.png",
   },
   {
     question: "الاهتمام",
-    src: "images/الاهتمام.jpeg",
+    src: "/images/الاهتمام.jpeg",
   },
   {
     question: "ما اسمك؟",
-    src: "images/ما اسمك؟.jpeg",
+    src: "/images/ما اسمك؟.jpeg",
   },
   {
     question: "التصميم",
-    src: "images/التصميم.jpeg",
+    src: "/images/التصميم.jpeg",
   },
   {
     question: "لاحظ",
-    src: "images/لاحظ.jpeg",
+    src: "/images/لاحظ.jpeg",
   },
   {
     question: "الغيرة",
-    src: "images/الغيره.jpeg",
+    src: "/images/الغيره.jpeg",
   },
   {
     question: "كيف حالك؟",
-    src: "images/كيف حالك.jpeg",
+    src: "/images/كيف حالك.jpeg",
   },
   {
     question: "فَكر",
-    src: "images/فكر.jpeg",
+    src: "/images/فكر.jpeg",
   },
   {
     question: "التشجيع",
-    src: "images/التشجيع.jpeg",
+    src: "/images/التشجيع.jpeg",
   },
   {
     question: "احترام",
-    src: "images/احترام.jpeg",
+    src: "/images/احترام.jpeg",
   },
   {
     question: "التسامح",
-    src: "images/التسامح.jpeg",
+    src: "/images/التسامح.jpeg",
   },
   {
     question: "هل انت بخير",
-    src: "images/هل انت بخير.jpeg",
+    src: "/images/هل انت بخير.jpeg",
   },
   {
     question: "تصبح علي خير",
-    src: "images/تصبح علي خير.jpeg",
+    src: "/images/تصبح علي خير.jpeg",
   },
   {
     question: "شكراً",
-    src: "images/شكرا.png",
+    src: "/images/شكرا.png",
   },
 ];
 

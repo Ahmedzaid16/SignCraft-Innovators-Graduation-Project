@@ -93,7 +93,7 @@ function createBullets(num) {
 function addQuestionData(obj, count) {
   if (currentIndex < count) {
     let questionTitle = document.createElement("img");
-    questionTitle.src = obj["title"];
+    questionTitle.src = `/${obj["title"]}`;
     let questionText = document.createTextNode(obj["title"]);
     questionTitle.appendChild(questionText);
     quizArea.appendChild(questionTitle);

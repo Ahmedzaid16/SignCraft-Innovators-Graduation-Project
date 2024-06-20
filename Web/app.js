@@ -1,4 +1,4 @@
-const port = 4000;
+const port = process.env.PORT || 4000;
 const firebase = require("firebase");
 const nodemailer = require("nodemailer");
 const express = require("express");
@@ -6,7 +6,6 @@ const cors = require("cors");
 const admin = require("./models/admin");
 const axios = require("axios");
 const Typo = require("typo-js");
-const livereload = require("livereload");
 const multer = require("multer");
 const Storage = multer.memoryStorage();
 const upload = multer({
@@ -14,6 +13,8 @@ const upload = multer({
 });
 const User = require("./config");
 const session = require("express-session");
+const { createClient } = require("redis");
+const RedisStore = require("connect-redis").default;
 const ffmpeg = require("ffmpeg");
 const path = require("path");
 const fs = require("fs");
@@ -39,20 +40,25 @@ app.use(cookieParser());
 app.use(i18n.init);
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Auto refresh livereload for All Files ===> there is script in package.json
-const liveReloadServer = livereload.createServer();
-liveReloadServer.watch(path.join(__dirname, "public"));
+if (process.env.NODE_ENV === 'development') {
+  const livereload = require("livereload");
+  const connectLivereload = require("connect-livereload");
 
-const connectLivereload = require("connect-livereload");
-app.use(connectLivereload());
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.watch(path.join(__dirname, "public"));
 
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
+  app.use(connectLivereload());
+
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+}
 //////////////////////////////////////////////////////////////////////////////
 
 // fection to send Email
@@ -189,15 +195,27 @@ setAdmin("sherefalex34@gmail.com");
 setAdmin("omaradmin@gmail.com");
 //////////////////////////////////////////////////////////////////////////////
 
+const redisClient = createClient({
+  password: "eVLuzcezIri8rpauQcx0ThNE2TkrUInE",
+  socket: {
+    host: "redis-17305.c11.us-east-1-2.ec2.redns.redis-cloud.com",
+    port: 17305,
+  },
+});
+
+redisClient.connect().catch(console.error);
+
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     secret: secretKey,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === "production", // Set to true if in production
-      httpOnly: true, // Helps prevent cross-site scripting (XSS) attacks
-      sameSite: "strict", // Helps prevent CSRF attacks
+      secure: false,
+      sameSite: "strict",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000
     },
   })
 );
@@ -220,7 +238,7 @@ app.get("/", (req, res) => {
   } else if (user) {
     res.render("index", { user: user });
   } else {
-    res.render("index");[]
+    res.render("index");
   }
 });
 
@@ -389,6 +407,36 @@ app.get("/courses/course_info/course_lessons", async (req, res) => {
   }
 });
 
+app.get("/courses/course_info/course_lessons/exercise", async (req, res) => {
+  const user = req.session.userData;
+  const lang = req.query.lang || req.cookies.lang || "en";
+  if (user) {
+    res.render("exercise");
+  } else {
+    if (lang === "en") {
+      req.session.msg = "Please Sign in To Enter the Exercise";
+    } else {
+      req.session.msg = "يرجى تسجيل الدخول للدخول إلى التمرين";
+    }
+    res.redirect("/signIn");
+  }
+});
+
+app.get("/courses/course_info/course_lessons/quiz", async (req, res) => {
+  const user = req.session.userData;
+  const lang = req.query.lang || req.cookies.lang || "en";
+  if (user) {
+    res.render("quiz");
+  } else {
+    if (lang === "en") {
+      req.session.msg = "Please Sign in To Enter the Quiz";
+    } else {
+      req.session.msg = "يرجى تسجيل الدخول للدخول إلى الاختبار";
+    }
+    res.redirect("/signIn");
+  }
+});
+
 app.get("/signIn", async (req, res) => {
   const user = req.session.userData;
   const admin = req.session.adminData;
@@ -406,7 +454,12 @@ app.get("/signIn", async (req, res) => {
 });
 
 app.get("/signUp", async (req, res) => {
-  res.render("signUp");
+  const user = req.session.userData;
+  if (user) {
+    res.redirect("/");
+  } else {
+    res.render("signUp");
+  }
 });
 
 app.get("/profile", async (req, res) => {
@@ -1414,28 +1467,16 @@ app.post("/proxy-process", async (req, res) => {
       .json({ error: "An error occurred while sending data to Flask API" });
   }
 });
+
+app.post('/uploadAudio', upload.single('audio'), (req, res) => {
+  if (req.file) {
+      res.json({ message: 'File uploaded successfully', file: req.file });
+  } else {
+      res.status(400).json({ message: 'File upload failed' });
+  }
+});
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`);
-});
-
-app.get("/exercise", async (req, res) => {
-  const user = req.session.userData;
-  if (user) {
-    res.render("exercise.ejs");
-  } else {
-    req.session.msg = "Please Sign in To Enter the Exercise";
-    res.redirect("/signIn");
-  }
-});
-
-app.get("/quiz", async (req, res) => {
-  const user = req.session.userData;
-  if (user) {
-    res.render("quiz.ejs");
-  } else {
-    req.session.msg = "Please Sign in To Enter the Quiz";
-    res.redirect("/signIn");
-  }
 });
