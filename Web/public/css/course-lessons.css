@@ -1,5 +1,7 @@
 /* Start Global Rules */
 :root {
+  --error-massage: #ba181b;
+  --success-massage: #2ec4b6;
   --blue-color: #0075ff;
   --blue-alt-color: #0d69d5;
   --orange-color: #ff9f1c;
@@ -12,6 +14,9 @@
   --main-color-alt: #3c7671;
   --purple-alt: #6610f2;
   --purple: #6f42c1;
+  --about-color: #f3f3f3;
+  --black-shadow1: rgba(0, 0, 0, 0.25);
+  --black-shadow2: rgba(0, 0, 0, 0.22);
   --main-transition: 0.3s;
   --model-duration: 1s;
 }
@@ -346,7 +351,7 @@ ul {
 .container-quiz {
   display: flex;
   background-color: var(--white-color);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 14px 28px var(--black-shadow1), 0 10px 10px var(--black-shadow2);
   margin: 40px 60px;
   padding: 40px 60px;
   border-radius: 8px;
@@ -375,8 +380,8 @@ ul {
 
 .container-course .course-description {
   margin-right: 80px;
-  background-color: #f8f9fa;
-  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  background-color: var(--white-color);
+  box-shadow: 0 8px 10px var(--black-shadow1), 0 8px 10px var(--black-shadow2);
   padding: 30px;
   border-radius: 8px;
   height: 100%;
@@ -388,6 +393,7 @@ ul {
   margin-top: 0;
   font-size: 22px;
   font-weight: bold;
+  color: var(--black-color);
 }
 
 .container-quiz a {
@@ -407,8 +413,8 @@ ul {
 
 .exercise-lessons {
   margin-right: 80px;
-  background-color: #f8f9fa;
-  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  background-color: var(--white-color);
+  box-shadow: 0 8px 10px var(--black-shadow1), 0 8px 10px var(--black-shadow2);
   padding: 30px;
   border-radius: 8px;
   height: 100%;
@@ -417,8 +423,8 @@ ul {
 }
 
 .quiz {
-  background-color: #f8f9fa;
-  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  background-color: var(--white-color);
+  box-shadow: 0 8px 10px var(--black-shadow1), 0 8px 10px var(--black-shadow2);
   padding: 30px;
   border-radius: 8px;
   width: 100%;
@@ -439,6 +445,11 @@ ul {
 }
 .container-course .course-description .title .icon h2 {
   margin: 0;
+  color: var(--black-color);
+}
+
+.container-course .course-description .title .icon p {
+  color: var(--black-color);
 }
 
 .container-course .course-description .time {
@@ -489,9 +500,14 @@ ul {
   color: var(--main-color);
 }
 
+.container-course .course-description .learn h2,
+.container-course .course-description .learn .complete p {
+  color: var(--black-color);
+}
+
 .container-course .course-body {
-  background-color: #f8f9fa;
-  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25), 0 8px 10px rgba(0, 0, 0, 0.22);
+  background-color: var(--white-color);
+  box-shadow: 0 8px 10px var(--black-shadow1), 0 8px 10px var(--black-shadow2);
   padding: 30px;
   border-radius: 8px;
   width: 100%;
@@ -514,6 +530,7 @@ ul {
 
 .container-course .course-body .logo h2 {
   margin: 0;
+  color: var(--black-color);
 }
 
 .container-course .course-body .box {
@@ -525,7 +542,11 @@ ul {
   padding: 0 10px;
   cursor: pointer;
   transition: 0.3s ease;
-  background: linear-gradient(to right, var(--main-color) 50%, white 50%);
+  background: linear-gradient(
+    to right,
+    var(--main-color) 50%,
+    var(--white-color) 50%
+  );
   background-size: 200% 100%;
   background-position: right bottom;
 }
@@ -534,6 +555,9 @@ ul {
   padding-right: 10px;
   color: var(--main-color);
   flex-basis: 10%;
+}
+.container-course .course-body .box p {
+  color: var(--black-color);
 }
 
 .container-course .course-body .box:hover i {

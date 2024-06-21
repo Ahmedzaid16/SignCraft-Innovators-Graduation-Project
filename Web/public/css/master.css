@@ -121,6 +121,7 @@ ul {
   z-index: 1;
   color: var(--black-color);
   transition: var(--main-transition);
+  margin-top: 60px;
 }
 @media (max-width: 425px) {
   .main-title {
@@ -253,6 +254,7 @@ ul {
 
 .header .main-nav li.active {
   color: var(--main-color);
+  background-color: var(--about-color);
 }
 
 .header .main-nav li {
@@ -282,7 +284,7 @@ ul {
 
 .header .main-nav > li > a.active {
   color: var(--main-color);
-  background-color: #fafafa;
+  background-color: var(--about-color);
 }
 
 .header .main-nav > li > a:hover::before {
@@ -1196,17 +1198,6 @@ ul {
   padding: 0 20px;
 }
 
-.translate .T1 h1 {
-  font-size: 40px;
-}
-
-.translate .T1 p {
-  margin: 0 55px;
-  text-align: center;
-  line-height: 1.7;
-  font-size: 20px;
-}
-
 .translate .T1 img {
   max-width: 300px;
   padding-top: 20px;
@@ -1218,6 +1209,10 @@ ul {
   justify-content: center;
   flex-basis: 50%;
   padding-bottom: 50px;
+}
+
+.translate .T2 h1 {
+  color: var(--black-color);
 }
 
 @media (max-width: 991px) {
@@ -1248,10 +1243,12 @@ ul {
   font-size: 30px;
   cursor: pointer;
   padding-left: 5px;
+  color: var(--black-color);
 }
 .translate .content h2 {
   font-size: 40px;
   letter-spacing: -2;
+  color: var(--black-color);
 }
 
 .translate .form textarea.input {
@@ -1276,7 +1273,7 @@ ul {
   transition: var(--main-transition);
 }
 
-.translate form [type="submit"]:hover {
+.translate #button1:hover {
   background-color: var(--main-color-alt);
 }
 

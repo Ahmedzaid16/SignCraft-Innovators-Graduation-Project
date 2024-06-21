@@ -1,3 +1,24 @@
+:root {
+  --error-massage: #ba181b;
+  --success-massage: #2ec4b6;
+  --blue-color: #0075ff;
+  --blue-alt-color: #0d69d5;
+  --orange-color: #ff9f1c;
+  --green-color: #22c55e;
+  --red-color: #e71d36;
+  --grey-color: #888;
+  --black-color: #011627;
+  --white-color: #fdfffc;
+  --main-color: #2ec4b6;
+  --main-color-alt: #3c7671;
+  --purple-alt: #6610f2;
+  --purple: #6f42c1;
+  --about-color: #f3f3f3;
+  --black-shadow1: rgba(0, 0, 0, 0.25);
+  --black-shadow2: rgba(0, 0, 0, 0.22);
+  --main-transition: 0.3s;
+  --model-duration: 1s;
+}
 section {
   row-gap: 48px;
   position: relative;
@@ -84,21 +105,22 @@ section {
   display: grid;
   padding-left: 3rem;
   padding-right: 3rem;
-  background-color: #fdfffc;
+  background-color: var(--about-color);
   grid-template-rows: 5% auto auto;
   align-items: center;
-  margin-top: 3rem;
 }
 
 .courses .head-courses h3 {
   font-size: 40px;
   font-weight: bold;
+  color: var(--black-color);
 }
 
 .courses .div-courses .adult-info-content h4,
 .courses .div-courses .kids-info-content h4 {
   font-size: 25px;
   font-weight: 700;
+  color: var(--black-color);
 }
 
 .courses .div-courses .adult-info-content p,
@@ -107,6 +129,7 @@ section {
   font-weight: 400;
   line-height: 25px;
   opacity: 0.8;
+  color: var(--black-color);
 }
 
 .courses .div-courses .div-courses-videos {
@@ -117,7 +140,7 @@ section {
 }
 
 .courses .div-courses .div-courses-videos a {
-  color: #011627;
+  color: var(--black-color);
   aspect-ratio: 1 / 1;
 }
 
@@ -352,6 +375,7 @@ section {
   padding-top: 60px;
   padding-bottom: 60px;
   position: relative;
+  background-color: var(--about-color);
 }
 
 .articles .container {
@@ -370,7 +394,7 @@ section {
 
 .articles .box {
   box-shadow: 0 2px 15px rgb(0 0 0 / 10%);
-  background-color: white;
+  background-color: var(--white-color);
   border-radius: 6px;
   overflow: hidden;
   transition: transform var(--main-transition),
@@ -395,19 +419,20 @@ section {
 
 .articles .box .content h3 {
   margin: 0;
+  color: var(--black-color);
 }
 
 .articles .box .content p {
   margin: 10px 0 0;
   line-height: 1.5;
-  color: #777;
+  color: var(--black-color);
 }
 
 .articles .box .info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f9f9fb;
+  background: var(--white-color);
   padding: 20px;
 }
 
@@ -441,10 +466,10 @@ section {
 }
 
 .subscribe form {
-  width: 600px;
+  width: 439px;
   margin: 20px auto;
-  padding: 30px 40px;
-  background-color: #f6f5f5;
+  padding: 15px 25px;
+  background-color: var(--white-color);
   border-radius: 50px;
   display: flex;
   gap: 20px;
@@ -479,20 +504,4 @@ section {
 
 .subscribe form input[type="text"]:focus::placeholder {
   opacity: 0;
-}
-
-.subscribe form input[type="submit"] {
-  border: none;
-  font-weight: bold;
-  padding: 15px;
-  border-radius: 15px;
-  background-color: var(--main-color);
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  transition: 0.5s;
-}
-
-.subscribe form input[type="submit"]:hover {
-  background-color: var(--main-color);
 }
