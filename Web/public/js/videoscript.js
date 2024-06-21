@@ -1,27 +1,24 @@
 const video = document.getElementById("video");
-const recorded_v_elem = document.querySelector("#display_video");
 const divvideo = document.getElementById("divvideo");
 const content = document.getElementById("unity-iframe");
 const startRecordingSvg = document.getElementById("startRecordingSvg");
 const unityReloadButton = document.getElementById("unity-reload-button");
+const playButton = document.getElementById("playButton");
+const pauseButton = document.getElementById("pauseButton");
+const videoControls = document.getElementById("videoControls");
+const inputParams = document.getElementById("inputParams");
 
 // for Video
 let stream = null;
 let mediaRecorder = null;
 let recordedblob = [];
-let record_bl = null;
-let translationLabel = null; // Keep track of translation label
 
 const get_start = async () => {
-  // Remove the translation label if it exists
-  if (translationLabel) {
-    translationLabel.remove();
-  }
-
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: true });
     console.log("successful access");
     video.srcObject = stream;
+    videoControls.style.display = "flex"; // Show video controls
   } catch (error) {
     console.error("Error accessing camera:", error);
     return;
@@ -32,80 +29,83 @@ const get_start = async () => {
   mediaRecorder = new MediaRecorder(video.srcObject);
   mediaRecorder.ondataavailable = (e) => {
     console.log("data is available for the media recorder");
-    recordedblob.push(e.data);
+    if (e.data.size > 0) {
+      recordedblob.push(e.data);
+    }
   };
 
   mediaRecorder.start();
+};
 
-  setTimeout(() => {
-    mediaRecorder.stop();
-    const track = stream.getTracks();
-    track[0].stop();
-    console.log("successful stop");
-  }, 3000); // Automatically stop recording after 3 seconds
+const sendVideoToApi = async () => {
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop(); // Stop the recording to gather data
+  }
 
-  mediaRecorder.onstop = async () => {
-    video.style.display = "none";
-    recorded_v_elem.style.display = "block";
+  // Wait for a short time to ensure data is gathered
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
-    const superbuffer = new Blob(recordedblob, { type: "video/mp4" });
-    recorded_v_elem.src = window.URL.createObjectURL(superbuffer);
-    recorded_v_elem.controls = true;
+  if (recordedblob.length === 0) {
+    console.log("No data to send.");
+    return;
+  }
 
-    recorded_v_elem.onloadedmetadata = () => {
-      recorded_v_elem.play().catch((error) => {
-        console.log("Error playing video:", error);
-      });
-    };
+  const videoSegment = new Blob(recordedblob, { type: "video/mp4" });
+  const videoDataForm = new FormData();
+  videoDataForm.append("video", videoSegment);
+  console.log(videoDataForm);
 
-    record_bl = new Blob(recordedblob, { type: "video/mp4" });
+  try {
+    const uploadResponse = await axios.post(
+      `https://jennet-elegant-ferret.ngrok-free.app/upload`,
+      videoDataForm,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    console.log(uploadResponse.data);
 
-    // Automatically send the video for translation
-    const videoDataForm = new FormData();
-    videoDataForm.append("video", record_bl);
-    console.log(videoDataForm);
+    const translation = uploadResponse.data.prediction;
+    inputParams.value === ""
+      ? (inputParams.value = translation)
+      : (inputParams.value += " " + translation);
+  } catch (err) {
+    console.log(err);
+  }
 
-    try {
-      const uploadResponse = await axios.post(
-        `https://jennet-elegant-ferret.ngrok-free.app/upload`,
-        videoDataForm,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(uploadResponse.data);
+  // Reset the recorded blob array to start recording a new segment
+  recordedblob = [];
 
-      const translation = uploadResponse.data.prediction;
-      translationLabel = document.createElement("div");
-      translationLabel.setAttribute("id", "translationLabel");
-      translationLabel.innerHTML = `<div><label> the translation </label></div> <br> <div>
-              <label style="resize:none; background-color:#fff; color:black; border-radius: 10px; padding:10px; margin: 20px 5px;">${translation}<label></div>`;
-      divvideo.appendChild(translationLabel);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // Restart the media recorder to continue recording
+  mediaRecorder.start();
 };
 
 startRecordingSvg.addEventListener("click", () => {
-  unityReloadButton.style.color = "black";
+  if (localStorage.getItem("dark-mode") === "enabled") {
+    unityReloadButton.style.color = "#fff";
+  } else {
+    unityReloadButton.style.color = "#011627";
+  }
   startRecordingSvg.style.fill = "#2ec4b6";
   content.contentWindow.postMessage("START_RECORDING", "*");
   content.style.display = "none";
   divvideo.style.display = "block";
   video.style.display = "block";
-  recorded_v_elem.style.display = "none";
   get_start();
 });
 
 unityReloadButton.addEventListener("click", () => {
   stopVideoRecording();
-  unityReloadButton.style.color = "#2ec4b6";
-  startRecordingSvg.style.fill = "black";
+  if (localStorage.getItem("dark-mode") === "enabled") {
+    unityReloadButton.style.color = "#fff";
+    startRecordingSvg.style.fill = "#fff";
+  } else {
+    unityReloadButton.style.color = "#011627";
+    startRecordingSvg.style.fill = "#011627";
+  }
   divvideo.style.display = "none";
-  recorded_v_elem.style.display = "none";
   video.style.display = "none";
   content.style.display = "block";
   // Reload the iframe
@@ -115,12 +115,181 @@ unityReloadButton.addEventListener("click", () => {
 function stopVideoRecording() {
   if (mediaRecorder && mediaRecorder.state === "recording") {
     mediaRecorder.stop();
-    const tracks = video.srcObject.getTracks();
+    recordedblob = [];
+  }
+  if (localStorage.getItem("dark-mode") === "enabled") {
+    startRecordingSvg.style.fill = "#fff";
+  } else {
+    startRecordingSvg.style.fill = "#011627";
+  }
+}
+
+playButton.addEventListener("click", () => {
+  sendVideoToApi();
+});
+
+pauseButton.addEventListener("click", () => {
+  videoControls.style.display = "none";
+  stopVideoRecording();
+});
+
+const recordButton = document.getElementById("recordButton");
+const mint = document.getElementById("mint");
+const spinner = document.querySelector(".spinner");
+const timer = document.querySelector(".timer");
+const minutesSpan = document.querySelector(".minutes");
+const secondsSpan = document.querySelector(".seconds");
+let mediaRecorderAudio;
+let audioChunks = [];
+let audioBlob = null;
+let recordingStartTimeAud;
+let timerInterval;
+
+// For Audio
+recordButton.addEventListener("click", async () => {
+  if (mediaRecorderAudio && mediaRecorderAudio.state === "recording") {
+    stopAudioRecording();
+  } else {
+    await startAudioRecording();
+  }
+});
+
+async function startAudioRecording() {
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorderAudio = new MediaRecorder(stream);
+
+    mediaRecorderAudio.ondataavailable = (event) => {
+      audioChunks.push(event.data);
+    };
+
+    mediaRecorderAudio.onstart = () => {
+      recordButton.classList.add("loading");
+      spinner.style.display = "flex"; // Show the spinner
+      timer.style.display = "flex"; // Show the timer
+      recordingStartTimeAud = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+    };
+
+    mediaRecorderAudio.onstop = async () => {
+      recordButton.classList.remove("loading");
+      spinner.style.display = "none"; // Hide the spinner
+      timer.style.display = "none"; // Hide the timer
+      clearInterval(timerInterval); // Stop the timer
+      minutesSpan.textContent = "0"; // Reset the minutes text
+      secondsSpan.textContent = "0"; // Reset the seconds text
+      mint.style.display = "none";
+      minutesSpan.style.display = "none";
+
+      audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      audioChunks = [];
+      const formData = new FormData();
+      formData.append(
+        "file",
+        new File([audioBlob], "output.wav", { type: "audio/wav" })
+      );
+
+      try {
+        const response = await axios.post(
+          "https://203e-41-43-246-7.ngrok-free.app/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data", // Do not set Content-Type manually
+            },
+          }
+        );
+        console.log("Upload successful:", response.data);
+        // Handle the response from Express.js backend
+        console.log("Transcription:", response.data.transcription);
+      } catch (error) {
+        console.error("Upload failed:", error);
+      }
+    };
+
+    mediaRecorderAudio.start();
+  } else {
+    console.error("getUserMedia not supported on your browser!");
+  }
+}
+
+function stopAudioRecording() {
+  if (mediaRecorderAudio && mediaRecorderAudio.state === "recording") {
+    mediaRecorderAudio.stop();
+    const tracks = mediaRecorderAudio.stream.getTracks();
     tracks.forEach((track) => track.stop());
   }
-  video.style.display = "none";
-  recorded_v_elem.style.display = "none";
 }
+
+function updateTimer() {
+  const elapsedSeconds = Math.floor(
+    (Date.now() - recordingStartTimeAud) / 1000
+  );
+  const minutes = Math.floor(elapsedSeconds / 60);
+  const seconds = elapsedSeconds % 60;
+  if (minutes > 0) {
+    if (minutes === 1) {
+      mint.style.display = "inline-block";
+      minutesSpan.style.display = "inline-block";
+    }
+    minutesSpan.textContent = `${minutes}`;
+  } else {
+    minutesSpan.textContent = "0";
+  }
+  secondsSpan.textContent = `${seconds < 10 ? "0" + seconds : seconds}`;
+}
+
+// async function uploadToServer(audioBlob) {
+//   const formData = new FormData();
+//   formData.append(
+//     "file",
+//     new File([audioBlob], "output.wav", { type: "audio/wav" })
+//   );
+
+//   try {
+//     const response = await axios.post(
+//       "https://0917-41-43-246-7.ngrok-free.app/upload",
+//       formData,
+//       {
+//         headers: {
+//           // "Content-Type": "multipart/form-data", // Do not set Content-Type manually
+//         },
+//       }
+//     );
+//     console.log("Upload successful:", response.data);
+//     // Handle the response from Express.js backend
+//     console.log("Transcription:", response.data.transcription);
+//   } catch (error) {
+//     console.error("Upload failed:", error);
+//   }
+// }
+
+// Function to send message to Unity iframe
+function sendMessageToUnity(message) {
+  if (content.contentWindow) {
+    content.contentWindow.postMessage(message, "*");
+  } else {
+    console.error("Unity iframe not initialized.");
+  }
+}
+
+startRecordingSvg.addEventListener("click", () => {
+  sendMessageToUnity("START_RECORDING");
+});
+
+// Add event listener for the button to send data to Unity
+document.getElementById("button1").addEventListener("click", () => {
+  stopVideoRecording();
+  video.style.display = "none";
+  divvideo.style.display = "none";
+  unityReloadButton.style.color = "#2ec4b6";
+  if (content.style.display === "none") {
+    content.style.display = "block";
+    content.src = "/unity";
+  }
+  var inputText = inputParams.value;
+  sendMessageToUnity(inputText);
+});
 
 // let typingTimer;
 // const doneTypingInterval = 5000; // 5 seconds
@@ -162,127 +331,3 @@ function stopVideoRecording() {
 //     }
 //   }, doneTypingInterval);
 // }
-
-const recordButton = document.getElementById("recordButton");
-const mint = document.getElementById("mint");
-const spinner = document.querySelector(".spinner");
-const timer = document.querySelector(".timer");
-const minutesSpan = document.querySelector(".minutes");
-const secondsSpan = document.querySelector(".seconds");
-let mediaRecorderAudio;
-let audioChunks = [];
-let recordingStartTime;
-let timerInterval;
-
-// For Audio
-recordButton.addEventListener("click", async () => {
-  if (mediaRecorderAudio && mediaRecorderAudio.state === "recording") {
-    stopAudioRecording();
-  } else {
-    await startAudioRecording();
-  }
-});
-
-async function startAudioRecording() {
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorderAudio = new MediaRecorder(stream);
-
-    mediaRecorderAudio.ondataavailable = (event) => {
-      audioChunks.push(event.data);
-    };
-
-    mediaRecorderAudio.onstart = () => {
-      recordButton.classList.add("loading");
-      spinner.style.display = "flex"; // Show the spinner
-      timer.style.display = "flex"; // Show the timer
-      recordingStartTime = Date.now();
-      timerInterval = setInterval(updateTimer, 1000);
-    };
-
-    mediaRecorderAudio.onstop = async () => {
-      recordButton.classList.remove("loading");
-      spinner.style.display = "none"; // Hide the spinner
-      timer.style.display = "none"; // Hide the timer
-      clearInterval(timerInterval); // Stop the timer
-      minutesSpan.textContent = "0"; // Reset the minutes text
-      secondsSpan.textContent = "0"; // Reset the seconds text
-      mint.style.display = "none";
-      minutesSpan.style.display = "none";
-
-      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-      audioChunks = [];
-
-      await uploadToServer(audioBlob);
-    };
-
-    mediaRecorderAudio.start();
-  } else {
-    console.error("getUserMedia not supported on your browser!");
-  }
-}
-
-function stopAudioRecording() {
-  if (mediaRecorderAudio && mediaRecorderAudio.state === "recording") {
-    mediaRecorderAudio.stop();
-    const tracks = mediaRecorderAudio.stream.getTracks();
-    tracks.forEach((track) => track.stop());
-  }
-}
-
-function updateTimer() {
-  const elapsedSeconds = Math.floor((Date.now() - recordingStartTime) / 1000);
-  const minutes = Math.floor(elapsedSeconds / 60);
-  const seconds = elapsedSeconds % 60;
-  if (minutes > 0) {
-    if (minutes === 1) {
-      mint.style.display = "inline-block";
-      minutesSpan.style.display = "inline-block";
-    }
-    minutesSpan.textContent = `${minutes}`;
-  } else {
-    minutesSpan.textContent = "0";
-  }
-  secondsSpan.textContent = `${seconds < 10 ? "0" + seconds : seconds}`;
-}
-
-async function uploadToServer(audioBlob) {
-  const formData = new FormData();
-  formData.append("audio", audioBlob, "recording.wav");
-
-  try {
-    const response = await fetch("/uploadAudio", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await response.json();
-    console.log("Upload successful:", data);
-  } catch (error) {
-    console.error("Upload failed:", error);
-  }
-}
-
-// Function to send message to Unity iframe
-function sendMessageToUnity(message) {
-  if (content.contentWindow) {
-    content.contentWindow.postMessage(message, "*");
-  } else {
-    console.error("Unity iframe not initialized.");
-  }
-}
-
-// Add event listener for the button to send data to Unity
-document.getElementById("button1").addEventListener("click", () => {
-  stopVideoRecording();
-  unityReloadButton.style.color = "#2ec4b6";
-  startRecordingSvg.style.fill = "black";
-  divvideo.style.display = "none";
-  recorded_v_elem.style.display = "none";
-  video.style.display = "none";
-  if (content.style.display === "none") {
-    content.style.display = "block";
-    content.src = "/unity";
-  }
-  var inputText = document.getElementById("inputParams").value;
-  sendMessageToUnity(inputText);
-});

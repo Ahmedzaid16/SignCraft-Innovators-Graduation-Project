@@ -3,6 +3,7 @@ const firebase = require("firebase");
 const nodemailer = require("nodemailer");
 const express = require("express");
 const cors = require("cors");
+const { OAuth2Client } = require("google-auth-library");
 const admin = require("./models/admin");
 const axios = require("axios");
 const Typo = require("typo-js");
@@ -44,7 +45,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // Auto refresh livereload for All Files ===> there is script in package.json
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   const livereload = require("livereload");
   const connectLivereload = require("connect-livereload");
 
@@ -59,6 +60,13 @@ if (process.env.NODE_ENV === 'development') {
     }, 100);
   });
 }
+
+const client = new OAuth2Client(
+  "213054151045-inbvvelvgt68tt2mef2t4pah180n2hjo.apps.googleusercontent.com",
+  "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",
+  "http://localhost:4000/googleCallback"
+);
+
 //////////////////////////////////////////////////////////////////////////////
 
 // fection to send Email
@@ -215,7 +223,7 @@ app.use(
       secure: false,
       sameSite: "strict",
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000
+      maxAge: 24 * 60 * 60 * 1000,
     },
   })
 );
@@ -462,6 +470,96 @@ app.get("/signUp", async (req, res) => {
   }
 });
 
+app.get("/googleSignIn", (req, res) => {
+  const url = client.generateAuthUrl({
+    access_type: "offline",
+    scope: ["profile", "email"],
+  });
+  res.redirect(url);
+});
+
+app.get("/googleCallback", async (req, res) => {
+  const code = req.query.code;
+  const lang = req.query.lang || req.cookies.lang || "en";
+
+  try {
+    const { tokens } = await client.getToken(code);
+    client.setCredentials(tokens);
+
+    const ticket = await client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience:
+        "213054151045-inbvvelvgt68tt2mef2t4pah180n2hjo.apps.googleusercontent.com",
+    });
+
+    const payload = ticket.getPayload();
+    const userId = payload["sub"];
+    const email = payload["email"];
+    const name = payload["name"];
+    const picture = payload["picture"];
+
+    // Check if the user already exists in Firebase Authentication
+    let userRecord;
+    try {
+      userRecord = await admin.auth().getUser(userId);
+      if (!userRecord.emailVerified) {
+        await admin.auth().updateUser(userId, { emailVerified: true });
+      }
+    } catch (error) {
+      if (error.code === "auth/user-not-found") {
+        // Create a new user in Firebase Authentication
+        userRecord = await admin.auth().createUser({
+          uid: userId,
+          email: email,
+          emailVerified: true,
+        });
+      } else {
+        throw error;
+      }
+    }
+
+    // Check if the user already exists in Firestore
+    const userDoc = await db.collection("Users").doc(userId).get();
+    if (!userDoc.exists) {
+      // Create new user document in Firestore
+      await db
+        .collection("Users")
+        .doc(userId)
+        .set({
+          username: name,
+          gender: "male",
+          avatarUrl: picture || "/images/dark-avatar.jpg",
+          isSignLanguageSpeaker: false,
+        });
+    }
+
+    // Retrieve user data
+    const userData = (await db.collection("Users").doc(userId).get()).data();
+
+    // Store user data in session
+    req.session.userData = {
+      idToken: tokens.id_token,
+      userId: userId,
+      username: userData.username,
+      gender: userData.gender,
+      avatarUrl: userData.avatarUrl,
+      isSignLanguageSpeaker: userData.isSignLanguageSpeaker,
+      email: email,
+      emailVerified: userRecord.emailVerified,
+    };
+
+    // Redirect to the home page
+    res.redirect("/");
+  } catch (error) {
+    console.error("Error during Google Sign-In:", error);
+    req.session.msg =
+      lang === "en"
+        ? "Failed to sign in with Google."
+        : "فشل تسجيل الدخول باستخدام جوجل.";
+    res.redirect("/signIn");
+  }
+});
+
 app.get("/profile", async (req, res) => {
   const user = req.session.userData;
   const PassMsg = req.session.PassMsg;
@@ -551,10 +649,6 @@ app.get("/reset", async (req, res) => {
 app.get("/reset/reset_password", async (req, res) => {
   const userId = req.query.userId;
   res.render("reset-password", { userId: userId });
-});
-
-app.get("/support", async (req, res) => {
-  res.render("courses");
 });
 
 app.get("/logout", (req, res) => {
@@ -1467,15 +1561,6 @@ app.post("/proxy-process", async (req, res) => {
       .json({ error: "An error occurred while sending data to Flask API" });
   }
 });
-
-app.post('/uploadAudio', upload.single('audio'), (req, res) => {
-  if (req.file) {
-      res.json({ message: 'File uploaded successfully', file: req.file });
-  } else {
-      res.status(400).json({ message: 'File upload failed' });
-  }
-});
-/////////////////////////////////////////////////////////////////////////////////////////////////
 
 app.listen(port, () => {
   console.log(`http://localhost:${port}/`);
