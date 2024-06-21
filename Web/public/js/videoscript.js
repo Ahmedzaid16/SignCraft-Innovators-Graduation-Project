@@ -83,7 +83,11 @@ const sendVideoToApi = async () => {
 };
 
 startRecordingSvg.addEventListener("click", () => {
-  unityReloadButton.style.color = "black";
+  if (localStorage.getItem("dark-mode") === "enabled") {
+    unityReloadButton.style.color = "#fff";
+  } else {
+    unityReloadButton.style.color = "#011627";
+  }
   startRecordingSvg.style.fill = "#2ec4b6";
   content.contentWindow.postMessage("START_RECORDING", "*");
   content.style.display = "none";
@@ -94,8 +98,13 @@ startRecordingSvg.addEventListener("click", () => {
 
 unityReloadButton.addEventListener("click", () => {
   stopVideoRecording();
-  unityReloadButton.style.color = "#2ec4b6";
-  startRecordingSvg.style.fill = "black";
+  if (localStorage.getItem("dark-mode") === "enabled") {
+    unityReloadButton.style.color = "#fff";
+    startRecordingSvg.style.fill = "#fff";
+  } else {
+    unityReloadButton.style.color = "#011627";
+    startRecordingSvg.style.fill = "#011627";
+  }
   divvideo.style.display = "none";
   video.style.display = "none";
   content.style.display = "block";
@@ -106,12 +115,13 @@ unityReloadButton.addEventListener("click", () => {
 function stopVideoRecording() {
   if (mediaRecorder && mediaRecorder.state === "recording") {
     mediaRecorder.stop();
-    const tracks = video.srcObject.getTracks();
-    tracks.forEach((track) => track.stop());
+    recordedblob = [];
   }
-  startRecordingSvg.style.fill = "black";
-  video.style.display = "none";
-  divvideo.style.display = "none";
+  if (localStorage.getItem("dark-mode") === "enabled") {
+    startRecordingSvg.style.fill = "#fff";
+  } else {
+    startRecordingSvg.style.fill = "#011627";
+  }
 }
 
 playButton.addEventListener("click", () => {
@@ -119,6 +129,7 @@ playButton.addEventListener("click", () => {
 });
 
 pauseButton.addEventListener("click", () => {
+  videoControls.style.display = "none";
   stopVideoRecording();
 });
 
@@ -269,6 +280,8 @@ startRecordingSvg.addEventListener("click", () => {
 // Add event listener for the button to send data to Unity
 document.getElementById("button1").addEventListener("click", () => {
   stopVideoRecording();
+  video.style.display = "none";
+  divvideo.style.display = "none";
   unityReloadButton.style.color = "#2ec4b6";
   if (content.style.display === "none") {
     content.style.display = "block";

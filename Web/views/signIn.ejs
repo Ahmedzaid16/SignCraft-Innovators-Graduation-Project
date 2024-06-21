@@ -11,14 +11,17 @@
     <link rel="stylesheet" href="/css/master.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
+    />
+    <link
+      rel="preload"
+      href="https://fonts.gstatic.com/s/googlesans/v58/4UaRrENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iq2vgCI.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
     />
     <title data-i18n="SIGN_IN">Sign In</title>
   </head>
@@ -54,7 +57,9 @@
               <a href="#" class="social"
                 ><i class="fa-brands fa-facebook-f"></i
               ></a>
-              <a href="#" class="social"><i class="fa-brands fa-google"></i></a>
+              <a href="/googleSignIn" class="social"
+                ><i class="fa-brands fa-google"></i
+              ></a>
             </div>
             <div class="text">
               <span data-i18n="OR_USE_ACCOUNT" class="mb-10 mt-10 fw-bold"

@@ -225,7 +225,7 @@ ul {
   margin-right: 10px;
 }
 
-.btlang{
+.btlang {
   fill: var(--black-color);
 }
 
@@ -674,7 +674,7 @@ ul {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 80vh;
+  height: 90vh;
   flex: 1;
 }
 
@@ -803,7 +803,7 @@ ul {
   text-align: center;
   flex-direction: column;
   flex: 1;
-  height: 80vh;
+  height: 90vh;
   background-color: var(--main-color);
 }
 
@@ -866,7 +866,7 @@ ul {
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: 81vh;
+  height: 97vh;
   flex: 1;
 }
 
@@ -953,7 +953,7 @@ ul {
   flex-direction: column;
   flex: 1;
   width: 100%;
-  height: 81vh;
+  height: 97vh;
   background-color: var(--main-color);
 }
 
@@ -1252,7 +1252,13 @@ ul {
   font-size: 30px;
   cursor: pointer;
   padding-left: 5px;
+  color: var(--black-color);
 }
+
+#startRecordingSvg {
+  fill: var(--black-color);
+}
+
 .translate .content h2 {
   font-size: 40px;
   letter-spacing: -2;

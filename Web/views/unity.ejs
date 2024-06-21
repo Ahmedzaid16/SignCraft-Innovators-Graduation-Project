@@ -52,33 +52,166 @@
           })
             .then((unityInstance) => {
               UnityInstance = unityInstance;
+
               // Add message event listener to receive messages from the parent window
               window.addEventListener("message", (event) => {
                 var message = event.data;
                 console.log(message);
+
                 if (message === "START_RECORDING") {
-                  // Stop Unity
                   UnityInstance.Quit().then(function () {
                     console.log("Unity quit successfully");
                     UnityInstance = null;
                   });
                 } else if (typeof message === "string") {
+                  // Define the mapping for words to animation codes and durations
+                  const wordMapping = {
+                    and: { code: "1", synonyms: ["و", "also", "as well as"] },
+                    milk: { code: "2", synonyms: ["حليب", "لبن"] },
+                    me: {
+                      code: "3",
+                      synonyms: ["انا", "أنا", "mee", "myself"],
+                    },
+                    hello: {
+                      code: "4",
+                      synonyms: ["مرحبا", "greetings", "hi"],
+                    },
+                    YourHealthIsFine: {
+                      code: "5",
+                      synonyms: [
+                        "صحتك بخير",
+                        "you're healthy",
+                        "in good health",
+                      ],
+                    },
+                    drink: {
+                      code: "6",
+                      synonyms: ["بشرب", "يشرب", "beverage", "consume"],
+                    },
+                    train: {
+                      code: "7",
+                      synonyms: ["قطار", "locomotive", "rail"],
+                    },
+                    before: {
+                      code: "8",
+                      synonyms: ["قبل", "prior to", "earlier"],
+                    },
+                    "He will come": {
+                      code: "9",
+                      synonyms: ["سيأتي", "he's coming", "he'll arrive"],
+                    },
+                    Fast: {
+                      code: "10",
+                      synonyms: ["سريع", "quick", "speedy", "rapid"],
+                    },
+                    together: {
+                      code: "11",
+                      synonyms: ["معا", "with", "along"],
+                    },
+                    "Train station": {
+                      code: "12",
+                      synonyms: [
+                        "محطة القطار",
+                        "railway station",
+                        "train terminal",
+                      ],
+                    },
+                    late: {
+                      code: "13",
+                      synonyms: ["متأخر", "tardy", "delayed"],
+                    },
+                    delay: {
+                      code: "14",
+                      synonyms: ["تأخير", "postpone", "defer"],
+                    },
+                    when: { code: "15", synonyms: ["متى", "at what time"] },
+                    after: {
+                      code: "16",
+                      synonyms: ["بعد", "following", "subsequent to"],
+                    },
+                    where: { code: "17", synonyms: ["أين", "in what place"] },
+                    place: {
+                      code: "18",
+                      synonyms: ["مكان", "location", "spot"],
+                    },
+                    hour: { code: "19", synonyms: ["ساعة", "time"] },
+                    "I go": { code: "20", synonyms: ["أنا أذهب", "I leave"] },
+                    discount: {
+                      code: "21",
+                      synonyms: ["خصم", "reduction", "deduction"],
+                    },
+                    fracture: {
+                      code: "22",
+                      synonyms: ["كسر", "break", "crack"],
+                    },
+                    Diarrhea: {
+                      code: "23",
+                      synonyms: ["إسهال", "loose motion"],
+                    },
+                    corona: { code: "24", synonyms: ["فيروس كورونا", "covid"] },
+                    feed: {
+                      code: "25",
+                      synonyms: ["تغذية", "nourish", "supply"],
+                    },
+                    mask: { code: "26", synonyms: ["قناع", "face covering"] },
+                    Forbidden: {
+                      code: "27",
+                      synonyms: ["ممنوع", "prohibited", "banned"],
+                    },
+                    canula: { code: "28", synonyms: ["قسطرة", "tube"] },
+                    Congestion: {
+                      code: "29",
+                      synonyms: ["ازدحام", "blockage"],
+                    },
+                    birth: { code: "30", synonyms: ["ولادة", "nativity"] },
+                    cotton: { code: "31", synonyms: ["قطن", "fabric"] },
+                    ticket: { code: "32", synonyms: ["تذكرة", "pass"] },
+                  };
+
                   message = message.trim().toLowerCase();
-                  if (message === "and" || message === "مرحبا") {
-                    message = "1";
-                  } else if (
-                    message === "milk" ||
-                    message === "حليب" ||
-                    message === "لبن"
-                  ) {
-                    message = "2";
+                  var translations = [];
+
+                  // Check for multi-word phrases first
+                  for (const key in wordMapping) {
+                    if (message.includes(key.toLowerCase())) {
+                      translations.push(wordMapping[key].code);
+                      message = message.replace(key.toLowerCase(), "").trim();
+                    }
                   }
                   console.log(message);
+                  // Split the remaining message into individual words
+                  var words = message.split(/\s+/);
+
+                  // Translate each word
+                  words.forEach((word) => {
+                    let found = false;
+                    for (const key in wordMapping) {
+                      if (
+                        word === key ||
+                        wordMapping[key].synonyms.includes(word)
+                      ) {
+                        translations.push(wordMapping[key].code);
+                        found = true;
+                        break;
+                      }
+                    }
+                    if (!found && word !== "") {
+                      translations.push("not found"); // or any other handling for not found words
+                    }
+                  });
+
+                  // Join the translations into a single string
+                  var translationString = translations.join(",");
+
+                  // Send the translation string to Unity
                   UnityInstance.SendMessage(
                     "Ch09_nonPBR",
-                    "StartPlayAnimationThenReset",
-                    message
+                    "StartPlayAnimationSequence",
+                    translationString
                   );
+
+                  // Log the translations
+                  console.log(translationString);
                 }
               });
             })
