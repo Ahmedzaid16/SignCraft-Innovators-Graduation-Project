@@ -179,21 +179,21 @@
     updateScroller();
   });
 
-  document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("dark-mode") === "enabled") {
-      document.body.classList.add("dark");
-      document.getElementById("dark-mode").className =
-        "fa-solid fa-sun dark-mode";
-    }
+  const dark = document.getElementById("dark-mode");
+  if (localStorage.getItem("dark-mode") === "on") {
+    document.body.classList.add("dark");
+    document.getElementById("dark-mode").className =
+      "fa-solid fa-sun dark-mode";
+  }
 
-    const dark = document.getElementById("dark-mode");
-    dark.onclick = function () {
-      document.body.classList.toggle("dark");
-      if (document.body.classList.contains("dark")) {
-        dark.className = "fa-solid fa-sun dark-mode";
-      } else {
-        dark.className = "fa-solid fa-moon dark-mode";
-      }
-    };
-  });
+  dark.onclick = function () {
+    document.body.classList.toggle("dark");
+    if (document.body.classList.contains("dark")) {
+      dark.className = "fa-solid fa-sun dark-mode";
+      window.localStorage.setItem("dark-mode", "on");
+    } else {
+      dark.className = "fa-solid fa-moon dark-mode";
+      window.localStorage.setItem("dark-mode", "off");
+    }
+  };
 </script>
