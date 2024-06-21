@@ -315,9 +315,16 @@ ul {
   display: block;
 }
 
+#menu-icon {
+  display: none;
+}
+
 @media (max-width: 991px) {
   .header .main-nav .header-pages {
     display: none;
+  }
+  #menu-icon {
+    display: block;
   }
 }
 
