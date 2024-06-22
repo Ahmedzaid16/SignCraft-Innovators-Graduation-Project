@@ -181,17 +181,33 @@ async function startAudioRecording() {
       mint.style.display = "none";
       minutesSpan.style.display = "none";
 
-      audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+      const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
       audioChunks = [];
+
+      const arrayBuffer = await audioBlob.arrayBuffer();
+      const audioBuffer = await new AudioContext().decodeAudioData(arrayBuffer);
+
+      // Test with WAV
+      const wavBlob = await convertToWav(audioBuffer);
+      // const downloadLink = document.createElement("a");
+      // const audioURL = window.URL.createObjectURL(wavBlob);
+      // downloadLink.href = audioURL;
+      // downloadLink.download = "recorded_audio.wav";
+      // downloadLink.textContent = "Download recorded audio (WAV)";
+      // document.body.appendChild(downloadLink);
+
+      // Optionally, automatically click the download link
+      // downloadLink.click();
+
       const formData = new FormData();
       formData.append(
         "file",
-        new File([audioBlob], "output.wav", { type: "audio/wav" })
+        new File([wavBlob], "output3.wav", { type: "audio/wav" })
       );
 
       try {
         const response = await axios.post(
-          "https://203e-41-43-246-7.ngrok-free.app/upload",
+          "http://mustafakhaled.pythonanywhere.com/upload",
           formData,
           {
             headers: {
@@ -202,6 +218,7 @@ async function startAudioRecording() {
         console.log("Upload successful:", response.data);
         // Handle the response from Express.js backend
         console.log("Transcription:", response.data.transcription);
+        inputParams.value = response.data.transcription;
       } catch (error) {
         console.error("Upload failed:", error);
       }
@@ -211,6 +228,61 @@ async function startAudioRecording() {
   } else {
     console.error("getUserMedia not supported on your browser!");
   }
+}
+
+async function convertToWav(audioBuffer) {
+  const numChannels = audioBuffer.numberOfChannels;
+  const sampleRate = audioBuffer.sampleRate;
+  const samples = [];
+
+  for (let channel = 0; channel < numChannels; channel++) {
+    samples[channel] = audioBuffer.getChannelData(channel);
+  }
+
+  const interleaved = interleave(samples, audioBuffer.length);
+  const buffer = new ArrayBuffer(44 + interleaved.length * 2);
+  const view = new DataView(buffer);
+
+  // Write WAV header
+  writeString(view, 0, "RIFF");
+  view.setUint32(4, 36 + interleaved.length * 2, true);
+  writeString(view, 8, "WAVE");
+  writeString(view, 12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2 * numChannels, true);
+  view.setUint16(32, numChannels * 2, true);
+  view.setUint16(34, 16, true);
+  writeString(view, 36, "data");
+  view.setUint32(40, interleaved.length * 2, true);
+
+  // Write PCM samples
+  let offset = 44;
+  for (let i = 0; i < interleaved.length; i++, offset += 2) {
+    const sample = Math.max(-1, Math.min(1, interleaved[i]));
+    view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7fff, true);
+  }
+
+  return new Blob([view], { type: "audio/wav" });
+}
+
+function writeString(view, offset, string) {
+  for (let i = 0; i < string.length; i++) {
+    view.setUint8(offset + i, string.charCodeAt(i));
+  }
+}
+
+function interleave(samples, length) {
+  const interleaved = new Float32Array(length * samples.length);
+  for (let sampleIndex = 0; sampleIndex < length; sampleIndex++) {
+    for (let channel = 0; channel < samples.length; channel++) {
+      interleaved[sampleIndex * samples.length + channel] =
+        samples[channel][sampleIndex];
+    }
+  }
+  return interleaved;
 }
 
 function stopAudioRecording() {
@@ -238,31 +310,6 @@ function updateTimer() {
   }
   secondsSpan.textContent = `${seconds < 10 ? "0" + seconds : seconds}`;
 }
-
-// async function uploadToServer(audioBlob) {
-//   const formData = new FormData();
-//   formData.append(
-//     "file",
-//     new File([audioBlob], "output.wav", { type: "audio/wav" })
-//   );
-
-//   try {
-//     const response = await axios.post(
-//       "https://0917-41-43-246-7.ngrok-free.app/upload",
-//       formData,
-//       {
-//         headers: {
-//           // "Content-Type": "multipart/form-data", // Do not set Content-Type manually
-//         },
-//       }
-//     );
-//     console.log("Upload successful:", response.data);
-//     // Handle the response from Express.js backend
-//     console.log("Transcription:", response.data.transcription);
-//   } catch (error) {
-//     console.error("Upload failed:", error);
-//   }
-// }
 
 // Function to send message to Unity iframe
 function sendMessageToUnity(message) {

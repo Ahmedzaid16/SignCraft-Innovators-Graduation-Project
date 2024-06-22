@@ -1499,6 +1499,12 @@ app.post("/editVideo", upload.single("newVideo"), async (req, res) => {
   }
 });
 
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
+
 //***********************************Change Language***************************************** //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Middleware to set language based on user preference
