@@ -1,0 +1,7 @@
+<!-- edittext_error_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#ffeeeeee"/> <!-- Background color when there is an error -->
+    <stroke android:width="2dp" android:color="#ff0000"/> <!-- Red border color -->
+    <corners android:radius="4dp"/> <!-- Rounded corners, adjust as needed -->
+</shape>

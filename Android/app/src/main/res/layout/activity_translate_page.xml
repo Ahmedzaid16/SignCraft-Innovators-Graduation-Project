@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Your main content goes here -->
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/Translate_edt"
+    >
+<!--  there was a problem in linke avatar and android but it work in web     -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/model"
+/>
+
+</RelativeLayout>
+    <!-- Bottom Bar -->
+    <EditText
+        android:id="@+id/Translate_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomBar"
+        android:layout_marginBottom="3dp"
+        android:background="@color/babypowder"
+        android:hint="@string/Translate_Box"
+        android:layout_marginEnd="80dp"
+        android:padding="10dp"
+        android:textSize="24sp"/>
+
+    <!-- Camera Icon -->
+    <ImageView
+        android:id="@+id/cameraIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@id/Translate_edt"
+
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/baseline_photo_camera_24"/>
+
+    <!-- Voice Icon -->
+    <ImageView
+        android:id="@+id/voiceIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/cameraIcon"
+        android:layout_alignBottom="@id/Translate_edt"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:onClick="onVoiceIconClick"
+        android:src="@drawable/baseline_keyboard_voice_24"/>
+
+    <RelativeLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="4dp"
+        android:background="@color/primary">
+
+        <!-- Home Icon with Text -->
+        <LinearLayout
+            android:id="@+id/translateLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp">
+
+            <ImageView
+                android:id="@+id/translate_Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_translate_24"
+                android:background="@color/secondary"
+                />
+
+            <TextView
+                android:id="@+id/translateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/translate"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <!-- Search Icon with Text -->
+        <LinearLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/educaiton_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_cast_for_education_24"
+                android:background="@color/secondary"
+                />
+
+            <TextView
+                android:id="@+id/education_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Education"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+        <!-- Settings Icon with Text -->
+        <LinearLayout
+            android:id="@+id/settingsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp">
+
+            <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_person_24"
+                android:background="@color/secondary"
+                />
+
+            <TextView
+                android:id="@+id/profile_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Profile"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
