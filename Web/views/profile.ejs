@@ -58,11 +58,10 @@
 
       /* Container for the courses section */
       .courses-section {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        margin-top: 20px;
-        width: 60%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 40px;
+        margin: 50px 100px;
       }
 
       /* Styles for each course link */
@@ -100,6 +99,12 @@
         padding: 15px;
       }
 
+      .course-details .pro {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+
       /* Styles for the course name */
       .course-name {
         font-size: 18px;
@@ -123,18 +128,17 @@
       .course-progress .blue {
         display: block;
         height: 100%;
-        background-color: #007bff;
-        border-radius: 10px;
+        background-color: var(--main-color);
+        border-radius: 5px;
       }
 
       /* Text within the progress bar */
-      .course-progress .bg-blue {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
+      .course-details .bg-bluee {
         color: white;
         font-weight: bold;
+        background-color: var(--main-color);
+        padding: 2px 5px;
+        border-radius: 5px;
       }
     </style>
     <title data-i18n="PROFILE_TITLE">Profile</title>
@@ -352,15 +356,17 @@
             class="course-image"
           />
           <div class="course-details">
-            <h3 class="course-name"><%= course.name %></h3>
+            <div class="pro">
+              <h3 class="course-name"><%= course.name %></h3>
+              <span class="bg-bluee"
+                ><%= course.averageProgress.toFixed(2) %>%</span
+              >
+            </div>
             <p class="course-progress">
               <span
                 class="blue"
                 style="width: <%= course.averageProgress.toFixed(2) %>%"
               >
-                <span class="bg-blue"
-                  ><%= course.averageProgress.toFixed(2) %>%</span
-                >
               </span>
             </p>
           </div>
