@@ -71,11 +71,11 @@
                     milk: { code: "2", synonyms: ["حليب", "لبن"] },
                     me: {
                       code: "3",
-                      synonyms: ["انا", "أنا", "mee", "myself"],
+                      synonyms: ["انا", "mee", "myself"],
                     },
                     hello: {
                       code: "4",
-                      synonyms: ['اهلا',"مرحبا", "greetings", "hi"],
+                      synonyms: ["اهلا", "مرحبا", "greetings", "hi"],
                     },
                     "your health is fine": {
                       code: "5",
@@ -88,7 +88,7 @@
                     },
                     drink: {
                       code: "6",
-                      synonyms: ['اشرب',"بشرب", "يشرب", "beverage", "consume"],
+                      synonyms: ["اشرب", "بشرب", "يشرب", "beverage", "consume"],
                     },
                     train: {
                       code: "7",
@@ -102,10 +102,8 @@
                       code: "9",
                       synonyms: [
                         "هو سياتي",
-                        "هو سيأتي",
                         "هو جي",
                         "سياتي",
-                        "سيأتي",
                         "he's coming",
                         "he'll arrive",
                       ],
@@ -121,31 +119,31 @@
                     "train station": {
                       code: "12",
                       synonyms: [
-                        "محطة القطار",
+                        "محطة فطار",
                         "railway station",
                         "train terminal",
                       ],
                     },
                     late: {
                       code: "13",
-                      synonyms: ["متأخر", "tardy", "delayed"],
+                      synonyms: ["متاخر", "tardy", "delayed"],
                     },
                     delay: {
                       code: "14",
-                      synonyms: ["تأخير", "postpone", "defer"],
+                      synonyms: ["تاخير", "postpone", "defer"],
                     },
                     when: { code: "15", synonyms: ["متى", "at what time"] },
                     after: {
                       code: "16",
                       synonyms: ["بعد", "following", "subsequent to"],
                     },
-                    where: { code: "17", synonyms: ["أين", "in what place"] },
+                    where: { code: "17", synonyms: ["اين", "in what place"] },
                     place: {
                       code: "18",
                       synonyms: ["مكان", "location", "spot"],
                     },
                     hour: { code: "19", synonyms: ["ساعة", "time"] },
-                    "I go": { code: "20", synonyms: ["أنا أذهب", "I leave"] },
+                    "I go": { code: "20", synonyms: ["انا اذهب", "I leave"] },
                     discount: {
                       code: "21",
                       synonyms: ["خصم", "reduction", "deduction"],
@@ -156,7 +154,7 @@
                     },
                     diarrhea: {
                       code: "23",
-                      synonyms: ["إسهال", "loose motion"],
+                      synonyms: ["اسهال", "loose motion"],
                     },
                     corona: { code: "24", synonyms: ["فيروس كورونا", "covid"] },
                     feed: {
@@ -199,9 +197,9 @@
                     },
                     because: {
                       code: "39",
-                      synonyms: ["لان", "لأن", "due to", "since"],
+                      synonyms: ["لان", "due to", "since"],
                     },
-                    deaf: { code: "40", synonyms: ["أصم", "hearing impaired"] },
+                    deaf: { code: "40", synonyms: ["اصم", "hearing impaired"] },
                     finance: { code: "41", synonyms: ["تمويل", "funding"] },
                     "financial benefits": {
                       code: "42",
@@ -212,23 +210,29 @@
                       code: "44",
                       synonyms: ["محافظة", "province"],
                     },
-                    money: { code: "45", synonyms: ['فلوس',"مال", "cash", "funds"] },
+                    money: {
+                      code: "45",
+                      synonyms: ["فلوس", "مال", "cash", "funds"],
+                    },
                     "money payment": {
                       code: "46",
-                      synonyms: ['"دفع الفلوس"',"دفع المال", "payment"],
+                      synonyms: ["دفع فلوس", "دفع مال", "payment"],
                     },
                     "money transfer": {
                       code: "47",
-                      synonyms: ["تحويل المال","تحويل المال", "fund transfer"],
+                      synonyms: ["تحويل فلوس", "تحويل مال", "fund transfer"],
                     },
                     name: { code: "48", synonyms: ["اسم", "designation"] },
                     need: { code: "49", synonyms: ["يحتاج", "require"] },
                     new: { code: "50", synonyms: ["جديد", "recent"] },
                     number: { code: "51", synonyms: ["رقم", "figure"] },
-                    ok: { code: "52", synonyms: ["تمام","حسنا", "fine", "alright"] },
-                    on: { code: "53", synonyms: ['فوق',"على", "upon"] },
-                    open: { code: "54", synonyms: ["فتح","فتح", "unseal"] },
-                    or: { code: "55", synonyms: ["أو", "alternatively"] },
+                    ok: {
+                      code: "52",
+                      synonyms: ["تمام", "حسنا", "fine", "alright"],
+                    },
+                    on: { code: "53", synonyms: ["فوق", "على", "upon"] },
+                    open: { code: "54", synonyms: ["فتح", "فتح", "unseal"] },
+                    or: { code: "55", synonyms: ["او", "alternatively"] },
                     pension: {
                       code: "56",
                       synonyms: ["معاش", "retirement benefit"],
@@ -236,12 +240,35 @@
                     salary: { code: "57", synonyms: ["راتب", "wage"] },
                     signature: { code: "58", synonyms: ["توقيع", "autograph"] },
                     visa: { code: "59", synonyms: ["تأشيرة", "entry permit"] },
-                    "wait move": { code: "60", synonyms: ['استنى',"انتظر", "hold on"] },
-                    what: { code: "61", synonyms: ['ايه',"ماذا", "what's"] },
-                    yes: { code: "62", synonyms: ['ايوه','صح',"نعم", "affirmative"] },
+                    "wait move": {
+                      code: "60",
+                      synonyms: ["استنى", "انتظر", "hold on"],
+                    },
+                    what: { code: "61", synonyms: ["ايه", "ماذا", "what's"] },
+                    yes: {
+                      code: "62",
+                      synonyms: ["ايوه", "صح", "نعم", "affirmative"],
+                    },
                   };
 
                   message = message.trim().toLowerCase();
+
+                  // Function to remove the 'ال' prefix if present
+                  function removeAl(word) {
+                    return word.startsWith("ال") ? word.slice(2) : word;
+                  }
+
+                  // Function to replace 'أ' with 'ا'
+                  function replaceAlef(word) {
+                    return word.replace(/أ/g, "ا");
+                    return word.replace(/إ/g, "ا");
+                  }
+
+                  message = message
+                    .split(" ")
+                    .map((word) => replaceAlef(removeAl(word)))
+                    .join(" ");
+
                   console.log(message);
                   var translations = [];
 
