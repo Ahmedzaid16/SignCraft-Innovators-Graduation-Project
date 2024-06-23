@@ -97,12 +97,20 @@ startRecordingSvg.addEventListener("click", () => {
 });
 
 unityReloadButton.addEventListener("click", () => {
-  stopVideoRecording();
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+    recordedblob = [];
+    const tracks = mediaRecorder.stream.getTracks();
+    tracks.forEach((track) => track.stop());
+  }
+  video.style.display = "none";
+  divvideo.style.display = "none";
+  unityReloadButton.style.color = "#2ec4b6";
   if (localStorage.getItem("dark-mode") === "enabled") {
     unityReloadButton.style.color = "#fff";
     startRecordingSvg.style.fill = "#fff";
   } else {
-    unityReloadButton.style.color = "#011627";
+    unityReloadButton.style.color = "#2ec4b6";
     startRecordingSvg.style.fill = "#011627";
   }
   divvideo.style.display = "none";
@@ -326,11 +334,16 @@ startRecordingSvg.addEventListener("click", () => {
 
 // Add event listener for the button to send data to Unity
 document.getElementById("button1").addEventListener("click", () => {
-  stopVideoRecording();
-  video.style.display = "none";
-  divvideo.style.display = "none";
-  unityReloadButton.style.color = "#2ec4b6";
   if (content.style.display === "none") {
+    if (mediaRecorder && mediaRecorder.state === "recording") {
+      mediaRecorder.stop();
+      recordedblob = [];
+      const tracks = mediaRecorder.stream.getTracks();
+      tracks.forEach((track) => track.stop());
+    }
+    video.style.display = "none";
+    divvideo.style.display = "none";
+    unityReloadButton.style.color = "#2ec4b6";
     content.style.display = "block";
     content.src = "/unity";
   }

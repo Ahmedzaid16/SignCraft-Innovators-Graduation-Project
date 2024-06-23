@@ -10,11 +10,13 @@
       <canvas id="unity-canvas"></canvas>
     </div>
     <style>
+      body {
+        margin: 0px;
+      }
       /* Adjust the size of the Unity container */
       #unity-container {
-        width: 400px;
-        height: 500px;
-        margin: auto; /* Centers the container horizontally */
+        height: 600px;
+        overflow: hidden;
       }
 
       /* Adjust the size of the Unity canvas */
@@ -32,11 +34,11 @@
       function initializeUnity() {
         var canvas = document.querySelector("#unity-canvas");
         var buildUrl = "/animation/Build";
-        var loaderUrl = buildUrl + "/test5.loader.js";
+        var loaderUrl = buildUrl + "/webgl.loader.js";
         var config = {
-          dataUrl: buildUrl + "/test5.data",
-          frameworkUrl: buildUrl + "/test5.framework.js",
-          codeUrl: buildUrl + "/test5.wasm",
+          dataUrl: buildUrl + "/webgl.data",
+          frameworkUrl: buildUrl + "/webgl.framework.js",
+          codeUrl: buildUrl + "/webgl.wasm",
           streamingAssetsUrl: "StreamingAssets",
           companyName: "signlang",
           productName: "signlang",
@@ -56,7 +58,6 @@
               // Add message event listener to receive messages from the parent window
               window.addEventListener("message", (event) => {
                 var message = event.data;
-                console.log(message);
 
                 if (message === "START_RECORDING") {
                   UnityInstance.Quit().then(function () {
@@ -74,19 +75,20 @@
                     },
                     hello: {
                       code: "4",
-                      synonyms: ["مرحبا", "greetings", "hi"],
+                      synonyms: ['اهلا',"مرحبا", "greetings", "hi"],
                     },
-                    YourHealthIsFine: {
+                    "your health is fine": {
                       code: "5",
                       synonyms: [
                         "صحتك بخير",
+                        "انت كويس",
                         "you're healthy",
                         "in good health",
                       ],
                     },
                     drink: {
                       code: "6",
-                      synonyms: ["بشرب", "يشرب", "beverage", "consume"],
+                      synonyms: ['اشرب',"بشرب", "يشرب", "beverage", "consume"],
                     },
                     train: {
                       code: "7",
@@ -96,11 +98,19 @@
                       code: "8",
                       synonyms: ["قبل", "prior to", "earlier"],
                     },
-                    "He will come": {
+                    "he will come": {
                       code: "9",
-                      synonyms: ["سيأتي", "he's coming", "he'll arrive"],
+                      synonyms: [
+                        "هو سياتي",
+                        "هو سيأتي",
+                        "هو جي",
+                        "سياتي",
+                        "سيأتي",
+                        "he's coming",
+                        "he'll arrive",
+                      ],
                     },
-                    Fast: {
+                    fast: {
                       code: "10",
                       synonyms: ["سريع", "quick", "speedy", "rapid"],
                     },
@@ -108,7 +118,7 @@
                       code: "11",
                       synonyms: ["معا", "with", "along"],
                     },
-                    "Train station": {
+                    "train station": {
                       code: "12",
                       synonyms: [
                         "محطة القطار",
@@ -144,7 +154,7 @@
                       code: "22",
                       synonyms: ["كسر", "break", "crack"],
                     },
-                    Diarrhea: {
+                    diarrhea: {
                       code: "23",
                       synonyms: ["إسهال", "loose motion"],
                     },
@@ -154,51 +164,130 @@
                       synonyms: ["تغذية", "nourish", "supply"],
                     },
                     mask: { code: "26", synonyms: ["قناع", "face covering"] },
-                    Forbidden: {
+                    forbidden: {
                       code: "27",
                       synonyms: ["ممنوع", "prohibited", "banned"],
                     },
                     canula: { code: "28", synonyms: ["قسطرة", "tube"] },
-                    Congestion: {
+                    congestion: {
                       code: "29",
                       synonyms: ["ازدحام", "blockage"],
                     },
                     birth: { code: "30", synonyms: ["ولادة", "nativity"] },
                     cotton: { code: "31", synonyms: ["قطن", "fabric"] },
                     ticket: { code: "32", synonyms: ["تذكرة", "pass"] },
+                    analysis: {
+                      code: "33",
+                      synonyms: ["تحليل", "examination"],
+                    },
+                    pregnancy: { code: "34", synonyms: ["حمل", "gestation"] },
+                    tired: {
+                      code: "35",
+                      synonyms: ["متعب", "weary", "fatigued"],
+                    },
+                    address: {
+                      code: "36",
+                      synonyms: ["عنوان", "location", "place"],
+                    },
+                    bank: {
+                      code: "37",
+                      synonyms: ["بنك", "financial institution"],
+                    },
+                    "bank manager": {
+                      code: "38",
+                      synonyms: ["مدير البنك", "bank director"],
+                    },
+                    because: {
+                      code: "39",
+                      synonyms: ["لان", "لأن", "due to", "since"],
+                    },
+                    deaf: { code: "40", synonyms: ["أصم", "hearing impaired"] },
+                    finance: { code: "41", synonyms: ["تمويل", "funding"] },
+                    "financial benefits": {
+                      code: "42",
+                      synonyms: ["مزايا مالية", "financial perks"],
+                    },
+                    form: { code: "43", synonyms: ["نموذج", "template"] },
+                    governorate: {
+                      code: "44",
+                      synonyms: ["محافظة", "province"],
+                    },
+                    money: { code: "45", synonyms: ['فلوس',"مال", "cash", "funds"] },
+                    "money payment": {
+                      code: "46",
+                      synonyms: ['"دفع الفلوس"',"دفع المال", "payment"],
+                    },
+                    "money transfer": {
+                      code: "47",
+                      synonyms: ["تحويل المال","تحويل المال", "fund transfer"],
+                    },
+                    name: { code: "48", synonyms: ["اسم", "designation"] },
+                    need: { code: "49", synonyms: ["يحتاج", "require"] },
+                    new: { code: "50", synonyms: ["جديد", "recent"] },
+                    number: { code: "51", synonyms: ["رقم", "figure"] },
+                    ok: { code: "52", synonyms: ["تمام","حسنا", "fine", "alright"] },
+                    on: { code: "53", synonyms: ['فوق',"على", "upon"] },
+                    open: { code: "54", synonyms: ["فتح","فتح", "unseal"] },
+                    or: { code: "55", synonyms: ["أو", "alternatively"] },
+                    pension: {
+                      code: "56",
+                      synonyms: ["معاش", "retirement benefit"],
+                    },
+                    salary: { code: "57", synonyms: ["راتب", "wage"] },
+                    signature: { code: "58", synonyms: ["توقيع", "autograph"] },
+                    visa: { code: "59", synonyms: ["تأشيرة", "entry permit"] },
+                    "wait move": { code: "60", synonyms: ['استنى',"انتظر", "hold on"] },
+                    what: { code: "61", synonyms: ['ايه',"ماذا", "what's"] },
+                    yes: { code: "62", synonyms: ['ايوه','صح',"نعم", "affirmative"] },
                   };
 
                   message = message.trim().toLowerCase();
+                  console.log(message);
                   var translations = [];
 
-                  // Check for multi-word phrases first
-                  for (const key in wordMapping) {
-                    if (message.includes(key.toLowerCase())) {
-                      translations.push(wordMapping[key].code);
-                      message = message.replace(key.toLowerCase(), "").trim();
-                    }
-                  }
-                  console.log(message);
-                  // Split the remaining message into individual words
-                  var words = message.split(/\s+/);
-
-                  // Translate each word
-                  words.forEach((word) => {
-                    let found = false;
-                    for (const key in wordMapping) {
+                  // Function to find the longest match for a given substring
+                  function findLongestMatch(substring, wordMapping) {
+                    let longestMatch = { key: null, length: 0 };
+                    Object.keys(wordMapping).forEach((key) => {
                       if (
-                        word === key ||
-                        wordMapping[key].synonyms.includes(word)
+                        substring.startsWith(key.toLowerCase()) &&
+                        key.length > longestMatch.length
                       ) {
-                        translations.push(wordMapping[key].code);
-                        found = true;
+                        longestMatch = { key, length: key.length };
+                      } else {
+                        wordMapping[key].synonyms.forEach((synonym) => {
+                          if (
+                            substring.startsWith(synonym.toLowerCase()) &&
+                            synonym.length > longestMatch.length
+                          ) {
+                            longestMatch = { key, length: synonym.length };
+                          }
+                        });
+                      }
+                    });
+                    return longestMatch.key;
+                  }
+
+                  // Tokenize and map to codes
+                  while (message.length > 0) {
+                    let match = findLongestMatch(message, wordMapping);
+                    if (match) {
+                      translations.push(wordMapping[match].code);
+                      let matchedString = new RegExp(
+                        `^(${match}|${wordMapping[match].synonyms.join("|")})`,
+                        "i"
+                      ).exec(message);
+                      if (matchedString) {
+                        message = message.slice(matchedString[0].length).trim();
+                      } else {
+                        // If no match is found, break the loop to avoid infinite loop
                         break;
                       }
+                    } else {
+                      // If no match, remove the first word (assuming words are separated by spaces)
+                      message = message.replace(/^\S+\s*/, "").trim();
                     }
-                    if (!found && word !== "") {
-                      translations.push("not found"); // or any other handling for not found words
-                    }
-                  });
+                  }
 
                   // Join the translations into a single string
                   var translationString = translations.join(",");

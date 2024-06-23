@@ -1553,7 +1553,7 @@ app.post("/proxy-process", async (req, res) => {
 
   try {
     const response = await axios.post(
-      "https://18d8-102-42-140-48.ngrok-free.app/process_text",
+      "https://steadily-needed-lacewing.ngrok-free.app/process_text",
       {
         input_text: input_text,
       }
