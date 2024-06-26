@@ -1,25 +1,103 @@
-# Graduation-Project
 
-## This repo will contain all the work Associated to our graduation project
 
-## Development
+# SignCraft Innovators Graduation Project  
+![image](https://github.com/Ahmedzaid16/Graduation-Project/assets/84353686/f40d909b-a3a3-4280-8df4-8b18cf03b1bc)  
 
-### Prerequisites
+## Project Team
+- Ahmed Mohamed Ahmed Esmail
+- Ahmed Mohamed Shaban Abas
+- Eslam Hamdy Ragab Abd Allah
+- Abdul-Rhman Rashwan Elsaid
+- Omar Ashraf Abd El-Qader Hegab
+- Ghaidaa Hisham Abd El-Monem Abd El-Aziz
+- Sherif Alaa Abd El-Monem Mohamed
+- Mustafa Khaled Abdo Mohamed
 
-Before you begin, ensure you have the following installed:
+Under the supervision of Dr. Rasha Orban and Eng: Doaa Mohamed
 
-- Install [Node.js](https://nodejs.org/) which includes [Node Package Manager](https://docs.npmjs.com/getting-started/)
+## Problem Statement 
+1. Sign language translation systems lack accuracy.
+2. The integration of computer vision, machine learning, and NLP poses complex challenges.
+3. The scarcity of annotated sign language datasets in Arabic adds an additional layer of difficulty to training.
+4. The need for a comprehensive solution that seamlessly combines these technologies to bridge the communication gap between the DHH community and the hearing population.
 
-### Setting Up the Web Project
+## System Introduction
+Our goal is to make communication easy between those with hearing impairments using sign language and those who don't. The goal is to bridge communication gaps in places like schools, workplaces, and social settings.
 
-1-Install project dependencies locally:
+## Target Users
+1. **Deaf Users:**  
+   - Enable deaf users to communicate easily with non-sign speakers by translating sign language to text.
+2. **Normal Users:**  
+   - Enable normal users to translate from text or voice to sign language to communicate with deaf users.
+   - Offer educational material for users to learn sign language.
 
-```bash
- npm install
-```
+## Features
+- Real-time translation of sign language gestures to text and spoken language.
+- Intuitive user interface designed for both sign language users and non-sign language users.
+- Customizable settings to cater to individual preferences.
+- Camera integration for capturing and interpreting sign language gestures.
+- High accuracy and low latency to ensure effective and natural communication.
 
-2-To start the application, run from Web Folder Path:
+## Dataset
+The project uses the <a href = "https://zenodo.org/records/7771372">**ArabicSL-Net** <a/> dataset for training the machine learning models to recognize and interpret sign language gestures.
 
-```bash
- npm run watch 
-```
+## Modeling
+
+### OpenHands Sign Language Recognition
+OpenHands is an open-source software toolkit designed to facilitate research in Sign Language Recognition (SLR), particularly focusing on pose-based recognition techniques. It aims to democratize SLR research by providing accessible tools and resources, fostering collaboration, and establishing standardized methods within the field.
+
+**Key functionalities of OpenHands include:**
+- **Pose-Based SLR Framework:** Enables researchers to leverage existing hand pose estimation methods (e.g., MediaPipe) to represent signs for real-time processing capabilities.
+- **Standardized Datasets:** Offers carefully curated datasets for six sign languages (American, Argentinian, Chinese, Greek, Indian, and Turkish). These datasets contribute to consistency and comparability across research efforts.
+- **Pre-trained Models:** Provides baseline pre-trained models for pose-based SLR on the aforementioned sign languages. Researchers can utilize these models as a foundation for further development and experimentation.
+- **Self-supervised Pretraining Techniques:** Introduces methods for training models on unlabeled data. This addresses the challenge of limited availability of labeled sign language data, a common bottleneck in SLR research.
+
+**Experimental Setup in OpenHands:**
+The OpenHands project employs an experimental setup that evaluates four deep learning models for sign language recognition: Long Short-Term Memory (LSTM), Bidirectional Encoder Representations from Transformers (BERT), Spatial-Temporal Graph Convolutional Network (ST-GCN), and Sign Language Graph Convolutional Network (SL-GCN). Their approach leverages PyTorch Lightning for streamlined data processing and training pipelines. All models are optimized using the Adam optimizer.
+
+**Model Training Parameters in OpenHands:**
+- **LSTM:** Batch size: 32, Initial learning rate: 0.005
+- **BERT:** Batch size: 64, Initial learning rate: 0.0001
+- **ST-GCN & SL-GCN:** Batch size: 32, Initial learning rate: 0.001
+
+**Hardware and Training Data Usage in OpenHands:**
+OpenHands utilizes a single NVIDIA Tesla V100 GPU for training. Notably, they train exclusively on the provided training sets for each dataset.
+
+**Training and Validation Metrics for SL-GCN on ArabicSL-Net Dataset on Kaggle with 91 epochs:**
+- **Training Accuracy:** 0.9942
+- **Validation Accuracy:** 0.985
+![image](https://github.com/Ahmedzaid16/SignCraft-Innovators-Graduation-Project/assets/84353686/4e27810b-3434-43ae-943f-30e4240e63ff)
+
+- **Training Loss:** 0.00423
+- **Validation Loss:** 0.05288
+
+![image](https://github.com/Ahmedzaid16/SignCraft-Innovators-Graduation-Project/assets/84353686/eb638ffb-c4a9-4c14-92c9-678d726f6128)
+
+### Text Processing with Octopus
+We utilize the Octopus library, which provides a variety of natural language processing (NLP) capabilities. The main tasks supported include:
+- **Text Diacritization:** Adding diacritical marks to Arabic text.
+- **Grammatical Correction:** Identifying and correcting grammatical errors.
+- **Title Generation:** Generating titles for given text.
+- **Paraphrasing:** Rewriting text in a different form while maintaining the same meaning.
+- **Question Answering:** Providing answers to questions based on a given context.
+- **Question Generation:** Creating questions from given text.
+- **Translation:** Translating text from one language to another.
+
+The “process_text” function is the core of this modeling part. It maps each task to its corresponding prefix and uses the Octopus model to generate the desired output. The model's generation process is configured using specific options such as beam search to ensure high-quality results. We only use the Paraphrasing task to make the sentence that is coming from the translate model more understandable.
+
+### Audio Transcription with SpeechRecognition
+We focus on audio transcription using the SpeechRecognition library. The application accepts audio files in “.wav” format and processes them to extract the spoken content as text. The transcription process involves the following steps:
+- **File Upload:** Users upload audio files through an HTTP request.
+- **File Validation:** The application checks if the uploaded file is valid and allowed (only .wav files).
+- **Transcription:** Using the SpeechRecognition library, the application reads the audio file and transcribes it using Google's speech recognition API, specifically for the Arabic language (Egyptian dialect).
+
+## Contributing
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a Pull Request.
+
+---
+This readme was created with the help of chat GPT
+
