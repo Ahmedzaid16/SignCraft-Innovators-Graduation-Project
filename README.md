@@ -63,6 +63,16 @@ The OpenHands project employs an experimental setup that evaluates four deep lea
 **Hardware and Training Data Usage in OpenHands:**
 OpenHands utilizes a single NVIDIA Tesla V100 GPU for training. Notably, they train exclusively on the provided training sets for each dataset.
 
+**Training and Validation Metrics for SL-GCN on ArabicSL-Net Dataset on Kaggle with 91 epochs:**
+- **Training Accuracy:** 0.9942
+- **Validation Accuracy:** 0.985
+![image](https://github.com/Ahmedzaid16/SignCraft-Innovators-Graduation-Project/assets/84353686/4e27810b-3434-43ae-943f-30e4240e63ff)
+
+- **Training Loss:** 0.00423
+- **Validation Loss:** 0.05288
+
+![image](https://github.com/Ahmedzaid16/SignCraft-Innovators-Graduation-Project/assets/84353686/eb638ffb-c4a9-4c14-92c9-678d726f6128)
+
 ### Text Processing with Octopus
 We utilize the Octopus library, which provides a variety of natural language processing (NLP) capabilities. The main tasks supported include:
 - **Text Diacritization:** Adding diacritical marks to Arabic text.
@@ -90,3 +100,4 @@ We focus on audio transcription using the SpeechRecognition library. The applica
 
 ---
 This readme was created with the help of chat GPT
+
