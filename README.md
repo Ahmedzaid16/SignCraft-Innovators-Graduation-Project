@@ -39,7 +39,7 @@ Our goal is to make communication easy between those with hearing impairments us
 - High accuracy and low latency to ensure effective and natural communication.
 
 ## Dataset
-The project uses the **ArabicSL-Net** dataset for training the machine learning models to recognize and interpret sign language gestures.
+The project uses the <a href = "https://zenodo.org/records/7771372">**ArabicSL-Net** <a/> dataset for training the machine learning models to recognize and interpret sign language gestures.
 
 ## Modeling
 
