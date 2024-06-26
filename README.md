@@ -1,6 +1,4 @@
-Your README looks great! Here is the complete version with the changes incorporated:
 
----
 
 # SignCraft Innovators Graduation Project  
 ![image](https://github.com/Ahmedzaid16/Graduation-Project/assets/84353686/f40d909b-a3a3-4280-8df4-8b18cf03b1bc)  
@@ -91,3 +89,4 @@ We focus on audio transcription using the SpeechRecognition library. The applica
 5. Open a Pull Request.
 
 ---
+This readme was created with the help of chat GPT
